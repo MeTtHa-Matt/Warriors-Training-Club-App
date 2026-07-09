@@ -122,16 +122,6 @@ include __DIR__ . "/includes/general/index-liens.php";
                 </div>
 
                 <div class="col-12 col-sm-6 col-lg-3">
-                    <a class="link-card" href="<?= $cardBoutiqueJudoLink ?>" target="_blank" rel="noopener">
-                        <div>
-                            <p class="link-card__label">Boutique</p>
-                            <p class="link-card__title">Judo : kimonos, dossards</p>
-                        </div>
-                        <span class="link-card__arrow">HelloAsso <i class="bi bi-arrow-up-right"></i></span>
-                    </a>
-                </div>
-
-                <div class="col-12 col-sm-6 col-lg-3">
                     <a class="link-card" href="<?= $cardBoutiqueVetementsLink ?>" target="_blank" rel="noopener">
                         <div>
                             <p class="link-card__label">Boutique</p>

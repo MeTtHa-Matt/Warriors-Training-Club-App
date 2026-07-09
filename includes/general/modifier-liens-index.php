@@ -38,23 +38,11 @@ $defaultLinks = [
         'url' => 'https://www.helloasso.com/associations/warriors-training-club/boutiques/barres-de-cereales-artisanales',
         'order' => 3,
     ],
-    'card_boutique_judo' => [
-        'label' => 'Boutique',
-        'title' => 'Judo : kimonos, dossards',
-        'url' => 'https://www.helloasso.com/associations/judo-club-mormant/boutiques/kimonos-club-adidas-dossards-2024-2025',
-        'order' => 4,
-    ],
     'card_boutique_vetements' => [
         'label' => 'Boutique',
         'title' => 'Vêtements Warriors',
         'url' => 'https://market-factory.fr/warriors-training-club/',
         'order' => 5,
-    ],
-    'card_map' => [
-        'label' => 'Carte',
-        'title' => 'Localisation du Dojo Teddy Riner',
-        'url' => 'https://www.google.com/maps/search/?api=1&query=48.6113915%2C2.8807517',
-        'order' => 6,
     ],
 ];
 
