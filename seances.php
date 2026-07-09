@@ -416,14 +416,17 @@ $canManage = (int) ($_SESSION['gerer_seances'] ?? 0) === 1;
                                 <div class="col-12">
                                     <label class="form-label">Type de séance</label>
                                     <div class="wtc-choice-list" role="listbox" aria-label="Type de séance">
-                                        <button type="button" class="wtc-choice-pill" data-value="Cardio Training">Cardio
+                                        <button type="button" class="wtc-choice-pill" data-type-group="new"
+                                            data-value="Cardio Training">Cardio
                                             Training</button>
-                                        <button type="button" class="wtc-choice-pill" data-value="Hyrox">Hyrox</button>
-                                        <button type="button" class="wtc-choice-pill"
+                                        <button type="button" class="wtc-choice-pill" data-type-group="new"
+                                            data-value="Hyrox">Hyrox</button>
+                                        <button type="button" class="wtc-choice-pill" data-type-group="new"
                                             data-value="Running-Trail">Running-Trail</button>
-                                        <button type="button" class="wtc-choice-pill"
+                                        <button type="button" class="wtc-choice-pill" data-type-group="new"
                                             data-value="Préparation physique">Préparation physique</button>
-                                        <button type="button" class="wtc-choice-pill" data-value="__autre__">Autre…</button>
+                                        <button type="button" class="wtc-choice-pill" data-type-group="new"
+                                            data-value="__autre__">Autre…</button>
                                     </div>
                                     <input type="hidden" id="newType" name="newType" value="">
                                     <input type="text" class="form-control auth-input mt-2" id="newTypeAutre"
@@ -471,7 +474,7 @@ $canManage = (int) ($_SESSION['gerer_seances'] ?? 0) === 1;
             canManage: <?php echo $canManage ? 'true' : 'false'; ?>
         };
     </script>
-    <script src="js/seances.js?v=202607061230"></script>
+    <script src="js/seances.js?v=202607091200"></script>
 
 </body>
 

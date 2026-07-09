@@ -21,17 +21,28 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-$input = json_decode(file_get_contents('php://input'), true) ?? [];
+$rawInput = file_get_contents('php://input');
+$input = [];
+if ($rawInput !== '' && $rawInput !== false) {
+    $decodedInput = json_decode($rawInput, true);
+    if (is_array($decodedInput)) {
+        $input = $decodedInput;
+    }
+}
+
+if (empty($input) && !empty($_POST)) {
+    $input = $_POST;
+}
 
 $errors = [];
 
-$date        = trim($input['date_seance'] ?? '');
-$heureDebut  = trim($input['heure_debut'] ?? '');
-$heureFin    = trim($input['heure_fin'] ?? '');
-$type        = trim($input['type_seance'] ?? '');
-$coach       = trim($input['coach'] ?? '');
-$lieuSeance  = trim($input['lieu_seance'] ?? '');
-$lieuRdv     = trim($input['lieu_rdv'] ?? '');
+$date = trim($input['date_seance'] ?? '');
+$heureDebut = trim($input['heure_debut'] ?? '');
+$heureFin = trim($input['heure_fin'] ?? '');
+$type = trim($input['type_seance'] ?? '');
+$coach = trim($input['coach'] ?? '');
+$lieuSeance = trim($input['lieu_seance'] ?? '');
+$lieuRdv = trim($input['lieu_rdv'] ?? '');
 $description = trim($input['description'] ?? '');
 
 if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date) || strtotime($date) === false) {
@@ -72,13 +83,13 @@ $stmt = $pdo->prepare(
 $stmt->execute([
     'date_seance' => $date,
     'heure_debut' => $heureDebut . ':00',
-    'heure_fin'   => $heureFin . ':00',
+    'heure_fin' => $heureFin . ':00',
     'type_seance' => $type,
-    'coach'       => $coach,
+    'coach' => $coach,
     'lieu_seance' => $lieuSeance,
-    'lieu_rdv'    => $lieuRdv,
+    'lieu_rdv' => $lieuRdv,
     'description' => $description !== '' ? $description : null,
-    'created_by'  => $_SESSION['user_id'],
+    'created_by' => $_SESSION['user_id'],
 ]);
 
 echo json_encode(['success' => true, 'id' => $pdo->lastInsertId()]);

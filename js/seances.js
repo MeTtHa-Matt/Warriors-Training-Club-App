@@ -820,12 +820,12 @@
     getModal("newTemplateModal").show();
   }
 
-  if (newTypeInput) {
-    const toggleTypeChoice = (buttons, inputEl, otherEl) => {
-      const selected = inputEl.value;
-      toggleChoiceButtons(buttons, selected, inputEl, otherEl);
-    };
+  function toggleTypeChoice(buttons, inputEl, otherEl) {
+    const selected = inputEl.value;
+    toggleChoiceButtons(buttons, selected, inputEl, otherEl);
+  }
 
+  if (newTypeInput) {
     newTypeButtons.forEach((button) => {
       button.addEventListener("click", () => {
         newTypeInput.value = button.dataset.value;
@@ -883,7 +883,11 @@
         await apiPost("includes/seances/ajouter.php", payload);
         document.getElementById("formAjouterSeance").reset();
         newTypeInput.value = "";
-        toggleTypeChoice();
+        toggleTypeChoice(
+          newTypeButtons,
+          newTypeInput,
+          document.getElementById("newTypeAutre"),
+        );
         document.getElementById("newTypeAutre").style.display = "none";
         getModal("ajouterSeanceModal").hide();
         showToast("La séance a bien été créée.");
