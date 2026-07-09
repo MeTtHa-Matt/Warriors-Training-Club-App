@@ -49,18 +49,66 @@ function testMailerConfiguration(): array
     return $issues;
 }
 
-function getApplicationBaseUrl(): string
+function getApplicationBasePath(): string
 {
-    $envBaseUrl = getenv('APP_BASE_URL');
-    if (!empty($envBaseUrl)) {
-        return rtrim($envBaseUrl, '/');
+    $candidates = [
+        $_SERVER['SCRIPT_NAME'] ?? '',
+        $_SERVER['PHP_SELF'] ?? '',
+        $_SERVER['REQUEST_URI'] ?? '',
+    ];
+
+    foreach ($candidates as $candidate) {
+        $candidate = trim((string) $candidate);
+        if ($candidate === '') {
+            continue;
+        }
+
+        $candidate = str_replace('\\', '/', $candidate);
+        $candidatePath = parse_url($candidate, PHP_URL_PATH) ?: $candidate;
+        $normalizedPath = '/' . ltrim($candidatePath, '/');
+
+        $includesPosition = strpos($normalizedPath, '/includes/');
+        if ($includesPosition !== false) {
+            return substr($normalizedPath, 0, $includesPosition);
+        }
+
+        $directory = rtrim(dirname($normalizedPath), '/');
+        if ($directory !== '' && $directory !== '.' && $directory !== '/') {
+            return $directory;
+        }
     }
 
+    return '';
+}
+
+function getApplicationBaseUrl(): string
+{
     $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
     $host = $_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME'] ?? 'localhost';
 
-    if (stripos($host, 'localhost') !== false || stripos($host, '127.0.0.1') !== false || stripos($host, '::1') !== false) {
-        return $scheme . '://' . $host . '/WTC-App';
+    $basePath = getApplicationBasePath();
+    if ($basePath !== '') {
+        return $scheme . '://' . $host . $basePath;
+    }
+
+    $envBaseUrl = getenv('APP_BASE_URL');
+    if (!empty($envBaseUrl)) {
+        $trimmedBaseUrl = trim($envBaseUrl);
+        $parsedBaseUrl = parse_url($trimmedBaseUrl);
+
+        if ($parsedBaseUrl !== false) {
+            $envHost = strtolower($parsedBaseUrl['host'] ?? '');
+            $currentHost = strtolower($host);
+            $envHostLooksLocal = in_array($envHost, ['localhost', '127.0.0.1', '::1'], true);
+
+            if ($envHost === '' && strpos($trimmedBaseUrl, '/') === 0) {
+                return $scheme . '://' . $host . rtrim($trimmedBaseUrl, '/');
+            }
+
+            if (!$envHostLooksLocal || $envHost === '' || $envHost === $currentHost) {
+                return rtrim($trimmedBaseUrl, '/');
+            }
+        }
     }
 
     return $scheme . '://' . $host;
