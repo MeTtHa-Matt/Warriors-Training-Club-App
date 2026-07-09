@@ -1,0 +1,25 @@
+{
+  "name": "Warriors Training Club",
+  "short_name": "Warriors",
+  "description": "Application web du Warriors Training Club pour consulter les séances et gérer les inscriptions.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0C0B0A",
+  "theme_color": "#0C0B0A",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "./img/wtc.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./img/wtc.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

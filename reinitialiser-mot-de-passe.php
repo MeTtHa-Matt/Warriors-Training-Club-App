@@ -1,0 +1,86 @@
+<?php
+require_once "includes/general/session-config.php";
+require_once "includes/general/verifications.php";
+require 'includes/general/db.php';
+
+include __DIR__ . '/includes/general/reini-mdp.php';
+?>
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?php echo htmlspecialchars($pageTitle); ?></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css?v=202607051">
+    <link rel="manifest" href="./manifest.json">
+    <link rel="apple-touch-icon" href="./img/wtc.png">
+    <meta name="theme-color" content="#0C0B0A">
+    <link rel="icon" type="image/png" href="./img/wtc.png">
+</head>
+
+<body>
+    <?php require 'includes/general/navbar.php'; ?>
+
+    <section class="section auth-section">
+        <div class="container">
+            <div class="auth-wrapper">
+                <div class="section-head text-center text-lg-start mx-auto mx-lg-0">
+                    <p class="eyebrow">Espace membre</p>
+                    <h2>Choisir un nouveau mot de passe</h2>
+                    <p class="auth-hint mt-2">Définis un nouveau mot de passe sécurisé pour ton compte.</p>
+                </div>
+
+                <?php if ($success): ?>
+                    <div class="auth-alert auth-alert--success">
+                        <?php echo htmlspecialchars($success); ?>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (!empty($errors)): ?>
+                    <div class="auth-alert auth-alert--error">
+                        <ul class="mb-0 ps-3">
+                            <?php foreach ($errors as $error): ?>
+                                <li><?php echo htmlspecialchars($error); ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (empty($errors) || $success): ?>
+                    <?php if (!$success): ?>
+                        <form method="post" class="auth-form" novalidate>
+                            <input type="hidden" name="token" value="<?php echo htmlspecialchars($token); ?>">
+
+                            <div class="mb-3">
+                                <label for="new_password" class="form-label">Nouveau mot de passe</label>
+                                <input type="password" class="form-control auth-input" id="new_password" name="new_password"
+                                    required minlength="8">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="confirm_password" class="form-label">Confirmer le mot de passe</label>
+                                <input type="password" class="form-control auth-input" id="confirm_password"
+                                    name="confirm_password" required minlength="8">
+                            </div>
+
+                            <button type="submit" class="btn btn-wtc-gold rounded-pill w-100 mt-4">Réinitialiser le mot de
+                                passe</button>
+                        </form>
+                    <?php endif; ?>
+                <?php endif; ?>
+
+                <p class="auth-switch mt-4">
+                    <a href="connexion.php">Retour à la connexion</a>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <?php require 'includes/general/footer.php'; ?>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
