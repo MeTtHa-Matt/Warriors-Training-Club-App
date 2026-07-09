@@ -16,8 +16,16 @@ include __DIR__ . '/includes/general/reini-mdp.php';
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css?v=202607051">
     <link rel="manifest" href="./manifest.json">
-    <link rel="apple-touch-icon" href="./img/wtc.png">
-    <meta name="theme-color" content="#0C0B0A">
+    <link rel="icon" type="image/png" sizes="any" href="./img/wtc.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="./img/wtc.png">
+    <meta name="application-name" content="Warriors Training Club">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Warriors">
+    <meta name="msapplication-TileColor" content="#0C0B0A">
+    <meta name="msapplication-TileImage" content="./img/wtc.png">
+    <meta name="theme-color" content="#C9A227">
+    <meta name="mobile-web-app-capable" content="yes">
     <link rel="icon" type="image/png" href="./img/wtc.png">
 </head>
 
