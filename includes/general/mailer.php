@@ -410,6 +410,9 @@ function sendBulkHtmlEmail(array $recipients, string $subject, string $htmlBody,
 
 function buildVerificationEmailHtml($firstname, $link)
 {
+    $safeFirstname = htmlspecialchars($firstname, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+    $safeLink = htmlspecialchars($link, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+
     return <<<HTML
 <!DOCTYPE html>
 <html lang="fr">
@@ -428,17 +431,23 @@ function buildVerificationEmailHtml($firstname, $link)
                     </tr>
                     <tr>
                         <td style="padding:36px 32px;">
-                            <h2 style="color:#1a1a1a; font-size:20px; margin-top:0;">Bonjour {$firstname},</h2>
+                            <h2 style="color:#1a1a1a; font-size:20px; margin-top:0;">Bonjour {$safeFirstname},</h2>
                             <p style="color:#444444; font-size:15px; line-height:1.6;">
                                 Merci de vous être inscrit(e) sur l'espace membre du Warriors Training Club.
                                 Pour activer votre compte, confirmez votre adresse email en cliquant sur le bouton ci-dessous.
                             </p>
                             <div style="text-align:center; margin:32px 0;">
-                                <a href="{$link}" style="background-color:#b30000; color:#ffffff; text-decoration:none; padding:14px 32px; border-radius:8px; font-weight:bold; font-size:15px; display:inline-block;">
+                                <a href="{$safeLink}" style="background-color:#b30000; color:#ffffff; text-decoration:none; padding:14px 32px; border-radius:8px; font-weight:bold; font-size:15px; display:inline-block;">
                                     Confirmer mon email
                                 </a>
                             </div>
-                            <p style="color:#888888; font-size:13px; line-height:1.5;">
+                            <p style="color:#444444; font-size:15px; line-height:1.6; margin-top:16px;">
+                                Si le bouton ne s'affiche pas ou ne fonctionne pas, copiez-collez ce lien dans votre navigateur :
+                            </p>
+                            <p style="word-break:break-word; color:#1a1a1a; font-size:14px; line-height:1.6; margin:0;">
+                                <a href="{$safeLink}" style="color:#1a1a1a; text-decoration:underline;">{$safeLink}</a>
+                            </p>
+                            <p style="color:#888888; font-size:13px; line-height:1.5; margin-top:22px;">
                                 Ce lien est valable 24 heures. Si vous n'êtes pas à l'origine de cette inscription, ignorez simplement cet email.
                             </p>
                         </td>
