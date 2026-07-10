@@ -325,7 +325,9 @@
         actionsHtml += `<button type="button" class="btn btn-wtc-outline rounded-pill" id="btnModifierSeance">Modifier</button>`;
         actionsHtml += `<button type="button" class="btn btn-wtc-outline rounded-pill" id="btnSupprimerSeance" style="color: #d32f2f;">Supprimer</button>`;
       }
-      actionsHtml += `<button type="button" class="btn btn-wtc-outline rounded-pill" id="btnMesInscriptions">Voir mes inscriptions</button>`;
+      if (data.is_registered) {
+        actionsHtml += `<button type="button" class="btn btn-wtc-outline rounded-pill" id="btnMesInscriptions">Voir mes inscriptions</button>`;
+      }
       if (data.is_registered) {
         actionsHtml += `<button type="button" class="btn btn-wtc-gold rounded-pill" id="btnSInscrire">S'inscrire</button>`;
       } else if (data.registration_allowed) {

@@ -61,6 +61,7 @@ $pageTitle = "Warriors Training Club - Règlement intérieur";
                     <p class="lead">
                         Applicable à tous les adhérents du Warriors Training Club et de ses sections.
                         L'adhésion au club implique l'acceptation pleine et entière de ce règlement.
+                        Veuillez lire ce règlement et le valider avant de pouvoir continuer sur le site.
                     </p>
                 </div>
             </div>
