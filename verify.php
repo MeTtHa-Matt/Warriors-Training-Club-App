@@ -2,6 +2,15 @@
 require_once __DIR__ . '/includes/general/session-config.php';
 require_once __DIR__ . '/includes/general/db.php';
 
+$cleanupStmt = $pdo->prepare(
+    'DELETE FROM account_wtc
+     WHERE email_verified = 0
+       AND verification_token IS NOT NULL
+       AND verification_token_expires IS NOT NULL
+       AND verification_token_expires < NOW()'
+);
+$cleanupStmt->execute();
+
 $token = trim($_GET['token'] ?? '');
 
 if ($token === '') {
@@ -21,8 +30,11 @@ if (!$account) {
 }
 
 if (!empty($account['verification_token_expires']) && strtotime($account['verification_token_expires']) < time()) {
-    $_SESSION['errors'] = ['Ce lien de vérification a expiré. Demande un nouveau mail de vérification à l’administrateur.'];
-    header('Location: connexion.php');
+    $deleteStmt = $pdo->prepare('DELETE FROM account_wtc WHERE id = :id');
+    $deleteStmt->execute(['id' => $account['id']]);
+
+    $_SESSION['errors'] = ['Ce lien de vérification a expiré. Le compte associé a été supprimé, tu peux en créer un nouveau.'];
+    header('Location: inscription.php');
     exit;
 }
 

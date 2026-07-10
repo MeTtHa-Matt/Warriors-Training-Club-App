@@ -3,6 +3,15 @@ require_once __DIR__ . '/../general/session-config.php';
 require_once __DIR__ . '/../general/db.php';
 require_once __DIR__ . '/../general/mailer.php';
 
+$cleanupStmt = $pdo->prepare(
+    'DELETE FROM account_wtc
+     WHERE email_verified = 0
+       AND verification_token IS NOT NULL
+       AND verification_token_expires IS NOT NULL
+       AND verification_token_expires < NOW()'
+);
+$cleanupStmt->execute();
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: ../../inscription.php');
     exit;
@@ -12,14 +21,14 @@ $errors = [];
 
 $old = [
     'firstname' => trim($_POST['firstname'] ?? ''),
-    'lastname'  => trim($_POST['lastname'] ?? ''),
-    'email'     => trim($_POST['email'] ?? ''),
+    'lastname' => trim($_POST['lastname'] ?? ''),
+    'email' => trim($_POST['email'] ?? ''),
 ];
 
-$firstname       = $old['firstname'];
-$lastname        = $old['lastname'];
-$email           = $old['email'];
-$password        = $_POST['password'] ?? '';
+$firstname = $old['firstname'];
+$lastname = $old['lastname'];
+$email = $old['email'];
+$password = $_POST['password'] ?? '';
 $passwordConfirm = $_POST['password_confirm'] ?? '';
 
 if ($firstname === '' || mb_strlen($firstname) > 100) {
@@ -60,11 +69,11 @@ if (empty($errors) && isset($_FILES['pdp']) && $_FILES['pdp']['error'] !== UPLOA
 
         $allowedTypes = [
             'image/jpeg' => 'jpg',
-            'image/png'  => 'png',
+            'image/png' => 'png',
             'image/webp' => 'webp',
         ];
 
-        $finfo    = new finfo(FILEINFO_MIME_TYPE);
+        $finfo = new finfo(FILEINFO_MIME_TYPE);
         $mimeType = $finfo->file($_FILES['pdp']['tmp_name']);
 
         if (!isset($allowedTypes[$mimeType])) {
@@ -93,7 +102,7 @@ if (empty($errors) && isset($_FILES['pdp']) && $_FILES['pdp']['error'] !== UPLOA
 
 if (!empty($errors)) {
     $_SESSION['errors'] = $errors;
-    $_SESSION['old']    = $old;
+    $_SESSION['old'] = $old;
     header('Location: ../../inscription.php');
     exit;
 }
@@ -124,10 +133,10 @@ $stmt = $pdo->prepare(
 );
 $stmt->execute([
     'firstname' => $firstname,
-    'lastname'  => $lastname,
-    'email'     => $email,
-    'password'  => $hashedPassword,
-    'pdp'       => $pdpFilename,
+    'lastname' => $lastname,
+    'email' => $email,
+    'password' => $hashedPassword,
+    'pdp' => $pdpFilename,
     'email_verified' => 0,
     'verification_token' => $verificationToken,
     'verification_token_expires' => $verificationExpires,
@@ -138,7 +147,7 @@ $mailResult = sendVerificationEmail($email, $firstname, $verificationToken);
 if (!empty($mailResult['success'])) {
     $_SESSION['success'] = "Ton compte a bien été créé. Vérifie ta boîte mail pour confirmer ton adresse email.";
 } else {
-    $_SESSION['errors'] = ["Ton compte a bien été créé, mais l'email de vérification n'a pas pu être envoyé. Contacte l'administrateur du club." ];
+    $_SESSION['errors'] = ["Ton compte a bien été créé, mais l'email de vérification n'a pas pu être envoyé. Contacte l'administrateur du club."];
     header('Location: ../../inscription.php');
     exit;
 }

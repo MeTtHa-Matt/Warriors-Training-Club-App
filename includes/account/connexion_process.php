@@ -3,6 +3,15 @@ require_once __DIR__ . '/../general/session-config.php';
 require_once __DIR__ . '/../general/db.php';
 require_once __DIR__ . '/../general/persistent-auth.php';
 
+$cleanupStmt = $pdo->prepare(
+    'DELETE FROM account_wtc
+     WHERE email_verified = 0
+       AND verification_token IS NOT NULL
+       AND verification_token_expires IS NOT NULL
+       AND verification_token_expires < NOW()'
+);
+$cleanupStmt->execute();
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: ../../connexion.php');
     exit;
@@ -10,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 $errors = [];
 
-$email    = trim($_POST['email'] ?? '');
+$email = trim($_POST['email'] ?? '');
 $password = $_POST['password'] ?? '';
 
 if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -38,21 +47,21 @@ if (empty($errors)) {
 
 if (!empty($errors)) {
     $_SESSION['errors'] = $errors;
-    $_SESSION['old']    = ['email' => $email];
+    $_SESSION['old'] = ['email' => $email];
     header('Location: ../../connexion.php');
     exit;
 }
 
 session_regenerate_id(true);
 
-$_SESSION['user_id']   = $account['id'];
+$_SESSION['user_id'] = $account['id'];
 $_SESSION['firstname'] = $account['firstname'];
-$_SESSION['lastname']  = $account['lastname'];
-$_SESSION['email']     = $account['email'];
-$_SESSION['pdp']       = $account['pdp'];
-$_SESSION['admin']     = (int) $account['admin'];
+$_SESSION['lastname'] = $account['lastname'];
+$_SESSION['email'] = $account['email'];
+$_SESSION['pdp'] = $account['pdp'];
+$_SESSION['admin'] = (int) $account['admin'];
 $_SESSION['gerer_seances'] = (int) $account['gerer_seances'];
-$_SESSION['ban']       = (int) $account['ban'];
+$_SESSION['ban'] = (int) $account['ban'];
 $_SESSION['maintenance'] = (int) $account['maintenance'];
 
 $tokenManager = new PersistentToken($pdo);
