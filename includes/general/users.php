@@ -47,8 +47,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_action'], $_PO
     }
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verify_email_action'], $_POST['target_id'])) {
+
+    $targetId = (int) $_POST['target_id'];
+
+    if ($targetId === (int) $currentId) {
+        $errors[] = "Tu ne peux pas vérifier ton propre email.";
+    } else {
+        $userStmt = $pdo->prepare('SELECT id FROM account_wtc WHERE id = ?');
+        $userStmt->execute([$targetId]);
+
+        if ($userStmt->fetchColumn() === false) {
+            $errors[] = "Utilisateur introuvable.";
+        } else {
+            $verifyStmt = $pdo->prepare('UPDATE account_wtc SET email_verified = 1, verification_token = NULL, verification_token_expires = NULL WHERE id = ?');
+            $verifyStmt->execute([$targetId]);
+            $success = "L'email a bien été vérifié.";
+        }
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_account_action'], $_POST['target_id'])) {
+
+    $targetId = (int) $_POST['target_id'];
+
+    if ($targetId === (int) $currentId) {
+        $errors[] = "Tu ne peux pas supprimer ton propre compte.";
+    } else {
+        $userStmt = $pdo->prepare('SELECT id FROM account_wtc WHERE id = ?');
+        $userStmt->execute([$targetId]);
+
+        if ($userStmt->fetchColumn() === false) {
+            $errors[] = "Utilisateur introuvable.";
+        } else {
+            $deleteStmt = $pdo->prepare('DELETE FROM account_wtc WHERE id = ?');
+            $deleteStmt->execute([$targetId]);
+            $success = "Le compte a bien été supprimé.";
+        }
+    }
+}
+
 $usersStmt = $pdo->query(
-    'SELECT id, firstname, lastname, email, pdp, admin, gerer_seances, ban, maintenance
+    'SELECT id, firstname, lastname, email, pdp, admin, gerer_seances, ban, maintenance, email_verified
      FROM account_wtc
      ORDER BY lastname ASC, firstname ASC'
 );

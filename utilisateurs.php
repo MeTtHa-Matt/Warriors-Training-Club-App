@@ -20,7 +20,7 @@ include __DIR__ . "/includes/general/users.php"
     <title>Warriors Training Club - Utilisateurs</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=202607051">
+    <link rel="stylesheet" href="css/style.css?v=20260710">
     <link rel="icon" type="image/png" href="/WTC-App/img/wtc.png">
 </head>
 <body>
@@ -85,83 +85,81 @@ include __DIR__ . "/includes/general/users.php"
                    placeholder="Rechercher un utilisateur (nom, prénom, email)...">
         </div>
 
-        <div class="users-list-wrapper" id="usersTable">
-            <div class="users-list-header d-none d-md-flex">
-                <span class="users-list-header__cell">Utilisateur</span>
-                <span class="users-list-header__cell">Email</span>
-                <span class="users-list-header__cell">Rôles</span>
-                <span class="users-list-header__cell users-list-header__cell--actions">Actions</span>
-            </div>
-
+        <div class="users-grid" id="usersTable">
             <?php foreach ($users as $user): ?>
-                <article class="users-card <?= $user['ban'] ? 'users-row--banned' : '' ?>">
-                    <div class="users-card__main">
+                <div class="user-profile-card <?= $user['ban'] ? 'user-profile-card--banned' : '' ?>">
+                    <div class="user-profile-card__content" role="button" tabindex="0" data-user-id="<?= (int) $user['id'] ?>" data-search>
                         <img src="img/pdps/<?= htmlspecialchars($user['pdp']) ?>"
-                             alt="" class="users-avatar" width="40" height="40" loading="lazy" decoding="async">
-                        <div class="users-card__identity" data-search>
-                            <div class="users-name">
+                             alt="" class="user-profile-card__avatar" width="64" height="64" loading="lazy" decoding="async">
+                        <div class="user-profile-card__info">
+                            <div class="user-profile-card__name">
                                 <?= htmlspecialchars($user['firstname'] . ' ' . $user['lastname']) ?>
                                 <?php if ((int) $user['id'] === (int) $currentId): ?>
-                                    <span class="users-you">(toi)</span>
+                                    <span class="user-profile-card__you">(toi)</span>
                                 <?php endif; ?>
                             </div>
-                            <div class="users-email"><?= htmlspecialchars($user['email']) ?></div>
                         </div>
                     </div>
 
-                    <div class="users-badges">
-                        <?php if ($user['admin']): ?>
-                            <span class="users-badge users-badge--admin">Admin</span>
-                        <?php endif; ?>
-                        <?php if ($user['gerer_seances']): ?>
-                            <span class="users-badge users-badge--coach">Gère les séances</span>
-                        <?php endif; ?>
-                        <?php if ($user['ban']): ?>
-                            <span class="users-badge users-badge--ban">Banni</span>
-                        <?php endif; ?>
-                        <?php if (!$user['admin'] && !$user['gerer_seances'] && !$user['ban']): ?>
-                            <span class="users-badge users-badge--member">Membre</span>
-                        <?php endif; ?>
-                    </div>
+                    <div class="user-profile-menu" data-menu-for="<?= (int) $user['id'] ?>">
+                        <div class="user-profile-menu__header">
+                            <h4><?= htmlspecialchars($user['firstname'] . ' ' . $user['lastname']) ?></h4>
+                            <p class="text-white"><?= htmlspecialchars($user['email']) ?></p>
+                            <div class="user-profile-menu__badges mt-2">
+                                <?php if ($user['admin']): ?>
+                                    <span class="users-badge users-badge--admin">Admin</span>
+                                <?php endif; ?>
+                                <?php if ($user['gerer_seances']): ?>
+                                    <span class="users-badge users-badge--coach">Gère les séances</span>
+                                <?php endif; ?>
+                                <?php if ($user['ban']): ?>
+                                    <span class="users-badge users-badge--ban">Banni</span>
+                                <?php endif; ?>
+                                <?php if (!$user['admin'] && !$user['gerer_seances'] && !$user['ban']): ?>
+                                    <span class="users-badge users-badge--member">Membre</span>
+                                <?php endif; ?>
+                            </div>
+                        </div>
 
-                    <div class="users-actions">
-                        <form method="POST" class="d-inline">
-                            <input type="hidden" name="target_id" value="<?= (int) $user['id'] ?>">
-                            <input type="hidden" name="toggle_action" value="admin">
-                            <button type="submit"
-                                class="users-action-btn <?= $user['admin'] ? 'users-action-btn--active-admin' : '' ?>"
-                                title="<?= $user['admin'] ? 'Retirer les droits admin' : 'Rendre admin' ?>"
-                                <?= (int) $user['id'] === (int) $currentId ? 'disabled' : '' ?>>
-                                <i class="bi bi-shield-lock"></i>
-                                <span><?= $user['admin'] ? 'Retirer admin' : 'Rendre admin' ?></span>
+                        <div class="user-profile-menu__actions">
+                            <button type="button" class="btn btn-sm w-100 btn-warning user-action-btn" 
+                                    data-action="toggle_gerer_seances" data-user-id="<?= (int) $user['id'] ?>"
+                                    title="<?= $user['gerer_seances'] ? 'Retirer la gestion des séances' : 'Autoriser la gestion des séances' ?>"
+                                    <?= (int) $user['id'] === (int) $currentId ? 'disabled' : '' ?>>
+                                <i class="bi bi-calendar2-check me-2"></i>
+                                <span class="btn-text"><?= $user['gerer_seances'] ? 'Retirer séances' : 'Gérer séances' ?></span>
                             </button>
-                        </form>
-                        <form method="POST" class="d-inline">
-                            <input type="hidden" name="target_id" value="<?= (int) $user['id'] ?>">
-                            <input type="hidden" name="toggle_action" value="gerer_seances">
-                            <button type="submit"
-                                class="users-action-btn <?= $user['gerer_seances'] ? 'users-action-btn--active-coach' : '' ?>"
-                                title="<?= $user['gerer_seances'] ? 'Retirer la gestion des séances' : 'Autoriser la gestion des séances' ?>">
-                                <i class="bi bi-calendar2-check"></i>
-                                <span><?= $user['gerer_seances'] ? 'Retirer séances' : 'Gérer séances' ?></span>
+
+                            <button type="button" class="btn btn-sm w-100 btn-danger user-action-btn" 
+                                    data-action="toggle_ban" data-user-id="<?= (int) $user['id'] ?>"
+                                    title="<?= $user['ban'] ? 'Débannir' : 'Bannir' ?>"
+                                    <?= (int) $user['id'] === (int) $currentId ? 'disabled' : '' ?>>
+                                <i class="bi <?= $user['ban'] ? 'bi-person-check' : 'bi-person-slash' ?> me-2"></i>
+                                <span class="btn-text"><?= $user['ban'] ? 'Débannir' : 'Bannir' ?></span>
                             </button>
-                        </form>
-                        <form method="POST" action="ban.php" class="d-inline">
-                            <input type="hidden" name="target_id" value="<?= (int) $user['id'] ?>">
-                            <button type="submit"
-                                class="users-action-btn users-action-btn--danger <?= $user['ban'] ? 'users-action-btn--active-ban' : '' ?>"
-                                title="<?= $user['ban'] ? 'Débannir' : 'Bannir' ?>"
-                                <?= (int) $user['id'] === (int) $currentId ? 'disabled' : '' ?>>
-                                <i class="bi <?= $user['ban'] ? 'bi-person-check' : 'bi-person-slash' ?>"></i>
-                                <span><?= $user['ban'] ? 'Débannir' : 'Bannir' ?></span>
+
+                            <button type="button" class="btn btn-sm w-100 btn-info user-action-btn" 
+                                    data-action="verify_email" data-user-id="<?= (int) $user['id'] ?>"
+                                    title="Vérifier l'email"
+                                    <?= ((int) $user['id'] === (int) $currentId || (int) $user['email_verified'] === 1) ? 'disabled' : '' ?>>
+                                <i class="bi bi-check-circle me-2"></i>
+                                Vérifier le mail
                             </button>
-                        </form>
+
+                            <button type="button" class="btn btn-sm w-100 btn-danger user-action-btn" 
+                                    data-action="delete_account" data-user-id="<?= (int) $user['id'] ?>"
+                                    title="Supprimer le compte"
+                                    <?= (int) $user['id'] === (int) $currentId ? 'disabled' : '' ?>>
+                                <i class="bi bi-trash me-2"></i>
+                                Supprimer le compte
+                            </button>
+                        </div>
                     </div>
-                </article>
+                </div>
             <?php endforeach; ?>
 
             <?php if (empty($users)): ?>
-                <p class="upcoming-empty text-center py-4">Aucun utilisateur enregistré.</p>
+                <p class="upcoming-empty text-center py-4 w-100">Aucun utilisateur enregistré.</p>
             <?php endif; ?>
         </div>
 
@@ -172,14 +170,183 @@ include __DIR__ . "/includes/general/users.php"
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    document.getElementById('userSearch').addEventListener('input', function (e) {
-        const query = e.target.value.trim().toLowerCase();
-        document.querySelectorAll('#usersTable .users-card').forEach(function (card) {
-            const text = Array.from(card.querySelectorAll('[data-search]'))
-                .map(function (el) { return el.textContent.toLowerCase(); })
-                .join(' ');
-            card.style.display = text.includes(query) ? '' : 'none';
+    document.addEventListener('DOMContentLoaded', function() {
+        // Search functionality
+        document.getElementById('userSearch').addEventListener('input', function (e) {
+            const query = e.target.value.trim().toLowerCase();
+            document.querySelectorAll('#usersTable .user-profile-card').forEach(function (card) {
+                const text = card.querySelector('[data-search]')?.textContent.toLowerCase() || '';
+                card.style.display = text.includes(query) ? '' : 'none';
+            });
         });
+
+        // Menu toggle functionality
+        document.querySelectorAll('.user-profile-card__content').forEach(function(element) {
+            element.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const userId = this.getAttribute('data-user-id');
+                const menu = document.querySelector(`[data-menu-for="${userId}"]`);
+                
+                // Close other menus
+                document.querySelectorAll('.user-profile-menu').forEach(function(m) {
+                    if (m !== menu) {
+                        m.classList.remove('active');
+                    }
+                });
+                
+                // Toggle this menu
+                if (menu) {
+                    menu.classList.toggle('active');
+                }
+            });
+
+            element.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.click();
+                }
+            });
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function() {
+            document.querySelectorAll('.user-profile-menu').forEach(function(menu) {
+                menu.classList.remove('active');
+            });
+        });
+
+        // Prevent menu from closing when clicking inside it
+        document.querySelectorAll('.user-profile-menu').forEach(function(menu) {
+            menu.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        });
+
+        // User action buttons (AJAX)
+        document.querySelectorAll('.user-action-btn').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const action = this.getAttribute('data-action');
+                const userId = parseInt(this.getAttribute('data-user-id'));
+                const button = this;
+
+                // Confirmation for delete
+                if (action === 'delete_account') {
+                    if (!confirm('Êtes-vous sûr de vouloir supprimer ce compte ? Cette action est irréversible.')) {
+                        return;
+                    }
+                }
+
+                // Show loading state
+                const originalText = button.innerHTML;
+                button.disabled = true;
+                button.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Traitement...';
+
+                fetch('includes/general/users-api.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        action: action,
+                        target_id: userId
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Restore original HTML first
+                        button.innerHTML = originalText;
+                        button.disabled = false;
+
+                        // Handle specific actions
+                        if (action === 'toggle_gerer_seances') {
+                            const btnText = button.querySelector('.btn-text');
+                            
+                            if (btnText) {
+                                // Update button appearance
+                                if (data.new_value === 1) {
+                                    button.classList.remove('btn-outline-warning');
+                                    button.classList.add('btn-warning');
+                                    btnText.textContent = 'Retirer séances';
+                                } else {
+                                    button.classList.add('btn-outline-warning');
+                                    button.classList.remove('btn-warning');
+                                    btnText.textContent = 'Gérer séances';
+                                }
+                            }
+                        } else if (action === 'toggle_ban') {
+                            const card = document.querySelector(`[data-menu-for="${userId}"]`);
+                            const userCard = card ? card.closest('.user-profile-card') : null;
+                            const btnText = button.querySelector('.btn-text');
+                            const btnIcon = button.querySelector('.bi');
+                            
+                            if (btnText && btnIcon && userCard) {
+                                // Update card visual state
+                                if (data.new_value === 1) {
+                                    userCard.classList.add('user-profile-card--banned');
+                                    button.classList.add('btn-success');
+                                    button.classList.remove('btn-danger');
+                                    btnText.textContent = 'Débannir';
+                                    btnIcon.className = 'bi bi-person-check me-2';
+                                } else {
+                                    userCard.classList.remove('user-profile-card--banned');
+                                    button.classList.remove('btn-success');
+                                    button.classList.add('btn-danger');
+                                    btnText.textContent = 'Bannir';
+                                    btnIcon.className = 'bi bi-person-slash me-2';
+                                }
+                            }
+                        } else if (action === 'verify_email') {
+                            // Disable the button after verification
+                            button.disabled = true;
+                            button.innerHTML = '<i class="bi bi-check-circle me-2"></i>Email vérifié';
+                        } else if (action === 'delete_account') {
+                            // Remove the card from the DOM
+                            const card = document.querySelector(`[data-menu-for="${userId}"]`);
+                            const userCard = card ? card.closest('.user-profile-card') : null;
+                            if (userCard) {
+                                userCard.remove();
+                            }
+                        }
+
+                        showNotification(data.message, 'success');
+                    } else {
+                        button.innerHTML = originalText;
+                        button.disabled = false;
+                        showNotification(data.message, 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    button.innerHTML = originalText;
+                    button.disabled = false;
+                    showNotification('Une erreur est survenue', 'error');
+                });
+            });
+        });
+
+        // Simple notification function
+        function showNotification(message, type) {
+            const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
+            const alertHtml = `<div class="alert ${alertClass} alert-dismissible fade show" role="alert" style="position: fixed; top: 20px; right: 20px; z-index: 9999; max-width: 400px;">
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>`;
+            
+            const alertContainer = document.createElement('div');
+            alertContainer.innerHTML = alertHtml;
+            const alertEl = alertContainer.firstElementChild;
+            document.body.appendChild(alertEl);
+
+            // Auto-dismiss after 3 seconds
+            setTimeout(() => {
+                alertEl.classList.remove('show');
+                setTimeout(() => {
+                    alertEl.remove();
+                }, 150);
+            }, 3000);
+        }
     });
 </script>
 

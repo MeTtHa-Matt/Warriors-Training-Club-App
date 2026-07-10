@@ -2224,3 +2224,221 @@ h3,
 .accept-email-feedback--loading {
   color: #9a9a9a;
 }
+
+/* ==========================================================================
+   NOUVELLE INTERFACE UTILISATEURS — Cartes de profil avec menu déroulant
+   ========================================================================== */
+
+.users-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.user-profile-card {
+  position: relative;
+  background: var(--black-soft);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 1.25rem;
+  text-align: center;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.user-profile-card:hover {
+  border-color: var(--gold);
+  background: rgba(244, 239, 226, 0.04);
+  transform: translateY(-2px);
+}
+
+.user-profile-card--banned {
+  opacity: 0.55;
+}
+
+.user-profile-card__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 10px;
+  transition:
+    background 0.2s ease,
+    outline 0.2s ease;
+}
+
+.user-profile-card__content:hover,
+.user-profile-card__content:focus {
+  background: rgba(244, 239, 226, 0.05);
+  outline: 2px solid transparent;
+}
+
+.user-profile-card__content:focus {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+.user-profile-card__avatar {
+  width: 64px;
+  height: 64px;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--line);
+  background: rgba(244, 239, 226, 0.08);
+  transition: border-color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.user-profile-card__content:hover .user-profile-card__avatar {
+  border-color: var(--gold);
+}
+
+.user-profile-card__info {
+  width: 100%;
+}
+
+.user-profile-card__name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--paper);
+  margin: 0;
+  word-break: break-word;
+}
+
+.user-profile-card__you {
+  display: block;
+  color: var(--gold-soft);
+  font-size: 0.7rem;
+  font-weight: 400;
+  margin-top: 0.2rem;
+}
+
+/* Menu déroulant */
+.user-profile-menu {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 0.5rem;
+  background: var(--black-soft);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 0;
+  min-width: 220px;
+  max-width: calc(100vw - 2rem);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+  z-index: 100;
+  display: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-50%) translateY(-10px);
+  transition:
+    opacity 0.2s ease,
+    visibility 0.2s ease,
+    transform 0.2s ease;
+  pointer-events: none;
+}
+
+.user-profile-menu.active {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+
+.user-profile-menu__header {
+  padding: 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.user-profile-menu__header h4 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--paper);
+  margin: 0 0 0.25rem;
+}
+
+.user-profile-menu__header p {
+  font-size: 0.8rem;
+  color: var(--grey);
+  margin: 0;
+  word-break: break-word;
+}
+
+.user-profile-menu__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  justify-content: flex-start;
+}
+
+.user-profile-menu__actions {
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.user-profile-menu__actions .btn {
+  font-size: 0.8rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.user-profile-menu__actions .btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.user-profile-menu__actions .btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.user-profile-menu__actions .btn .bi {
+  font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 575.98px) {
+  .users-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .user-profile-card {
+    padding: 1rem;
+  }
+
+  .user-profile-card__avatar {
+    width: 56px;
+    height: 56px;
+  }
+
+  .user-profile-card__name {
+    font-size: 0.9rem;
+  }
+
+  .user-profile-menu {
+    min-width: 180px;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .users-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
+}
