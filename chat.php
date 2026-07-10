@@ -224,7 +224,7 @@ function getChatMemory(): array
         return [];
     }
 
-    return array_slice($_SESSION['chat_memory'], -6);
+    return array_slice($_SESSION['chat_memory'], -4);
 }
 
 function saveChatMemory(array $memory, string $userMessage, string $assistantMessage): array
@@ -261,8 +261,10 @@ function callGroqApi(string $apiKey, string $systemPrompt, string $userMessage):
             ['role' => 'system', 'content' => $systemPrompt],
             ['role' => 'user', 'content' => $userMessage],
         ],
-        'temperature' => 0.7,
-        'max_tokens' => 500,
+        'temperature' => 0.25,
+        'top_p' => 0.9,
+        'frequency_penalty' => 0.5,
+        'max_tokens' => 180,
     ];
 
     $body = json_encode($payload, JSON_UNESCAPED_UNICODE);
@@ -333,6 +335,17 @@ function callGroqApi(string $apiKey, string $systemPrompt, string $userMessage):
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+    $now = time();
+    if (!isset($_SESSION['chat_last_request'])) {
+        $_SESSION['chat_last_request'] = 0;
+    }
+
+    if ($now - (int) $_SESSION['chat_last_request'] < 5) {
+        header('Content-Type: application/json');
+        echo json_encode(['success' => false, 'answer' => 'Merci de patienter quelques secondes avant de poser une nouvelle question.']);
+        exit;
+    }
+    $_SESSION['chat_last_request'] = $now;
     $rawInput = file_get_contents('php://input');
     $data = json_decode($rawInput, true);
     $message = isset($data['message']) ? trim((string) $data['message']) : '';
@@ -345,12 +358,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_SERVER['HTTP_X_REQUESTED_W
 
     $siteContext = buildSiteContext($pdo);
     $contextText = formatSiteContext($siteContext);
-    $databaseSchema = buildDatabaseSchemaContext($pdo);
     $chatMemory = getChatMemory();
     $memoryText = formatChatMemory($chatMemory);
 
-    $systemPrompt = "Tu es un assistant clair, utile et concret du site Warriors Training Club. Réponds en français, de façon directe, naturelle et concise. Ton rôle est de répondre précisément aux questions sur le site, les séances, les inscriptions, les règles, les comptes et les données disponibles dans la base. Utilise uniquement les informations fournies par le contexte du site et la base de données. Si une information n'est pas disponible, dis-le clairement sans inventer. Tu as une mémoire courte des derniers échanges pour garder une continuité naturelle dans la conversation. Les noms de colonnes de la base ont été traduits en français pour t'aider à comprendre les questions.";
-    $userPrompt = "Question de l'utilisateur : {$message}\n\nContexte disponible du site :\n{$contextText}\n\nSchéma de la base de données :\n{$databaseSchema}\n\n{$memoryText}";
+    $systemPrompt = "Tu es un assistant bref et utile du site Warriors Training Club. Réponds en français de manière directe et concise avec les informations du site. Si tu n'as pas la réponse, dis-le clairement. Ne fais pas de digression inutile.";
+    $userPrompt = "Question de l'utilisateur : {$message}\n\nContexte disponible du site :\n{$contextText}\n\n{$memoryText}";
 
     $apiKey = getenv('IA_API_KEY') ?: '';
     $answer = '';

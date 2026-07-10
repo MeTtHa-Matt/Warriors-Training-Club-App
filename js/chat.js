@@ -64,11 +64,21 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
     const text = input.value.trim();
     if (!text) return;
+    if (text.length > 420) {
+      appendMessage(
+        "Merci de reformuler votre question de manière plus courte (max 420 caractères).",
+        "assistant",
+      );
+      return;
+    }
 
     appendMessage(text, "user");
     input.value = "";
     autoResize();
     updateSendState();
+
+    sendBtn.disabled = true;
+    input.disabled = true;
 
     const loading = document.createElement("div");
     loading.className = "chat-msg chat-msg--assistant";
@@ -94,6 +104,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (data && data.success && data.answer) {
         appendMessage(data.answer, "assistant");
+      } else if (data && data.answer) {
+        appendMessage(data.answer, "assistant");
       } else {
         appendMessage(
           "Je n’ai pas pu obtenir de réponse pour le moment.",
@@ -106,6 +118,10 @@ document.addEventListener("DOMContentLoaded", () => {
         "Une erreur est survenue pendant la communication avec l’assistant.",
         "assistant",
       );
+    } finally {
+      sendBtn.disabled = false;
+      input.disabled = false;
+      updateSendState();
     }
   });
 
