@@ -20,7 +20,7 @@ include __DIR__ . "/includes/general/users.php"
     <title>Warriors Training Club - Utilisateurs</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=20260710">
+    <link rel="stylesheet" href="css/style.css?v=202607102000">
     <link rel="icon" type="image/png" href="/WTC-App/img/wtc.png">
 </head>
 <body>
@@ -352,3 +352,4 @@ include __DIR__ . "/includes/general/users.php"
 
 </body>
 </html>
+

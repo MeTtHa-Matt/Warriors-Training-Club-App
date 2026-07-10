@@ -325,7 +325,7 @@
         actionsHtml += `<button type="button" class="btn btn-wtc-outline rounded-pill" id="btnModifierSeance">Modifier</button>`;
         actionsHtml += `<button type="button" class="btn btn-wtc-outline rounded-pill" id="btnSupprimerSeance" style="color: #d32f2f;">Supprimer</button>`;
       }
-      if (data.is_registered) {
+      if (data.has_inscriptions) {
         actionsHtml += `<button type="button" class="btn btn-wtc-outline rounded-pill" id="btnMesInscriptions">Voir mes inscriptions</button>`;
       }
       if (data.is_registered) {

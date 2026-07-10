@@ -43,3 +43,4 @@ $pdo->prepare('UPDATE account_wtc SET email_verified = 1, verification_token = N
 $_SESSION['success'] = 'Votre adresse email a bien été vérifiée. Vous pouvez maintenant vous connecter.';
 header('Location: connexion.php');
 exit;
+

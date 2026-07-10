@@ -44,9 +44,22 @@ $stmt->execute([
 ]);
 $isRegistered = (int) $stmt->fetch()['c'] > 0;
 
+// Vérifier si l'utilisateur a inscrit quelqu'un à cette séance
+$stmtHasInscriptions = $pdo->prepare(
+    'SELECT COUNT(*) AS c FROM inscriptions_seances
+     WHERE seance_id = :seance_id
+       AND inscrit_par = :user_id'
+);
+$stmtHasInscriptions->execute([
+    'seance_id' => $id,
+    'user_id' => $_SESSION['user_id'],
+]);
+$hasInscriptions = (int) $stmtHasInscriptions->fetch()['c'] > 0;
+
 echo json_encode([
     'seance' => $seance,
     'can_manage' => (int) ($_SESSION['gerer_seances'] ?? 0) === 1,
     'is_registered' => $isRegistered,
+    'has_inscriptions' => $hasInscriptions,
     'registration_allowed' => $registrationAllowed,
 ]);

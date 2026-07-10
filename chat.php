@@ -389,8 +389,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_SERVER['HTTP_X_REQUESTED_W
     <title>Warriors Training Club - Assistant</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=202607051">
-    <link rel="stylesheet" href="css/chat.css?v=202607051">
+    <link rel="stylesheet" href="css/style.css?v=202607102000">
+    <link rel="stylesheet" href="css/chat.css?v=202607102000">
     <link rel="manifest" href="./manifest.json">
     <link rel="icon" type="image/png" sizes="any" href="./img/wtc.png">
     <link rel="apple-touch-icon" sizes="180x180" href="./img/wtc.png">
@@ -463,7 +463,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_SERVER['HTTP_X_REQUESTED_W
     <?php require 'includes/general/footer.php'; ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/chat.js?v=202607051"></script>
+    <script src="js/chat.js?v=202607102000"></script>
 
 </body>
 

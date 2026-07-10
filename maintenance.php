@@ -46,7 +46,7 @@ if ($maintenanceEnabled && !$isAdmin) {
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width,initial-scale=1">
         <title>Maintenance</title>
-        <link rel="stylesheet" href="css/style.css?v=202607051">
+        <link rel="stylesheet" href="css/style.css?v=202607102000">
     </head>
     <body>
     <section class="section auth-section">
@@ -66,3 +66,4 @@ if ($maintenanceEnabled && !$isAdmin) {
 
 header('Location: index.php');
 exit;
+

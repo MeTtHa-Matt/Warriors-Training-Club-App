@@ -10,7 +10,7 @@ include __DIR__ . "/includes/general/ban.php";
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Compte banni</title>
-    <link rel="stylesheet" href="css/style.css?v=202607051">
+    <link rel="stylesheet" href="css/style.css?v=202607102000">
 </head>
 <body>
 <section class="section auth-section">
@@ -25,3 +25,4 @@ include __DIR__ . "/includes/general/ban.php";
 <?php require 'includes/general/footer.php'; ?>
 </body>
 </html>
+
