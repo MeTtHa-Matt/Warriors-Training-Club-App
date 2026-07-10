@@ -114,6 +114,13 @@ function getApplicationBaseUrl(): string
     return $scheme . '://' . $host;
 }
 
+function configureMailerCharacterEncoding(PHPMailer $mail): void
+{
+    $mail->CharSet = 'UTF-8';
+    $mail->Encoding = 'base64';
+    $mail->setLanguage('fr');
+}
+
 function sendVerificationEmail($email, $firstname, $token)
 {
     $mail = new PHPMailer(true);
@@ -126,6 +133,7 @@ function sendVerificationEmail($email, $firstname, $token)
     }
 
     try {
+        configureMailerCharacterEncoding($mail);
         $mail->isSMTP();
         $mail->SMTPDebug = 0;
         $mail->Debugoutput = function ($str, $level) use (&$smtpDebug) {
@@ -176,6 +184,7 @@ function sendPasswordResetEmail(string $email, string $firstname, string $link):
     }
 
     try {
+        configureMailerCharacterEncoding($mail);
         $mail->isSMTP();
         $mail->SMTPDebug = 0;
         $mail->Debugoutput = function ($str, $level) use (&$smtpDebug) {
@@ -271,6 +280,7 @@ function sendReportNotificationEmail(string $subject, string $message, string $u
     $recipient = getenv('REPORT_RECIPIENT') ?: getenv('MAIL_TO') ?: $settings['from'];
 
     try {
+        configureMailerCharacterEncoding($mail);
         $mail->isSMTP();
         $mail->SMTPDebug = 0;
         $mail->Debugoutput = function ($str, $level) use (&$smtpDebug) {
@@ -344,6 +354,7 @@ function sendBulkHtmlEmail(array $recipients, string $subject, string $htmlBody,
     }
 
     try {
+        configureMailerCharacterEncoding($mail);
         $mail->isSMTP();
         $mail->SMTPDebug = 0;
         $mail->Debugoutput = function ($str, $level) use (&$smtpDebug) {
