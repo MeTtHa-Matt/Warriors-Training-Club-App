@@ -10,11 +10,6 @@ if (!isset($_SESSION['user_id'])) {
     echo json_encode(['error' => 'unauthorized']);
     exit;
 }
-if ((int) ($_SESSION['gerer_seances'] ?? 0) !== 1) {
-    http_response_code(403);
-    echo json_encode(['error' => 'forbidden']);
-    exit;
-}
 
 $seanceId = isset($_GET['seance_id']) ? (int) $_GET['seance_id'] : 0;
 if ($seanceId <= 0) {

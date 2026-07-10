@@ -320,8 +320,8 @@
             `;
 
       let actionsHtml = "";
+      actionsHtml += `<button type="button" class="btn btn-wtc-outline rounded-pill" id="btnVoirInscrits">Voir les inscrits</button>`;
       if (data.can_manage) {
-        actionsHtml += `<button type="button" class="btn btn-wtc-outline rounded-pill" id="btnVoirInscrits">Voir les inscrits</button>`;
         actionsHtml += `<button type="button" class="btn btn-wtc-outline rounded-pill" id="btnModifierSeance">Modifier</button>`;
         actionsHtml += `<button type="button" class="btn btn-wtc-outline rounded-pill" id="btnSupprimerSeance" style="color: #d32f2f;">Supprimer</button>`;
       }
@@ -337,11 +337,11 @@
       }
       actions.innerHTML = actionsHtml;
 
-      if (data.can_manage) {
-        const btnVoirInscrits = document.getElementById("btnVoirInscrits");
-        if (btnVoirInscrits)
-          btnVoirInscrits.addEventListener("click", () => openInscrits(id));
+      const btnVoirInscrits = document.getElementById("btnVoirInscrits");
+      if (btnVoirInscrits)
+        btnVoirInscrits.addEventListener("click", () => openInscrits(id));
 
+      if (data.can_manage) {
         const btnModifierSeance = document.getElementById("btnModifierSeance");
         if (btnModifierSeance)
           btnModifierSeance.addEventListener("click", () =>

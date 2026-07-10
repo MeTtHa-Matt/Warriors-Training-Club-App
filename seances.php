@@ -1,6 +1,9 @@
 <?php
 require_once "includes/general/session-config.php";
 require_once "includes/general/verifications.php";
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0, private');
+header('Pragma: no-cache');
+header('Expires: Thu, 01 Jan 1970 00:00:00 GMT');
 if (!isset($_SESSION['user_id'])) {
     header('Location: connexion.php');
     exit;
@@ -15,10 +18,13 @@ $canManage = (int) ($_SESSION['gerer_seances'] ?? 0) === 1;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0, private">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title><?php echo $pageTitle; ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=202607102000">
+    <link rel="stylesheet" href="css/style.css?v=202607102200">
     <link rel="manifest" href="./manifest.json">
     <link rel="icon" type="image/png" sizes="any" href="./img/wtc.png">
     <link rel="apple-touch-icon" sizes="180x180" href="./img/wtc.png">
@@ -480,7 +486,7 @@ $canManage = (int) ($_SESSION['gerer_seances'] ?? 0) === 1;
             canManage: <?php echo $canManage ? 'true' : 'false'; ?>
         };
     </script>
-    <script src="js/seances.js?v=202607102000"></script>
+    <script src="js/seances.js?v=202607102200"></script>
 
 </body>
 

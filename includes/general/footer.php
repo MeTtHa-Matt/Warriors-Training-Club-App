@@ -42,6 +42,19 @@ if (session_status() === PHP_SESSION_NONE) {
 </footer>
 
 <script>
+const WTC_CACHE_BUST_VERSION = '202607102200';
+const WTC_CACHE_BUSTER_KEY = 'wtc-cache-buster';
+
+if (window.localStorage && window.localStorage.getItem(WTC_CACHE_BUSTER_KEY) !== WTC_CACHE_BUST_VERSION) {
+    Promise.allSettled([
+        navigator.serviceWorker?.getRegistrations?.().then((registrations) => Promise.all(registrations.map((reg) => reg.unregister()))),
+        caches?.keys?.().then((keys) => Promise.all(keys.map((key) => caches.delete(key))))
+    ]).finally(() => {
+        window.localStorage.setItem(WTC_CACHE_BUSTER_KEY, WTC_CACHE_BUST_VERSION);
+        window.location.reload();
+    });
+}
+
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         const basePath = window.location.pathname.replace(/\/[^\/]*$/, '') || '/';
