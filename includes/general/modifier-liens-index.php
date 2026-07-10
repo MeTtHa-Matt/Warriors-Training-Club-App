@@ -23,19 +23,19 @@ $defaultLinks = [
     'hero_inscription' => [
         'label' => 'Inscription en ligne',
         'title' => 'Bouton principal d’inscription',
-        'url' => 'https://www.helloasso.com/associations/warriors-training-club/adhesions/formulaire-d-inscription-2024-2025',
+        'url' => 'https://www.helloasso.com/associations/warriors-training-club/adhesions/formulaire-d-inscription-2026-2027',
         'order' => 1,
     ],
     'card_adhesion' => [
         'label' => 'Adhésion',
         'title' => 'Carte d’adhésion',
-        'url' => 'https://www.helloasso.com/associations/warriors-training-club/adhesions/formulaire-d-inscription-2024-2025',
+        'url' => 'https://www.helloasso.com/associations/warriors-training-club/adhesions/formulaire-d-inscription-2026-2027',
         'order' => 2,
     ],
     'card_boutique_barres' => [
         'label' => 'Boutique',
         'title' => 'Barres de céréales Les Craq\'s',
-        'url' => 'https://www.helloasso.com/associations/warriors-training-club/boutiques/barres-de-cereales-artisanales',
+        'url' => 'https://www.helloasso.com/associations/judo-club-mormant/boutiques/barres-de-cereales-artisanales',
         'order' => 3,
     ],
     'card_boutique_vetements' => [
