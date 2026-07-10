@@ -3,6 +3,12 @@ require_once "includes/general/session-config.php";
 require_once "includes/general/verifications.php";
 require_once __DIR__ . '/vendor/autoload.php';
 
+$currentId = $_SESSION['user_id'] ?? 0;
+if ($currentId <= 0 || (int) ($_SESSION['admin'] ?? 0) !== 1) {
+    header('Location: index.php');
+    exit;
+}
+
 use Dotenv\Dotenv;
 
 if (file_exists(__DIR__ . '/.env')) {
