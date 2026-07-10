@@ -1243,6 +1243,7 @@ h3,
 }
 .wtc-modal .modal-body {
   padding: 1.5rem;
+  overflow: visible;
 }
 .wtc-modal__footer {
   border-top: 1px solid var(--line);
@@ -1258,6 +1259,11 @@ h3,
   }
   .wtc-modal__footer .btn {
     width: 100%;
+  }
+}
+@media (max-width: 575.98px) {
+  .wtc-modal .modal-dialog {
+    max-width: calc(100% - 1rem);
   }
 }
 

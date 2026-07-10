@@ -411,11 +411,11 @@ $canManage = (int) ($_SESSION['gerer_seances'] ?? 0) === 1;
                                     <label for="newDate" class="form-label">Date</label>
                                     <input type="date" class="form-control auth-input" id="newDate" required>
                                 </div>
-                                <div class="col-6 col-sm-3">
+                                <div class="col-12 col-sm-3">
                                     <label for="newHeureDebut" class="form-label">Début</label>
                                     <input type="time" class="form-control auth-input" id="newHeureDebut" required>
                                 </div>
-                                <div class="col-6 col-sm-3">
+                                <div class="col-12 col-sm-3">
                                     <label for="newHeureFin" class="form-label">Fin</label>
                                     <input type="time" class="form-control auth-input" id="newHeureFin" required>
                                 </div>
