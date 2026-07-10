@@ -29,6 +29,11 @@ require_once 'includes/general/administration.php';
                     <h1 class="mt-3 mb-3">Tableau de bord <span class="accent">administrateur</span></h1>
                     <p class="lead">Accède à toutes les actions réservées aux administrateurs et consulte les
                         informations clés du site.</p>
+                    <div class="mt-4">
+                        <a href="chat.php" class="btn btn-wtc-gold rounded-pill px-4 py-2">
+                            <i class="bi bi-stars me-2"></i>Ouvrir l'assistant IA
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -121,7 +126,8 @@ require_once 'includes/general/administration.php';
                     <div class="info-card p-4 h-100">
                         <div class="info-card__title">Maintenance active</div>
                         <div class="info-card__value display-6">
-                            <?= number_format($totalMaintenanceUsers, 0, ',', ' ') ?></div>
+                            <?= number_format($totalMaintenanceUsers, 0, ',', ' ') ?>
+                        </div>
                         <p class="mb-0 text-white">Comptes signalant le mode maintenance.</p>
                     </div>
                 </div>
