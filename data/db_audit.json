@@ -1,0 +1,41 @@
+[
+    {
+        "timestamp": "2026-07-22T14:22:30Z",
+        "event": "db_connection_error",
+        "sql": "SQLSTATE[HY000] [2002] Connection refused",
+        "params": [],
+        "context": "db.php",
+        "status": "error",
+        "request": {
+            "script": "Standard input code",
+            "method": null,
+            "uri": null
+        }
+    },
+    {
+        "timestamp": "2026-07-22T14:29:17Z",
+        "event": "statement_exec",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/index.php",
+            "method": "GET",
+            "uri": "/"
+        }
+    },
+    {
+        "timestamp": "2026-07-22T14:29:17Z",
+        "event": "background_cleanup",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "db.php",
+        "status": "completed",
+        "request": {
+            "script": "/index.php",
+            "method": "GET",
+            "uri": "/"
+        }
+    }
+]

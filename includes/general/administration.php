@@ -32,6 +32,12 @@ $adminActions = [
         'description' => 'Voir et modifier les droits, bannir ou rendre admin.',
     ],
     [
+        'url' => 'db-audit.php',
+        'icon' => 'bi bi-journal-text',
+        'label' => 'Audit base de données',
+        'description' => 'Consulter le journal JSON de toutes les actions SQL effectuées.',
+    ],
+    [
         'url' => 'envoyer-mail.php',
         'icon' => 'bi bi-envelope',
         'label' => 'Envoyer un mail',
