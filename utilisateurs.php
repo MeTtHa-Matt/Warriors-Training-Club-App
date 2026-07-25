@@ -5,7 +5,7 @@ header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
 header('Pragma: no-cache');
 header('Expires: 0');
 
-require 'includes/general/db.php';
+require_once 'includes/general/db.php';
 
 include __DIR__ . "/includes/general/users.php"
 ?>
