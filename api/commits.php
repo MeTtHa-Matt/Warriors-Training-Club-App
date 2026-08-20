@@ -1,6 +1,8 @@
 <?php
 // Simple API endpoint returning stored commits as JSON
 header('Content-Type: application/json; charset=utf-8');
+// prevent caching by browsers/proxies
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
 
 $path = __DIR__ . '/../data/commits.json';
 $commits = [];
@@ -15,8 +17,8 @@ if (is_file($path)) {
     }
 }
 
-// If no stored commits, try fetching from GitHub API (public repo)
-if (empty($commits)) {
+// If client requested a force refresh or no stored commits, fetch from GitHub API
+if (isset($_GET['force']) || empty($commits)) {
     $repo = 'MeTtHa-Matt/Warriors-Training-Club-App';
     $apiUrl = "https://api.github.com/repos/" . $repo . "/commits?per_page=100";
     $opts = [

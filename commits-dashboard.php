@@ -83,11 +83,10 @@ $latest = array_slice($commits, 0, 40);
                 <div class="col-12">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h3 class="h5 mb-0 text-white">Derniers commits</h3>
-                        <div class="d-flex gap-2">
+                        <div>
                             <a class="btn btn-outline-light btn-sm" href="https://github.com/MeTtHa-Matt/Warriors-Training-Club-App" target="_blank" rel="noopener">
                                 <i class="bi bi-github me-1"></i>Ouvrir le dépôt
                             </a>
-                            <button id="commits-refresh" class="btn btn-wtc-gold btn-sm">Rafraîchir</button>
                         </div>
                     </div>
 
@@ -122,7 +121,8 @@ $latest = array_slice($commits, 0, 40);
     <?php require 'includes/general/footer.php'; ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/commits-dashboard.js"></script>
+    <?php $jsPath = __DIR__ . '/js/commits-dashboard.js'; $v = is_file($jsPath) ? filemtime($jsPath) : time(); ?>
+    <script src="js/commits-dashboard.js?v=<?= $v ?>"></script>
 </body>
 
 </html>

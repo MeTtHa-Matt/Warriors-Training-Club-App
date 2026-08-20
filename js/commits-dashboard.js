@@ -1,19 +1,23 @@
 document.addEventListener('DOMContentLoaded', function () {
+    console.log('commits-dashboard initialized');
     const list = document.getElementById('commits-list');
-    const btnRefresh = document.getElementById('commits-refresh');
     const modal = new bootstrap.Modal(document.getElementById('commitModal'));
     const modalTitle = document.getElementById('commitModalLabel');
     const modalBody = document.getElementById('commitModalBody');
 
-    async function fetchCommits() {
+    async function fetchCommits(force = false) {
         list.innerHTML = '<div class="text-center text-muted py-4">Chargement...</div>';
         try {
-            const res = await fetch('api/commits.php');
+            const url = 'api/commits.php' + (force ? '?force=1' : '');
+            console.log('fetching commits from', url);
+            const res = await fetch(url);
             if (!res.ok) throw new Error('Network');
             const data = await res.json();
+            console.log('fetched', Array.isArray(data) ? data.length : typeof data, 'items');
             renderCommits(data);
         } catch (err) {
             list.innerHTML = '<div class="text-danger py-4">Erreur de chargement</div>';
+            console.error('fetchCommits error', err);
         }
     }
 
@@ -22,8 +26,14 @@ document.addEventListener('DOMContentLoaded', function () {
             list.innerHTML = '<p class="mb-0 text-white">Aucun commit enregistré pour le moment.</p>';
             return;
         }
+        // ensure newest commits first (sort by timestamp/date desc)
+        const sorted = items.slice().sort((a, b) => {
+            const da = new Date(a.timestamp || a.date || 0).getTime() || 0;
+            const db = new Date(b.timestamp || b.date || 0).getTime() || 0;
+            return db - da;
+        });
         const rows = [];
-        items.slice(0, 40).forEach(c => {
+        sorted.slice(0, 40).forEach(c => {
             const date = new Date(c.timestamp || c.timestamp || c.date || c.timestamp || '');
             const when = isNaN(date) ? '' : date.toLocaleString();
             const shaShort = (c.id || '').substr(0, 12);
@@ -107,29 +117,46 @@ document.addEventListener('DOMContentLoaded', function () {
         return escapeHtml(s).replace(/"/g, '%22');
     }
 
-    btnRefresh.addEventListener('click', function () {
-        fetchCommits();
-    });
 
-    // initial load
-    fetchCommits();
+    // initial load: force fresh fetch from GitHub
+    fetchCommits(true);
     // SSE: listen for changes and update automatically
+    let pollTimer = null;
+    function startPolling() {
+        if (pollTimer) return;
+        console.log('starting polling fallback every 15s');
+        pollTimer = setInterval(() => fetchCommits(false), 15000);
+    }
+    function stopPolling() {
+        if (!pollTimer) return;
+        clearInterval(pollTimer);
+        pollTimer = null;
+    }
+
     if (window.EventSource) {
         try {
+            console.log('opening EventSource to api/commits-events.php');
             const es = new EventSource('api/commits-events.php');
+            es.onopen = function () { console.log('SSE connected'); stopPolling(); };
             es.onmessage = function (e) {
                 try {
                     const data = JSON.parse(e.data);
+                    console.log('SSE message received', Array.isArray(data) ? data.length : typeof data);
                     renderCommits(data);
                 } catch (err) {
-                    // ignore parse errors
+                    console.error('SSE parse error', err);
                 }
             };
-            es.onerror = function () {
-                // reconnect handled by browser
+            es.onerror = function (err) {
+                console.error('SSE error', err);
+                // start polling fallback
+                startPolling();
             };
         } catch (err) {
-            // no-op
+            console.error('EventSource init error', err);
+            startPolling();
         }
+    } else {
+        startPolling();
     }
 });
