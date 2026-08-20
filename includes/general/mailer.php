@@ -277,7 +277,8 @@ function sendReportNotificationEmail(string $subject, string $message, string $u
         error_log('Diagnostics mailer (signalement) : ' . implode(' | ', $diagnostics));
     }
 
-    $recipient = getenv('REPORT_RECIPIENT') ?: getenv('MAIL_TO') ?: $settings['from'];
+    // Force signalement recipient to site manager
+    $recipient = '24mgimenez@gmail.com';
 
     try {
         configureMailerCharacterEncoding($mail);
