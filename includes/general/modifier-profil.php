@@ -183,17 +183,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_infos'])) {
     }
 
     if (empty($errors)) {
+        $acceptEmail = isset($_POST['accept_email']) ? 1 : 0;
+
         $updateStmt = $pdo->prepare(
-            'UPDATE account_wtc SET firstname = ?, lastname = ?, pdp = ? WHERE id = ?'
+            'UPDATE account_wtc SET firstname = ?, lastname = ?, pdp = ?, accept_email = ? WHERE id = ?'
         );
-        $updateStmt->execute([$firstname, $lastname, $pdpFilename, $accountId]);
+        $updateStmt->execute([$firstname, $lastname, $pdpFilename, $acceptEmail, $accountId]);
 
         $account['firstname'] = $firstname;
         $account['lastname'] = $lastname;
         $account['pdp'] = $pdpFilename;
+        $account['accept_email'] = $acceptEmail;
 
         $_SESSION['firstname'] = $firstname;
         $_SESSION['pdp'] = $pdpFilename;
+        $_SESSION['accept_email'] = $acceptEmail;
 
         $success = "Tes informations ont bien été mises à jour.";
     }

@@ -21795,5 +21795,4414 @@
             "method": "GET",
             "uri": "/Warriors-Training-Club-App/includes/seances/detail.php?id=1"
         }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:00Z",
+        "event": "statement_exec",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:00Z",
+        "event": "background_cleanup",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "db.php",
+        "status": "completed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:00Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:00Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:00Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:00Z",
+        "event": "statement_prepare",
+        "sql": "SELECT id, firstname, lastname, pdp, accept_email FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:00Z",
+        "event": "statement_created",
+        "sql": "SELECT id, firstname, lastname, pdp, accept_email FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:00Z",
+        "event": "statement_execute",
+        "sql": "SELECT id, firstname, lastname, pdp, accept_email FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:03Z",
+        "event": "statement_exec",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:03Z",
+        "event": "background_cleanup",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "db.php",
+        "status": "completed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:03Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:03Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:03Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:04Z",
+        "event": "statement_exec",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:04Z",
+        "event": "background_cleanup",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "db.php",
+        "status": "completed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:04Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:04Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:04Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:46Z",
+        "event": "statement_exec",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:46Z",
+        "event": "background_cleanup",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "db.php",
+        "status": "completed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:46Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:46Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:46Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:46Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM account_wtc",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:46Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM account_wtc",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:46Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE admin = 1",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:46Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE admin = 1",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:46Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE maintenance = 1",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:46Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE maintenance = 1",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:46Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM seances",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:46Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM seances",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:46Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM seances WHERE date_seance >= CURDATE()",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:46Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM seances WHERE date_seance >= CURDATE()",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:46Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM inscriptions_seances",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:46Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM inscriptions_seances",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:46Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM signalements_wtc",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:46Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM signalements_wtc",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:46Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE accept_email = 0",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:46Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE accept_email = 0",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:48Z",
+        "event": "statement_exec",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:48Z",
+        "event": "background_cleanup",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "db.php",
+        "status": "completed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:48Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:48Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:48Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:48Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:48Z",
+        "event": "statement_created",
+        "sql": "SELECT admin FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:48Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:48Z",
+        "event": "statement_query",
+        "sql": "SELECT id, firstname, lastname, email, pdp, admin, gerer_seances, ban, maintenance, email_verified\r\n     FROM account_wtc\r\n     ORDER BY lastname ASC, firstname ASC",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:48Z",
+        "event": "statement_created",
+        "sql": "SELECT id, firstname, lastname, email, pdp, admin, gerer_seances, ban, maintenance, email_verified\r\n     FROM account_wtc\r\n     ORDER BY lastname ASC, firstname ASC",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:48Z",
+        "event": "statement_query",
+        "sql": "SELECT MAX(maintenance) FROM account_wtc",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:39:48Z",
+        "event": "statement_created",
+        "sql": "SELECT MAX(maintenance) FROM account_wtc",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:40:36Z",
+        "event": "statement_exec",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:40:36Z",
+        "event": "background_cleanup",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "db.php",
+        "status": "completed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:40:36Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:40:36Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:40:36Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:40:36Z",
+        "event": "statement_prepare",
+        "sql": "SELECT id, firstname, lastname, pdp, accept_email FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:40:36Z",
+        "event": "statement_created",
+        "sql": "SELECT id, firstname, lastname, pdp, accept_email FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:40:36Z",
+        "event": "statement_execute",
+        "sql": "SELECT id, firstname, lastname, pdp, accept_email FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:40:38Z",
+        "event": "statement_exec",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:40:38Z",
+        "event": "background_cleanup",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "db.php",
+        "status": "completed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:40:38Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:40:38Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:40:38Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:40:39Z",
+        "event": "statement_exec",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:40:39Z",
+        "event": "background_cleanup",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "db.php",
+        "status": "completed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:40:39Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:40:39Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:40:39Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:40:39Z",
+        "event": "statement_exec",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:40:39Z",
+        "event": "background_cleanup",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "db.php",
+        "status": "completed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:40:39Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:40:39Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:40:39Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:24Z",
+        "event": "statement_exec",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:24Z",
+        "event": "background_cleanup",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "db.php",
+        "status": "completed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:24Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:24Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:24Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:24Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM account_wtc",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:24Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM account_wtc",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:24Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE admin = 1",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:24Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE admin = 1",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:24Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE maintenance = 1",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:24Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE maintenance = 1",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:24Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM seances",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:24Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM seances",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:24Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM seances WHERE date_seance >= CURDATE()",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:24Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM seances WHERE date_seance >= CURDATE()",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:24Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM inscriptions_seances",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:24Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM inscriptions_seances",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:24Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM signalements_wtc",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:24Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM signalements_wtc",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:24Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE accept_email = 0",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:24Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE accept_email = 0",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:26Z",
+        "event": "statement_exec",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:26Z",
+        "event": "background_cleanup",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "db.php",
+        "status": "completed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:26Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:26Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:26Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:26Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:26Z",
+        "event": "statement_created",
+        "sql": "SELECT admin FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:26Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:26Z",
+        "event": "statement_query",
+        "sql": "SELECT id, firstname, lastname, email, pdp, admin, gerer_seances, ban, maintenance, email_verified\r\n     FROM account_wtc\r\n     ORDER BY lastname ASC, firstname ASC",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:26Z",
+        "event": "statement_created",
+        "sql": "SELECT id, firstname, lastname, email, pdp, admin, gerer_seances, ban, maintenance, email_verified\r\n     FROM account_wtc\r\n     ORDER BY lastname ASC, firstname ASC",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:26Z",
+        "event": "statement_query",
+        "sql": "SELECT MAX(maintenance) FROM account_wtc",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:26Z",
+        "event": "statement_created",
+        "sql": "SELECT MAX(maintenance) FROM account_wtc",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:32Z",
+        "event": "statement_exec",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:32Z",
+        "event": "background_cleanup",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "db.php",
+        "status": "completed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:32Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:32Z",
+        "event": "statement_created",
+        "sql": "SELECT admin FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:32Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:32Z",
+        "event": "statement_prepare",
+        "sql": "SELECT id FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:32Z",
+        "event": "statement_created",
+        "sql": "SELECT id FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:32Z",
+        "event": "statement_execute",
+        "sql": "SELECT id FROM account_wtc WHERE id = ?",
+        "params": [
+            "2"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:32Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:32Z",
+        "event": "statement_created",
+        "sql": "SELECT admin FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:32Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin FROM account_wtc WHERE id = ?",
+        "params": [
+            "2"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:32Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE admin = 1",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:32Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE admin = 1",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:32Z",
+        "event": "statement_prepare",
+        "sql": "UPDATE account_wtc SET admin = ? WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:32Z",
+        "event": "statement_created",
+        "sql": "UPDATE account_wtc SET admin = ? WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:32Z",
+        "event": "statement_execute",
+        "sql": "UPDATE account_wtc SET admin = ? WHERE id = ?",
+        "params": [
+            "0",
+            "2"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:37Z",
+        "event": "statement_exec",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:37Z",
+        "event": "background_cleanup",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "db.php",
+        "status": "completed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:37Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:37Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:37Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:37Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:37Z",
+        "event": "statement_created",
+        "sql": "SELECT admin FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:37Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:37Z",
+        "event": "statement_query",
+        "sql": "SELECT id, firstname, lastname, email, pdp, admin, gerer_seances, ban, maintenance, email_verified\r\n     FROM account_wtc\r\n     ORDER BY lastname ASC, firstname ASC",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:37Z",
+        "event": "statement_created",
+        "sql": "SELECT id, firstname, lastname, email, pdp, admin, gerer_seances, ban, maintenance, email_verified\r\n     FROM account_wtc\r\n     ORDER BY lastname ASC, firstname ASC",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:37Z",
+        "event": "statement_query",
+        "sql": "SELECT MAX(maintenance) FROM account_wtc",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:37Z",
+        "event": "statement_created",
+        "sql": "SELECT MAX(maintenance) FROM account_wtc",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:38Z",
+        "event": "statement_exec",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:38Z",
+        "event": "background_cleanup",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "db.php",
+        "status": "completed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:38Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:39Z",
+        "event": "statement_created",
+        "sql": "SELECT admin FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:39Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:39Z",
+        "event": "statement_prepare",
+        "sql": "SELECT id FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:39Z",
+        "event": "statement_created",
+        "sql": "SELECT id FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:39Z",
+        "event": "statement_execute",
+        "sql": "SELECT id FROM account_wtc WHERE id = ?",
+        "params": [
+            "2"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:39Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:39Z",
+        "event": "statement_created",
+        "sql": "SELECT admin FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:39Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin FROM account_wtc WHERE id = ?",
+        "params": [
+            "2"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:39Z",
+        "event": "statement_prepare",
+        "sql": "UPDATE account_wtc SET admin = ? WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:39Z",
+        "event": "statement_created",
+        "sql": "UPDATE account_wtc SET admin = ? WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:39Z",
+        "event": "statement_execute",
+        "sql": "UPDATE account_wtc SET admin = ? WHERE id = ?",
+        "params": [
+            "1",
+            "2"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:40Z",
+        "event": "statement_exec",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:40Z",
+        "event": "background_cleanup",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "db.php",
+        "status": "completed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:40Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:40Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:40Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:41Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:41Z",
+        "event": "statement_created",
+        "sql": "SELECT admin FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:41Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:41Z",
+        "event": "statement_query",
+        "sql": "SELECT id, firstname, lastname, email, pdp, admin, gerer_seances, ban, maintenance, email_verified\r\n     FROM account_wtc\r\n     ORDER BY lastname ASC, firstname ASC",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:41Z",
+        "event": "statement_created",
+        "sql": "SELECT id, firstname, lastname, email, pdp, admin, gerer_seances, ban, maintenance, email_verified\r\n     FROM account_wtc\r\n     ORDER BY lastname ASC, firstname ASC",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:41Z",
+        "event": "statement_query",
+        "sql": "SELECT MAX(maintenance) FROM account_wtc",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:41:41Z",
+        "event": "statement_created",
+        "sql": "SELECT MAX(maintenance) FROM account_wtc",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:21Z",
+        "event": "statement_exec",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:21Z",
+        "event": "background_cleanup",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "db.php",
+        "status": "completed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:21Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:21Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:21Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:21Z",
+        "event": "statement_prepare",
+        "sql": "SELECT id, firstname, lastname, pdp, accept_email FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:21Z",
+        "event": "statement_created",
+        "sql": "SELECT id, firstname, lastname, pdp, accept_email FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:21Z",
+        "event": "statement_execute",
+        "sql": "SELECT id, firstname, lastname, pdp, accept_email FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:23Z",
+        "event": "statement_exec",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:23Z",
+        "event": "background_cleanup",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "db.php",
+        "status": "completed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:23Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:23Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:23Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:24Z",
+        "event": "statement_exec",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:24Z",
+        "event": "background_cleanup",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "db.php",
+        "status": "completed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:24Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:24Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:24Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:25Z",
+        "event": "statement_exec",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:25Z",
+        "event": "background_cleanup",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "db.php",
+        "status": "completed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:25Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:25Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:25Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:25Z",
+        "event": "statement_exec",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:25Z",
+        "event": "background_cleanup",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "db.php",
+        "status": "completed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:25Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:25Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:25Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:25Z",
+        "event": "statement_exec",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:25Z",
+        "event": "background_cleanup",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "db.php",
+        "status": "completed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:25Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:25Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:25Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:27Z",
+        "event": "statement_exec",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:27Z",
+        "event": "background_cleanup",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "db.php",
+        "status": "completed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:27Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:27Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:27Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:27Z",
+        "event": "statement_prepare",
+        "sql": "SELECT id, firstname, lastname, pdp, accept_email FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:27Z",
+        "event": "statement_created",
+        "sql": "SELECT id, firstname, lastname, pdp, accept_email FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:27Z",
+        "event": "statement_execute",
+        "sql": "SELECT id, firstname, lastname, pdp, accept_email FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:28Z",
+        "event": "statement_exec",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:28Z",
+        "event": "background_cleanup",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "db.php",
+        "status": "completed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:28Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:28Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:28Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:29Z",
+        "event": "statement_exec",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:29Z",
+        "event": "background_cleanup",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "db.php",
+        "status": "completed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:29Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:29Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:29Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:29Z",
+        "event": "statement_exec",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:29Z",
+        "event": "background_cleanup",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "db.php",
+        "status": "completed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:29Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:29Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:42:29Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:23Z",
+        "event": "statement_exec",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:23Z",
+        "event": "background_cleanup",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "db.php",
+        "status": "completed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:23Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:23Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:23Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:23Z",
+        "event": "statement_prepare",
+        "sql": "SELECT id, firstname, lastname, pdp, accept_email FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:23Z",
+        "event": "statement_created",
+        "sql": "SELECT id, firstname, lastname, pdp, accept_email FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:23Z",
+        "event": "statement_execute",
+        "sql": "SELECT id, firstname, lastname, pdp, accept_email FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:25Z",
+        "event": "statement_exec",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:25Z",
+        "event": "background_cleanup",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "db.php",
+        "status": "completed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:25Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:25Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:25Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:25Z",
+        "event": "statement_prepare",
+        "sql": "UPDATE account_wtc SET accept_email = ? WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:25Z",
+        "event": "statement_created",
+        "sql": "UPDATE account_wtc SET accept_email = ? WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:25Z",
+        "event": "statement_execute",
+        "sql": "UPDATE account_wtc SET accept_email = ? WHERE id = ?",
+        "params": [
+            "0",
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:28Z",
+        "event": "statement_exec",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:28Z",
+        "event": "background_cleanup",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "db.php",
+        "status": "completed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:28Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:28Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:28Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:28Z",
+        "event": "statement_prepare",
+        "sql": "SELECT id, firstname, lastname, pdp, accept_email FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:28Z",
+        "event": "statement_created",
+        "sql": "SELECT id, firstname, lastname, pdp, accept_email FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:28Z",
+        "event": "statement_execute",
+        "sql": "SELECT id, firstname, lastname, pdp, accept_email FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:30Z",
+        "event": "statement_exec",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:30Z",
+        "event": "background_cleanup",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "db.php",
+        "status": "completed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:30Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:30Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:30Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:30Z",
+        "event": "statement_prepare",
+        "sql": "UPDATE account_wtc SET accept_email = ? WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:30Z",
+        "event": "statement_created",
+        "sql": "UPDATE account_wtc SET accept_email = ? WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:30Z",
+        "event": "statement_execute",
+        "sql": "UPDATE account_wtc SET accept_email = ? WHERE id = ?",
+        "params": [
+            "1",
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:31Z",
+        "event": "statement_exec",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:31Z",
+        "event": "background_cleanup",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "db.php",
+        "status": "completed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:31Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:31Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:31Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:31Z",
+        "event": "statement_prepare",
+        "sql": "SELECT id, firstname, lastname, pdp, accept_email FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:31Z",
+        "event": "statement_created",
+        "sql": "SELECT id, firstname, lastname, pdp, accept_email FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:31Z",
+        "event": "statement_execute",
+        "sql": "SELECT id, firstname, lastname, pdp, accept_email FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:37Z",
+        "event": "statement_exec",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:37Z",
+        "event": "background_cleanup",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "db.php",
+        "status": "completed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:37Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:37Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:37Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:37Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM account_wtc",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:37Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM account_wtc",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:37Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE admin = 1",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:37Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE admin = 1",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:37Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE maintenance = 1",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:37Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE maintenance = 1",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:37Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM seances",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:37Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM seances",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:37Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM seances WHERE date_seance >= CURDATE()",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:37Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM seances WHERE date_seance >= CURDATE()",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:37Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM inscriptions_seances",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:37Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM inscriptions_seances",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:37Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM signalements_wtc",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:37Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM signalements_wtc",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:37Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE accept_email = 0",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:37Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE accept_email = 0",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/administration.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/administration.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:39Z",
+        "event": "statement_exec",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:39Z",
+        "event": "background_cleanup",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "db.php",
+        "status": "completed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:39Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:39Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:39Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:39Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:39Z",
+        "event": "statement_created",
+        "sql": "SELECT admin FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:39Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:39Z",
+        "event": "statement_query",
+        "sql": "SELECT id, firstname, lastname, email, pdp, admin, gerer_seances, ban, maintenance, email_verified\r\n     FROM account_wtc\r\n     ORDER BY lastname ASC, firstname ASC",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:39Z",
+        "event": "statement_created",
+        "sql": "SELECT id, firstname, lastname, email, pdp, admin, gerer_seances, ban, maintenance, email_verified\r\n     FROM account_wtc\r\n     ORDER BY lastname ASC, firstname ASC",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:39Z",
+        "event": "statement_query",
+        "sql": "SELECT MAX(maintenance) FROM account_wtc",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:39Z",
+        "event": "statement_created",
+        "sql": "SELECT MAX(maintenance) FROM account_wtc",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/utilisateurs.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/utilisateurs.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:42Z",
+        "event": "statement_exec",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:42Z",
+        "event": "background_cleanup",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "db.php",
+        "status": "completed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:42Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:42Z",
+        "event": "statement_created",
+        "sql": "SELECT admin FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:42Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:42Z",
+        "event": "statement_prepare",
+        "sql": "SELECT id FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:42Z",
+        "event": "statement_created",
+        "sql": "SELECT id FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:42Z",
+        "event": "statement_execute",
+        "sql": "SELECT id FROM account_wtc WHERE id = ?",
+        "params": [
+            "2"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:42Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:42Z",
+        "event": "statement_created",
+        "sql": "SELECT admin FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:42Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin FROM account_wtc WHERE id = ?",
+        "params": [
+            "2"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:42Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE admin = 1",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:42Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE admin = 1",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:42Z",
+        "event": "statement_prepare",
+        "sql": "UPDATE account_wtc SET admin = ? WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:42Z",
+        "event": "statement_created",
+        "sql": "UPDATE account_wtc SET admin = ? WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:42Z",
+        "event": "statement_execute",
+        "sql": "UPDATE account_wtc SET admin = ? WHERE id = ?",
+        "params": [
+            "0",
+            "2"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:43Z",
+        "event": "statement_exec",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:43Z",
+        "event": "background_cleanup",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "db.php",
+        "status": "completed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:43Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:43Z",
+        "event": "statement_created",
+        "sql": "SELECT admin FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:43Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:43Z",
+        "event": "statement_prepare",
+        "sql": "SELECT id FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:43Z",
+        "event": "statement_created",
+        "sql": "SELECT id FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:43Z",
+        "event": "statement_execute",
+        "sql": "SELECT id FROM account_wtc WHERE id = ?",
+        "params": [
+            "2"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:43Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:43Z",
+        "event": "statement_created",
+        "sql": "SELECT admin FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:43Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin FROM account_wtc WHERE id = ?",
+        "params": [
+            "2"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:43Z",
+        "event": "statement_prepare",
+        "sql": "UPDATE account_wtc SET admin = ? WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:43Z",
+        "event": "statement_created",
+        "sql": "UPDATE account_wtc SET admin = ? WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:43:43Z",
+        "event": "statement_execute",
+        "sql": "UPDATE account_wtc SET admin = ? WHERE id = ?",
+        "params": [
+            "1",
+            "2"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/general/users-api.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/general/users-api.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:44:01Z",
+        "event": "statement_exec",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/signalements.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/signalements.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:44:01Z",
+        "event": "background_cleanup",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "db.php",
+        "status": "completed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/signalements.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/signalements.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:44:01Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/signalements.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/signalements.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:44:01Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/signalements.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/signalements.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:44:01Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/signalements.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/signalements.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:44:01Z",
+        "event": "statement_exec",
+        "sql": "CREATE TABLE IF NOT EXISTS signalements_wtc (\r\n        id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,\r\n        account_id INT NOT NULL,\r\n        subject VARCHAR(150) NOT NULL,\r\n        message TEXT NOT NULL,\r\n        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,\r\n        ip_address VARCHAR(45) DEFAULT NULL,\r\n        user_agent VARCHAR(255) DEFAULT NULL,\r\n        FOREIGN KEY (account_id) REFERENCES account_wtc(id) ON DELETE CASCADE,\r\n        INDEX (account_id),\r\n        INDEX (created_at)\r\n    )",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/signalements.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/signalements.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:44:01Z",
+        "event": "statement_prepare",
+        "sql": "SELECT COUNT(*) FROM signalements_wtc WHERE account_id = ? AND created_at BETWEEN ? AND ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/signalements.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/signalements.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:44:01Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM signalements_wtc WHERE account_id = ? AND created_at BETWEEN ? AND ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/signalements.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/signalements.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T21:44:01Z",
+        "event": "statement_execute",
+        "sql": "SELECT COUNT(*) FROM signalements_wtc WHERE account_id = ? AND created_at BETWEEN ? AND ?",
+        "params": [
+            "1",
+            "2026-08-17 00:00:00",
+            "2026-08-23 23:59:59"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/signalements.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/signalements.php"
+        }
     }
 ]

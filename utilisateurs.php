@@ -130,6 +130,14 @@ include __DIR__ . "/includes/general/users.php"
                                 <span class="btn-text"><?= $user['gerer_seances'] ? 'Retirer séances' : 'Gérer séances' ?></span>
                             </button>
 
+                            <button type="button" class="btn btn-sm w-100 btn-primary user-action-btn" 
+                                    data-action="toggle_admin" data-user-id="<?= (int) $user['id'] ?>"
+                                    title="<?= $user['admin'] ? 'Retirer les droits administrateur' : 'Donner les droits administrateur' ?>"
+                                    <?= (int) $user['id'] === (int) $currentId ? 'disabled' : '' ?>>
+                                <i class="bi <?= $user['admin'] ? 'bi-shield-check' : 'bi-shield-lock' ?> me-2"></i>
+                                <span class="btn-text"><?= $user['admin'] ? 'Retirer admin' : 'Faire admin' ?></span>
+                            </button>
+
                             <button type="button" class="btn btn-sm w-100 btn-danger user-action-btn" 
                                     data-action="toggle_ban" data-user-id="<?= (int) $user['id'] ?>"
                                     title="<?= $user['ban'] ? 'Débannir' : 'Bannir' ?>"
@@ -306,6 +314,37 @@ include __DIR__ . "/includes/general/users.php"
                             // Disable the button after verification
                             button.disabled = true;
                             button.innerHTML = '<i class="bi bi-check-circle me-2"></i>Email vérifié';
+                        } else if (action === 'toggle_admin') {
+                            const card = document.querySelector(`[data-menu-for="${userId}"]`);
+                            const userCard = card ? card.closest('.user-profile-card') : null;
+                            const btnText = button.querySelector('.btn-text');
+                            const btnIcon = button.querySelector('.bi');
+
+                            if (btnText && btnIcon && userCard) {
+                                const badges = card.querySelector('.user-profile-menu__badges');
+
+                                if (data.new_value === 1) {
+                                    // Add admin badge if not present
+                                    if (!badges.querySelector('.users-badge--admin')) {
+                                        const span = document.createElement('span');
+                                        span.className = 'users-badge users-badge--admin';
+                                        span.textContent = 'Admin';
+                                        badges.insertBefore(span, badges.firstChild);
+                                    }
+                                    button.classList.remove('btn-outline-primary');
+                                    button.classList.add('btn-primary');
+                                    btnText.textContent = 'Retirer admin';
+                                    btnIcon.className = 'bi bi-shield-check me-2';
+                                } else {
+                                    // Remove admin badge
+                                    const existing = badges.querySelector('.users-badge--admin');
+                                    if (existing) existing.remove();
+                                    button.classList.add('btn-outline-primary');
+                                    button.classList.remove('btn-primary');
+                                    btnText.textContent = 'Faire admin';
+                                    btnIcon.className = 'bi bi-shield-lock me-2';
+                                }
+                            }
                         } else if (action === 'delete_account') {
                             // Remove the card from the DOM
                             const card = document.querySelector(`[data-menu-for="${userId}"]`);

@@ -61,6 +61,36 @@ if ($action === 'toggle_gerer_seances') {
     exit;
 }
 
+if ($action === 'toggle_admin') {
+    if ($targetId === (int) $currentId) {
+        http_response_code(400);
+        echo json_encode(['success' => false, 'message' => 'Tu ne peux pas modifier tes propres droits']);
+        exit;
+    }
+
+    $currentValueStmt = $pdo->prepare('SELECT admin FROM account_wtc WHERE id = ?');
+    $currentValueStmt->execute([$targetId]);
+    $currentValue = (int) $currentValueStmt->fetchColumn();
+    $newValue = $currentValue ? 0 : 1;
+
+    // Prevent removing the last admin
+    if ($newValue === 0) {
+        $countStmt = $pdo->query('SELECT COUNT(*) FROM account_wtc WHERE admin = 1');
+        $adminCount = (int) $countStmt->fetchColumn();
+        if ($adminCount <= 1) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'Impossible de retirer les droits : il doit rester au moins un administrateur.']);
+            exit;
+        }
+    }
+
+    $updateStmt = $pdo->prepare('UPDATE account_wtc SET admin = ? WHERE id = ?');
+    $updateStmt->execute([$newValue, $targetId]);
+
+    echo json_encode(['success' => true, 'message' => 'Statut mis à jour', 'new_value' => $newValue]);
+    exit;
+}
+
 if ($action === 'toggle_ban') {
     if ($targetId === (int) $currentId) {
         http_response_code(400);
