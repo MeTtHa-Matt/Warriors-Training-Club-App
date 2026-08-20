@@ -21,10 +21,15 @@ if (is_file($path)) {
 if (isset($_GET['force']) || empty($commits)) {
     $repo = 'MeTtHa-Matt/Warriors-Training-Club-App';
     $apiUrl = "https://api.github.com/repos/" . $repo . "/commits?per_page=100";
+    $token = trim(getenv('GITHUB_TOKEN') ?: getenv('GITHUB_API_TOKEN') ?: '');
+    $headers = "User-Agent: Warriors-Training-Club-App\r\nAccept: application/vnd.github.v3+json\r\n";
+    if ($token !== '') {
+        $headers .= "Authorization: token " . $token . "\r\n";
+    }
     $opts = [
         'http' => [
             'method' => 'GET',
-            'header' => "User-Agent: Warriors-Training-Club-App\r\nAccept: application/vnd.github.v3+json\r\n",
+            'header' => $headers,
             'timeout' => 5,
         ],
     ];
@@ -49,6 +54,14 @@ if (isset($_GET['force']) || empty($commits)) {
                 // attempt to write cache
                 @file_put_contents(__DIR__ . '/../data/commits.json', json_encode(array_reverse($fetched), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES), LOCK_EX);
                 $commits = array_reverse($fetched);
+            }
+        } else {
+            // if GitHub returned an error object, surface it to callers
+            $decodedErr = json_decode($raw, true);
+            if (is_array($decodedErr) && isset($decodedErr['message'])) {
+                http_response_code(502);
+                echo json_encode(['error' => 'GitHub API error: ' . ($decodedErr['message'] ?? 'unknown')]);
+                exit;
             }
         }
     }
