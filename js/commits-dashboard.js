@@ -59,8 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <h6 class="card-subtitle mb-2 text-muted">${escapeHtml(c.author || '')} — <code>${escapeHtml(shaShort)}</code></h6>
                         <p class="card-text small text-white-50">${escapeHtml(when)}</p>
                         <div class="d-flex gap-2">
-                            ${c.url ? `<a class="btn btn-sm btn-wtc-gold" href="${escapeAttr(c.url)}" target="_blank" rel="noopener">Voir</a>` : ''}
-                            <button class="btn btn-sm btn-outline-light btn-files" data-sha="${escapeAttr(c.id)}">Fichiers</button>
+                            <button class="btn btn-sm btn-wtc-gold btn-view" data-sha="${escapeAttr(c.id)}">Voir</button>
                         </div>
                     </div>
                 </div>
@@ -70,8 +69,8 @@ document.addEventListener('DOMContentLoaded', function () {
         list.innerHTML = '';
         rows.forEach(r => list.appendChild(r));
 
-        // attach handlers
-        document.querySelectorAll('.btn-files').forEach(btn => {
+        // attach handlers to the single 'Voir' button which opens the modal with commit files
+        document.querySelectorAll('.btn-view').forEach(btn => {
             btn.addEventListener('click', async function () {
                 const sha = this.dataset.sha;
                 modalTitle.textContent = 'Chargement du commit ' + (sha ? sha.substr(0, 12) : '');

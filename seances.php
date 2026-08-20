@@ -486,6 +486,11 @@ $canManage = (int) ($_SESSION['gerer_seances'] ?? 0) === 1;
             canManage: <?php echo $canManage ? 'true' : 'false'; ?>
         };
     </script>
+        <?php if (isset($_GET['open']) && is_numeric($_GET['open'])): ?>
+        <script>
+            window.WTC_OPEN_SEANCE = <?php echo (int) $_GET['open']; ?>;
+        </script>
+        <?php endif; ?>
     <script src="js/seances.js?v=202607102200"></script>
 
 </body>

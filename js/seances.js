@@ -1,4 +1,4 @@
-(function () {
+(async function () {
   "use strict";
 
   const MOIS = [
@@ -1190,6 +1190,27 @@
     });
   }
 
-  loadMonth(state.year, state.month);
-  loadUpcoming();
+  await loadMonth(state.year, state.month);
+  await loadUpcoming();
+
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const openId = params.get('open');
+    if (openId) {
+      const id = parseInt(openId, 10);
+      if (!isNaN(id)) {
+        // Open the detail modal for the requested seance
+        openSeanceDetail(id);
+      }
+    }
+    // Also support server-provided variable for reliability after redirect
+    if (window.WTC_OPEN_SEANCE) {
+      const id = parseInt(window.WTC_OPEN_SEANCE, 10);
+      if (!isNaN(id)) {
+        openSeanceDetail(id);
+      }
+    }
+  } catch (e) {
+    // ignore
+  }
 })();
