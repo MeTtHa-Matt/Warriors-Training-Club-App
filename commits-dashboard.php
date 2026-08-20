@@ -1,4 +1,8 @@
 <?php
+// prevent page caching
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Pragma: no-cache');
+header('Expires: 0');
 require_once 'includes/general/administration.php';
 
 $commitsPath = __DIR__ . '/data/commits.json';
@@ -122,6 +126,19 @@ $latest = array_slice($commits, 0, 40);
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <?php $jsPath = __DIR__ . '/js/commits-dashboard.js'; $v = is_file($jsPath) ? filemtime($jsPath) : time(); ?>
+    <script>
+    // Ensure service worker and caches do not interfere with live updates
+    if ('serviceWorker' in navigator) {
+        try {
+            navigator.serviceWorker.getRegistrations().then(regs => regs.forEach(r => r.unregister()));
+        } catch (e) {
+            console.error('SW unregister error', e);
+        }
+    }
+    if ('caches' in window) {
+        try { caches.keys().then(keys => keys.forEach(k => caches.delete(k))); } catch (e) { console.error('Caches clear error', e); }
+    }
+    </script>
     <script src="js/commits-dashboard.js?v=<?= $v ?>"></script>
 </body>
 

@@ -5,18 +5,31 @@ document.addEventListener('DOMContentLoaded', function () {
     const modalTitle = document.getElementById('commitModalLabel');
     const modalBody = document.getElementById('commitModalBody');
 
-    async function fetchCommits(force = false) {
-        list.innerHTML = '<div class="text-center text-muted py-4">Chargement...</div>';
+    let lastSeenId = null;
+    async function fetchCommits(force = false, updateOnly = false) {
+        // when updateOnly is true, don't replace UI unless there's a new commit
         try {
             const url = 'api/commits.php' + (force ? '?force=1' : '');
-            console.log('fetching commits from', url);
-            const res = await fetch(url);
+            const res = await fetch(url, {cache: 'no-store'});
             if (!res.ok) throw new Error('Network');
             const data = await res.json();
-            console.log('fetched', Array.isArray(data) ? data.length : typeof data, 'items');
-            renderCommits(data);
+            if (!Array.isArray(data)) return;
+            // detect newest commit id (array is newest-first from API)
+            const newest = data[0] && (data[0].id || data[0].sha || null);
+            if (updateOnly) {
+                if (newest && newest !== lastSeenId) {
+                    renderCommits(data);
+                    lastSeenId = newest;
+                } else {
+                    // no new commits, do nothing
+                    console.log('no new commits');
+                }
+            } else {
+                renderCommits(data);
+                lastSeenId = newest;
+            }
         } catch (err) {
-            list.innerHTML = '<div class="text-danger py-4">Erreur de chargement</div>';
+            if (!updateOnly) list.innerHTML = '<div class="text-danger py-4">Erreur de chargement</div>';
             console.error('fetchCommits error', err);
         }
     }
@@ -118,13 +131,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    // initial load: force fresh fetch from GitHub
-    fetchCommits(true);
-    // SSE: listen for changes and update automatically
-    // Simple polling: force a fresh fetch every 15 seconds
-    console.log('starting polling every 15s');
+    // initial load: force fresh fetch from GitHub and render
+    fetchCommits(true, false);
+    // Simple polling: check every 15 seconds but only update UI if new commits appear
     setInterval(() => {
-        console.log('polling for commits');
-        fetchCommits(true);
+        fetchCommits(true, true);
     }, 15000);
 });

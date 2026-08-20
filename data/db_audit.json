@@ -3891,5 +3891,1105 @@
             "method": "GET",
             "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
         }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:52Z",
+        "event": "statement_exec",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:52Z",
+        "event": "background_cleanup",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "db.php",
+        "status": "completed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:52Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:52Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:52Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:52Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM account_wtc",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:52Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM account_wtc",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:52Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE admin = 1",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:52Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE admin = 1",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:52Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE maintenance = 1",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:52Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE maintenance = 1",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:52Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM seances",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:52Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM seances",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:52Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM seances WHERE date_seance >= CURDATE()",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:52Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM seances WHERE date_seance >= CURDATE()",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:52Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM inscriptions_seances",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:52Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM inscriptions_seances",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:52Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM signalements_wtc",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:52Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM signalements_wtc",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:52Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE accept_email = 0",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:52Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE accept_email = 0",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:56Z",
+        "event": "statement_exec",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:56Z",
+        "event": "background_cleanup",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "db.php",
+        "status": "completed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:56Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:56Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:56Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:56Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM account_wtc",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:56Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM account_wtc",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:56Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE admin = 1",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:56Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE admin = 1",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:56Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE maintenance = 1",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:56Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE maintenance = 1",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:56Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM seances",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:56Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM seances",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:56Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM seances WHERE date_seance >= CURDATE()",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:56Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM seances WHERE date_seance >= CURDATE()",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:56Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM inscriptions_seances",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:56Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM inscriptions_seances",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:56Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM signalements_wtc",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:56Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM signalements_wtc",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:56Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE accept_email = 0",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:28:56Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE accept_email = 0",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:29:10Z",
+        "event": "statement_exec",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:29:10Z",
+        "event": "background_cleanup",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "db.php",
+        "status": "completed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:29:10Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:29:10Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:29:10Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:29:10Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM account_wtc",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:29:10Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM account_wtc",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:29:10Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE admin = 1",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:29:10Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE admin = 1",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:29:10Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE maintenance = 1",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:29:10Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE maintenance = 1",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:29:10Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM seances",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:29:10Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM seances",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:29:10Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM seances WHERE date_seance >= CURDATE()",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:29:10Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM seances WHERE date_seance >= CURDATE()",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:29:11Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM inscriptions_seances",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:29:11Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM inscriptions_seances",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:29:11Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM signalements_wtc",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:29:11Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM signalements_wtc",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:29:11Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE accept_email = 0",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:29:11Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE accept_email = 0",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:32:01Z",
+        "event": "statement_exec",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:32:01Z",
+        "event": "background_cleanup",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "db.php",
+        "status": "completed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:32:01Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:32:01Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:32:01Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:32:01Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM account_wtc",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:32:01Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM account_wtc",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:32:01Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE admin = 1",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:32:01Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE admin = 1",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:32:01Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE maintenance = 1",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:32:01Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE maintenance = 1",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:32:01Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM seances",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:32:01Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM seances",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:32:01Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM seances WHERE date_seance >= CURDATE()",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:32:01Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM seances WHERE date_seance >= CURDATE()",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:32:01Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM inscriptions_seances",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:32:01Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM inscriptions_seances",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:32:01Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM signalements_wtc",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:32:01Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM signalements_wtc",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:32:01Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE accept_email = 0",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T20:32:01Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE accept_email = 0",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/commits-dashboard.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/commits-dashboard.php"
+        }
     }
 ]
