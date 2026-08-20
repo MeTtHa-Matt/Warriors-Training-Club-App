@@ -66,3 +66,117 @@ if ('serviceWorker' in navigator) {
     });
 }
 </script>
+<?php
+// Global session timeout modal and script included on every page when user is logged in
+if (!empty($_SESSION['user_id'])):
+    require_once __DIR__ . '/app-settings.php';
+    $createdAt = (int) ($_SESSION['created_at'] ?? time());
+    $timeoutSeconds = (int) get_setting('session_timeout_seconds', (string)(14 * 86400));
+    $modalThreshold = (int) get_setting('session_modal_threshold_seconds', (string)(24 * 3600));
+?>
+
+<!-- Session timeout modal (global) -->
+<div class="modal fade wtc-modal" id="sessionTimeoutModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content wtc-modal__content">
+            <div class="modal-header wtc-modal__header">
+                <h5 class="modal-title">Avertissement de déconnexion</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fermer"></button>
+            </div>
+            <div class="modal-body">
+                <p id="sessionTimeoutMessage">Tu seras déconnecté dans</p>
+                <div style="font-size:1.6rem;font-weight:700;color:var(--gold);margin-bottom:0.5rem;" id="sessionTimeoutCountdown">00:00:00</div>
+                <p>Tu peux te reconnecter maintenant pour prolonger ta session.</p>
+            </div>
+            <div class="modal-footer wtc-modal__footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">J'ai bien compris</button>
+                <button type="button" id="sessionTimeoutLogout" class="btn btn-wtc-gold">Se reconnecter</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// session timeout script available on all pages
+(function(){
+    const createdAt = <?= json_encode($createdAt) ?> * 1000; // ms
+    const timeoutMs = <?= json_encode($timeoutSeconds) ?> * 1000; // ms
+    const thresholdMs = <?= json_encode($modalThreshold) ?> * 1000; // ms
+    let modalShown = false;
+
+    function formatSeconds(secs){
+        if (secs <= 0) return '0s';
+        const units = [
+            ['year',31557600],['month',2592000],['week',604800],['day',86400],['hour',3600],['minute',60],['second',1]
+        ];
+        for (const [name, val] of units){
+            if (secs >= val){
+                const v = Math.floor(secs / val);
+                return v + ' ' + name + (v>1? 's':'');
+            }
+        }
+        return secs + 's';
+    }
+
+    function pad(n){ return n.toString().padStart(2,'0'); }
+
+    function formatCountdown(ms){
+        const total = Math.max(0, Math.floor(ms/1000));
+        const days = Math.floor(total / 86400);
+        let rem = total % 86400;
+        const hours = Math.floor(rem / 3600); rem = rem % 3600;
+        const minutes = Math.floor(rem / 60);
+        const seconds = rem % 60;
+        const hh = pad(hours);
+        const mm = pad(minutes);
+        const ss = pad(seconds);
+        if (days > 0) return days + 'j ' + hh + ':' + mm + ':' + ss;
+        return hh + ':' + mm + ':' + ss;
+    }
+
+    function checkTimeout(){
+        const now = Date.now();
+        const expiresAt = createdAt + timeoutMs;
+        const remainingMs = Math.max(0, expiresAt - now);
+
+        if (remainingMs <= 0) {
+            window.location.href = 'includes/account/deconnexion_process.php?next=connexion.php';
+            return;
+        }
+
+        if (!modalShown && thresholdMs > 0 && remainingMs <= thresholdMs) {
+            modalShown = true;
+            const el = document.getElementById('sessionTimeoutCountdown');
+            if (el) el.textContent = formatCountdown(remainingMs);
+            const modalEl = document.getElementById('sessionTimeoutModal');
+            (function whenBootstrapReady(fn){
+                if (window.bootstrap && window.bootstrap.Modal) return fn();
+                const t = setInterval(function(){
+                    if (window.bootstrap && window.bootstrap.Modal){ clearInterval(t); fn(); }
+                }, 50);
+                setTimeout(function(){ clearInterval(t); }, 5000);
+            })(function(){
+                const modal = window.bootstrap.Modal.getOrCreateInstance(modalEl);
+                modal.show();
+            });
+
+            const logoutBtn = document.getElementById('sessionTimeoutLogout');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function(){
+                    window.location.href = 'includes/account/deconnexion_process.php?next=connexion.php';
+                });
+            }
+        }
+
+        if (modalShown) {
+            const el2 = document.getElementById('sessionTimeoutCountdown');
+            if (el2) el2.textContent = formatCountdown(remainingMs);
+        }
+    }
+
+    checkTimeout();
+    setInterval(checkTimeout, 1000);
+})();
+</script>
+
+<?php endif; ?>

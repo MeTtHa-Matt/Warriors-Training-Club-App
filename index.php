@@ -31,6 +31,8 @@ include __DIR__ . "/includes/general/index-liens.php";
 
     <?php require 'includes/general/navbar.php'; ?>
 
+        
+
     <section class="hero">
         <div class="container">
             <div class="row">
@@ -260,8 +262,16 @@ include __DIR__ . "/includes/general/index-liens.php";
                                     modalActions.appendChild(modalBtn);
 
                                     const modalEl = document.getElementById('indexSeanceModal');
-                                    const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
-                                    modal.show();
+                                    (function whenBootstrapReady(fn){
+                                        if (window.bootstrap && window.bootstrap.Modal) return fn();
+                                        const t = setInterval(function(){
+                                            if (window.bootstrap && window.bootstrap.Modal){ clearInterval(t); fn(); }
+                                        }, 50);
+                                        setTimeout(function(){ clearInterval(t); }, 5000);
+                                    })(function(){
+                                        const modal = window.bootstrap.Modal.getOrCreateInstance(modalEl);
+                                        modal.show();
+                                    });
 
                                 }catch(e){
                                     // ignore

@@ -63,6 +63,8 @@ $_SESSION['admin'] = (int) $account['admin'];
 $_SESSION['gerer_seances'] = (int) $account['gerer_seances'];
 $_SESSION['ban'] = (int) $account['ban'];
 $_SESSION['maintenance'] = (int) $account['maintenance'];
+// Store session creation timestamp for timeout calculations
+$_SESSION['created_at'] = time();
 
 $tokenManager = new PersistentToken($pdo);
 $tokenManager->create($account['id']);

@@ -55,4 +55,10 @@ $adminActions = [
         'label' => 'Commits GitHub',
         'description' => 'Voir les derniers commits reçus via webhook GitHub.',
     ],
+    [
+        'url' => 'settings.php',
+        'icon' => 'bi bi-gear',
+        'label' => 'Paramètres',
+        'description' => 'Paramètres globaux de l’application (session, emails, etc.)',
+    ],
 ];

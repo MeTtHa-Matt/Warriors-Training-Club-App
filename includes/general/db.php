@@ -17,6 +17,9 @@ if (!is_dir($dbAuditDir)) {
     @mkdir($dbAuditDir, 0775, true);
 }
 
+// Allow disabling DB audit logging for performance-sensitive environments
+$auditDisabled = (getenv('DISABLE_DB_AUDIT') === '1');
+
 function maskAuditValue(string $key, mixed $value): mixed
 {
     $normalizedKey = strtolower($key);
@@ -52,6 +55,10 @@ function sanitizeAuditParams(array $params): array
 
 function appendDbAuditLog(string $event, string $sql, array $params = [], ?string $context = null, ?string $status = 'ok'): void
 {
+    global $dbAuditPath, $auditDisabled;
+    if (!empty($auditDisabled)) {
+        return;
+    }
     global $dbAuditPath;
 
     $entry = [
@@ -141,8 +148,29 @@ try {
     $pdo = new AuditPDO("mysql:host={$host};port={$port};dbname={$dbname};charset=utf8", $username, $password);
 
     // Nettoyage automatique des séances trop anciennes (plus de 3 mois).
-    $pdo->exec('DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)');
-    appendDbAuditLog('background_cleanup', 'DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)', [], 'db.php', 'completed');
+    // To avoid running this expensive query on every request, throttle it to once per hour.
+    $cleanupFile = __DIR__ . '/../../data/last_cleanup.txt';
+    $runCleanup = true;
+    try {
+        if (is_file($cleanupFile)) {
+            $last = (int) @file_get_contents($cleanupFile);
+            if ($last > 0 && (time() - $last) < 3600) {
+                $runCleanup = false;
+            }
+        }
+    } catch (Throwable $e) {
+        // ignore and run cleanup
+    }
+
+    if ($runCleanup) {
+        try {
+            $pdo->exec('DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)');
+            appendDbAuditLog('background_cleanup', 'DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)', [], 'db.php', 'completed');
+            @file_put_contents($cleanupFile, (string) time());
+        } catch (Throwable $e) {
+            appendDbAuditLog('background_cleanup_error', $e->getMessage(), [], 'db.php', 'error');
+        }
+    }
 } catch (PDOException $e) {
     appendDbAuditLog('db_connection_error', $e->getMessage(), [], 'db.php', 'error');
     die("Erreur de connexion à la base de données : " . $e->getMessage());
