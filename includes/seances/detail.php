@@ -28,6 +28,8 @@ if (!$seance) {
     exit;
 }
 
+$currentUserId = (int) ($_SESSION['user_id'] ?? 0);
+$isAdmin = (int) ($_SESSION['admin'] ?? 0) === 1;
 $startDateTime = new DateTimeImmutable($seance['date_seance'] . ' ' . $seance['heure_debut']);
 $registrationAllowed = new DateTimeImmutable('now') < $startDateTime;
 
@@ -59,6 +61,8 @@ $hasInscriptions = (int) $stmtHasInscriptions->fetch()['c'] > 0;
 echo json_encode([
     'seance' => $seance,
     'can_manage' => (int) ($_SESSION['gerer_seances'] ?? 0) === 1,
+    'is_admin' => $isAdmin,
+    'is_creator' => $currentUserId === (int) $seance['created_by'],
     'is_registered' => $isRegistered,
     'has_inscriptions' => $hasInscriptions,
     'registration_allowed' => $registrationAllowed,

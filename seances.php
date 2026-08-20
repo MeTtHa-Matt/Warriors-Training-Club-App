@@ -141,19 +141,6 @@ $canManage = (int) ($_SESSION['gerer_seances'] ?? 0) === 1;
         </div>
     </div>
 
-    <div class="modal fade wtc-modal" id="mesInscriptionsModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content wtc-modal__content">
-                <div class="modal-header wtc-modal__header">
-                    <h5 class="modal-title">Mes inscriptions</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Fermer"></button>
-                </div>
-                <div class="modal-body" id="mesInscriptionsBody"></div>
-            </div>
-        </div>
-    </div>
-
     <div class="modal fade wtc-modal" id="choixInscriptionModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content wtc-modal__content">
@@ -483,8 +470,10 @@ $canManage = (int) ($_SESSION['gerer_seances'] ?? 0) === 1;
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         window.WTC_CONTEXT = {
-            canManage: <?php echo $canManage ? 'true' : 'false'; ?>
+            canManage: <?php echo $canManage ? 'true' : 'false'; ?>,
+            isAdmin: <?php echo ((int) ($_SESSION['admin'] ?? 0) === 1) ? 'true' : 'false'; ?>
         };
+        window.WTC_CURRENT_USER_ID = <?php echo (int) ($_SESSION['user_id'] ?? 0); ?>;
     </script>
         <?php if (isset($_GET['open']) && is_numeric($_GET['open'])): ?>
         <script>

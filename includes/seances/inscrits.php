@@ -19,7 +19,7 @@ if ($seanceId <= 0) {
 }
 
 $stmt = $pdo->prepare(
-    "SELECT i.firstname, i.lastname, i.account_id, i.created_at,
+    "SELECT i.id, i.firstname, i.lastname, i.account_id, i.created_at, i.inscrit_par,
             a.firstname AS par_firstname, a.lastname AS par_lastname
      FROM inscriptions_seances i
      LEFT JOIN account_wtc a ON a.id = i.inscrit_par

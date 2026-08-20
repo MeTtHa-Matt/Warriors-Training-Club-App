@@ -321,12 +321,9 @@
 
       let actionsHtml = "";
       actionsHtml += `<button type="button" class="btn btn-wtc-outline rounded-pill" id="btnVoirInscrits">Voir les inscrits</button>`;
-      if (data.can_manage) {
+      if (data.is_creator) {
         actionsHtml += `<button type="button" class="btn btn-wtc-outline rounded-pill" id="btnModifierSeance">Modifier</button>`;
         actionsHtml += `<button type="button" class="btn btn-wtc-outline rounded-pill" id="btnSupprimerSeance" style="color: #d32f2f;">Supprimer</button>`;
-      }
-      if (data.has_inscriptions) {
-        actionsHtml += `<button type="button" class="btn btn-wtc-outline rounded-pill" id="btnMesInscriptions">Voir mes inscriptions</button>`;
       }
       if (data.is_registered) {
         actionsHtml += `<button type="button" class="btn btn-wtc-gold rounded-pill" id="btnSInscrire">S'inscrire</button>`;
@@ -341,7 +338,7 @@
       if (btnVoirInscrits)
         btnVoirInscrits.addEventListener("click", () => openInscrits(id));
 
-      if (data.can_manage) {
+      if (data.is_creator) {
         const btnModifierSeance = document.getElementById("btnModifierSeance");
         if (btnModifierSeance)
           btnModifierSeance.addEventListener("click", () =>
@@ -355,13 +352,6 @@
             handleSupprimerSeance(id, s),
           );
       }
-
-      const btnMesInscriptionsEl =
-        document.getElementById("btnMesInscriptions");
-      if (btnMesInscriptionsEl)
-        btnMesInscriptionsEl.addEventListener("click", () =>
-          openMesInscriptions(id),
-        );
 
       const btnSInscrire = document.getElementById("btnSInscrire");
       if (btnSInscrire && !btnSInscrire.disabled) {
@@ -434,52 +424,25 @@
           '<p class="upcoming-empty">Aucun inscrit pour le moment.</p>';
         return;
       }
+
+      const currentUserId = Number(window.WTC_CURRENT_USER_ID || 0);
+      const isAdmin = Boolean(window.WTC_CONTEXT && window.WTC_CONTEXT.isAdmin);
       body.innerHTML =
         `<ul class="inscrits-list">` +
         data.inscrits
-          .map(
-            (i) => `
-                <li class="inscrits-list__item">
+          .map((i) => {
+            const canDelete = Number(i.inscrit_par) === currentUserId;
+            const metaHtml = isAdmin
+              ? `<span class="inscrits-list__meta">Inscrit par ${escapeHtml(i.par_firstname)} ${escapeHtml(i.par_lastname)}</span>`
+              : "";
+            return `
+                <li class="inscrits-list__item ${canDelete ? "inscrits-list__item--action" : ""}">
                     <span class="inscrits-list__name">${escapeHtml(i.firstname)} ${escapeHtml(i.lastname)}</span>
-                    <span class="inscrits-list__meta">Inscrit par ${escapeHtml(i.par_firstname)} ${escapeHtml(i.par_lastname)}</span>
+                    ${metaHtml}
+                    ${canDelete ? `<button type="button" class="btn btn-wtc-outline rounded-pill btn-sm" data-inscription-id="${i.id}" data-action="delete">Désinscrire</button>` : ""}
                 </li>
-            `,
-          )
-          .join("") +
-        `</ul>`;
-    } catch (e) {
-      body.innerHTML =
-        '<p class="upcoming-empty">Impossible de charger la liste des inscrits.</p>';
-    }
-  }
-
-  async function openMesInscriptions(id) {
-    getModal("mesInscriptionsModal").show();
-    const body = document.getElementById("mesInscriptionsBody");
-    body.innerHTML = '<p class="seance-detail__loading">Chargement…</p>';
-
-    try {
-      const data = await apiGet(
-        `includes/seances/mes_inscriptions.php?seance_id=${id}`,
-      );
-      if (!data.inscriptions.length) {
-        body.innerHTML =
-          '<p class="upcoming-empty">Tu n\'as inscrit personne pour cette séance.</p>';
-        return;
-      }
-      body.innerHTML =
-        `<ul class="inscrits-list">` +
-        data.inscriptions
-          .map(
-            (i) => `
-                <li class="inscrits-list__item inscrits-list__item--action">
-                    <span class="inscrits-list__name">${escapeHtml(i.firstname)} ${escapeHtml(i.lastname)}</span>
-                    <button type="button" class="btn btn-wtc-outline rounded-pill btn-sm" data-inscription-id="${i.id}" data-action="delete">
-                        Désinscrire
-                    </button>
-                </li>
-            `,
-          )
+            `;
+          })
           .join("") +
         `</ul>`;
 
@@ -493,7 +456,7 @@
               inscription_id: inscriptionId,
             });
             showToast("L'inscription a bien été supprimée.");
-            openMesInscriptions(id);
+            openInscrits(id);
             loadMonth(state.year, state.month);
             loadUpcoming();
             if (state.currentSeanceId === id) {
@@ -506,7 +469,7 @@
       });
     } catch (e) {
       body.innerHTML =
-        '<p class="upcoming-empty">Impossible de charger tes inscriptions.</p>';
+        '<p class="upcoming-empty">Impossible de charger la liste des inscrits.</p>';
     }
   }
 
