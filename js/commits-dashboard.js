@@ -121,42 +121,10 @@ document.addEventListener('DOMContentLoaded', function () {
     // initial load: force fresh fetch from GitHub
     fetchCommits(true);
     // SSE: listen for changes and update automatically
-    let pollTimer = null;
-    function startPolling() {
-        if (pollTimer) return;
-        console.log('starting polling fallback every 15s');
-        pollTimer = setInterval(() => fetchCommits(false), 15000);
-    }
-    function stopPolling() {
-        if (!pollTimer) return;
-        clearInterval(pollTimer);
-        pollTimer = null;
-    }
-
-    if (window.EventSource) {
-        try {
-            console.log('opening EventSource to api/commits-events.php');
-            const es = new EventSource('api/commits-events.php');
-            es.onopen = function () { console.log('SSE connected'); stopPolling(); };
-            es.onmessage = function (e) {
-                try {
-                    const data = JSON.parse(e.data);
-                    console.log('SSE message received', Array.isArray(data) ? data.length : typeof data);
-                    renderCommits(data);
-                } catch (err) {
-                    console.error('SSE parse error', err);
-                }
-            };
-            es.onerror = function (err) {
-                console.error('SSE error', err);
-                // start polling fallback
-                startPolling();
-            };
-        } catch (err) {
-            console.error('EventSource init error', err);
-            startPolling();
-        }
-    } else {
-        startPolling();
-    }
+    // Simple polling: force a fresh fetch every 15 seconds
+    console.log('starting polling every 15s');
+    setInterval(() => {
+        console.log('polling for commits');
+        fetchCommits(true);
+    }, 15000);
 });

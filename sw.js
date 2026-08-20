@@ -38,6 +38,17 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
+  // Do not try to cache or handle Server-Sent Events (streaming endpoints)
+  try {
+    const urlCheck = new URL(event.request.url);
+    if (urlCheck.pathname.endsWith('/api/commits-events.php') || urlCheck.pathname.includes('/commits-events.php')) {
+      // let the browser handle the SSE connection directly
+      return;
+    }
+  } catch (e) {
+    // ignore URL parsing errors
+  }
+
   const requestURL = new URL(event.request.url);
   const isSameOrigin = requestURL.origin === self.location.origin;
   const isNavigation = event.request.mode === "navigate";
