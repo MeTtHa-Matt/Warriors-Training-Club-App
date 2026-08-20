@@ -13,6 +13,43 @@ if (is_file($commitsPath)) {
     }
 }
 
+// If no commits stored yet, try to fetch from GitHub API for the configured repo
+if (empty($commits)) {
+    $repo = 'MeTtHa-Matt/Warriors-Training-Club-App';
+    $apiUrl = "https://api.github.com/repos/" . $repo . "/commits?per_page=100";
+    $opts = [
+        'http' => [
+            'method' => 'GET',
+            'header' => "User-Agent: Warriors-Training-Club-App\r\nAccept: application/vnd.github.v3+json\r\n",
+            'timeout' => 5,
+        ],
+    ];
+    $context = stream_context_create($opts);
+    $raw = @file_get_contents($apiUrl, false, $context);
+    if ($raw !== false) {
+        $items = json_decode($raw, true);
+        if (is_array($items)) {
+            $fetched = [];
+            foreach ($items as $it) {
+                $id = $it['sha'] ?? '';
+                $fetched[] = [
+                    'id' => $id,
+                    'message' => $it['commit']['message'] ?? '',
+                    'url' => $it['html_url'] ?? '',
+                    'author' => $it['commit']['author']['name'] ?? ($it['author']['login'] ?? ''),
+                    'timestamp' => $it['commit']['author']['date'] ?? '',
+                    'repo' => $repo,
+                ];
+            }
+            if (!empty($fetched)) {
+                // store and use fetched commits
+                @file_put_contents($commitsPath, json_encode(array_reverse($fetched), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES), LOCK_EX);
+                $commits = array_reverse($fetched);
+            }
+        }
+    }
+}
+
 $latest = array_slice($commits, 0, 40);
 ?>
 <!DOCTYPE html>
@@ -41,61 +78,42 @@ $latest = array_slice($commits, 0, 40);
     <section class="section">
         <div class="container">
             <div class="row g-4">
+                <!-- Top summary removed as requested -->
+
                 <div class="col-12">
-                    <div class="info-card p-4">
-                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
-                            <div>
-                                <div class="info-card__title">Historique commits</div>
-                                <div class="info-card__value display-6"><?= number_format(count($commits), 0, ',', ' ') ?></div>
-                            </div>
-                            <a href="data/commits.json" class="btn btn-wtc-gold rounded-pill px-4" target="_blank" rel="noopener">
-                                <i class="bi bi-download me-2"></i>Voir le JSON brut
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h3 class="h5 mb-0 text-white">Derniers commits</h3>
+                        <div class="d-flex gap-2">
+                            <a class="btn btn-outline-light btn-sm" href="https://github.com/MeTtHa-Matt/Warriors-Training-Club-App" target="_blank" rel="noopener">
+                                <i class="bi bi-github me-1"></i>Ouvrir le dépôt
                             </a>
+                            <button id="commits-refresh" class="btn btn-wtc-gold btn-sm">Rafraîchir</button>
                         </div>
-                        <p class="mb-0 text-white">Les commits sont stockés dans <strong>data/commits.json</strong> via le webhook public <strong>/github-webhook.php</strong>.</p>
+                    </div>
+
+                    <div class="info-card p-3">
+                        <div id="commits-list" class="row g-3">
+                            <p class="mb-0 text-white">Chargement initial des commits…</p>
+                        </div>
                     </div>
                 </div>
 
-                <div class="col-12">
-                    <div class="info-card p-4">
-                        <div class="info-card__title mb-3">Derniers commits</div>
-                        <?php if (empty($latest)): ?>
-                            <p class="mb-0 text-white">Aucun commit enregistré pour le moment.</p>
-                        <?php else: ?>
-                            <div class="table-responsive">
-                                <table class="table table-dark table-striped align-middle mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th>Horodatage</th>
-                                            <th>SHA</th>
-                                            <th>Message</th>
-                                            <th>Auteur</th>
-                                            <th>Dépôt</th>
-                                            <th>Lien</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php foreach ($latest as $c): ?>
-                                            <tr>
-                                                <td><?= htmlspecialchars((string) ($c['timestamp'] ?? '')) ?></td>
-                                                <td><code><?= htmlspecialchars(substr((string) ($c['id'] ?? ''), 0, 12)) ?></code></td>
-                                                <td><?= htmlspecialchars((string) ($c['message'] ?? '')) ?></td>
-                                                <td><?= htmlspecialchars((string) ($c['author'] ?? '')) ?></td>
-                                                <td><?= htmlspecialchars((string) ($c['repo'] ?? '')) ?></td>
-                                                <td>
-                                                    <?php if (!empty($c['url'])): ?>
-                                                        <a href="<?= htmlspecialchars($c['url']) ?>" target="_blank" rel="noopener">Voir</a>
-                                                    <?php else: ?>
-                                                        —
-                                                    <?php endif; ?>
-                                                </td>
-                                            </tr>
-                                        <?php endforeach; ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <?php endif; ?>
+                <!-- Modal pour détails commit -->
+                <div class="modal fade" id="commitModal" tabindex="-1" aria-labelledby="commitModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                    <div class="modal-content bg-dark text-white">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="commitModalLabel">Détails commit</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body" id="commitModalBody">
+                        Chargement…
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                      </div>
                     </div>
+                  </div>
                 </div>
             </div>
         </div>
@@ -104,6 +122,7 @@ $latest = array_slice($commits, 0, 40);
     <?php require 'includes/general/footer.php'; ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/commits-dashboard.js"></script>
 </body>
 
 </html>

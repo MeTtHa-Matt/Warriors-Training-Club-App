@@ -10,6 +10,8 @@ if ($payload === false || $payload === '') {
     exit;
 }
 
+// Note: signature validation removed — webhook accepts push events without HMAC check
+
 $event = $_SERVER['HTTP_X_GITHUB_EVENT'] ?? '';
 if ($event !== 'push') {
     // Only handle push events for now
