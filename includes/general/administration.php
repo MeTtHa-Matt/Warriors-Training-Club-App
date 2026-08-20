@@ -49,4 +49,10 @@ $adminActions = [
         'label' => 'Modifier les liens',
         'description' => 'Mettre à jour les urls affichées sur la page d’accueil.',
     ],
+    [
+        'url' => 'commits-dashboard.php',
+        'icon' => 'bi bi-git',
+        'label' => 'Commits GitHub',
+        'description' => 'Voir les derniers commits reçus via webhook GitHub.',
+    ],
 ];
