@@ -113,4 +113,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // initial load
     fetchCommits();
+    // SSE: listen for changes and update automatically
+    if (window.EventSource) {
+        try {
+            const es = new EventSource('api/commits-events.php');
+            es.onmessage = function (e) {
+                try {
+                    const data = JSON.parse(e.data);
+                    renderCommits(data);
+                } catch (err) {
+                    // ignore parse errors
+                }
+            };
+            es.onerror = function () {
+                // reconnect handled by browser
+            };
+        } catch (err) {
+            // no-op
+        }
+    }
 });
