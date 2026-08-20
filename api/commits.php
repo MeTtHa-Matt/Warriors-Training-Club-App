@@ -51,9 +51,9 @@ if (isset($_GET['force']) || empty($commits)) {
                 ];
             }
             if (!empty($fetched)) {
-                // attempt to write cache
+                // store cache in file as oldest-first, but keep $commits as newest-first
                 @file_put_contents(__DIR__ . '/../data/commits.json', json_encode(array_reverse($fetched), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES), LOCK_EX);
-                $commits = array_reverse($fetched);
+                $commits = $fetched; // fetched is newest-first from GitHub API
             }
         } else {
             // if GitHub returned an error object, surface it to callers
