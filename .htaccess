@@ -1,0 +1,13 @@
+# Custom error documents
+ErrorDocument 400 /error.php
+ErrorDocument 401 /error.php
+ErrorDocument 403 /error.php
+ErrorDocument 404 /error.php
+ErrorDocument 500 /error.php
+ErrorDocument 502 /error.php
+ErrorDocument 503 /error.php
+
+<IfModule mod_php.c>
+    php_flag display_errors Off
+    php_value log_errors On
+</IfModule>

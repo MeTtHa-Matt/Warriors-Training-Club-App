@@ -22,6 +22,9 @@ if (session_status() === PHP_SESSION_NONE) {
 
 require_once __DIR__ . '/clear-cache.php';
 
+// Global error handler - redirects users to the friendly error page on fatal errors
+require_once __DIR__ . '/error-handler.php';
+
 header('Cache-Control: private, no-store, no-cache, must-revalidate, max-age=0, post-check=0, pre-check=0');
 header('Pragma: no-cache');
 header('Expires: -1');

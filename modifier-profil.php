@@ -1,7 +1,7 @@
 <?php
 require_once "includes/general/session-config.php";
 require_once "includes/general/verifications.php";
-require 'includes/general/db.php';
+require_once 'includes/general/db.php';
 
 include __DIR__ . '/includes/general/modifier-profil.php';
 ?>
