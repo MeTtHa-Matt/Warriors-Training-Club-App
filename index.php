@@ -455,6 +455,17 @@ include __DIR__ . "/includes/general/index-liens.php";
         </div>
     </section>
 
+    <div id="pwa-install-popup" style="display:none;position:fixed;inset:0;align-items:center;justify-content:center;background:rgba(0,0,0,0.45);z-index:2000;"> 
+        <div style="max-width:520px;width:92%;background:#0b0b0b;color:var(--paper);border-radius:12px;padding:1.25rem;box-shadow:0 8px 30px rgba(0,0,0,0.6);">
+            <h5 style="margin:0 0 0.5rem 0;">Installer la web app</h5>
+            <p style="margin:0 0 1rem 0;color:var(--grey);">Vous n'avez pas encore installé la web app. Souhaitez-vous afficher la marche à suivre ?</p>
+            <div class="d-flex" style="gap:0.5rem;">
+                <button id="pwa-install-close" class="btn btn-wtc-outline rounded-pill">Je sais</button>
+                <button id="pwa-install-open" class="btn btn-wtc-gold rounded-pill ms-auto">Comment l'installer ?</button>
+            </div>
+        </div>
+    </div>
+
     <?php require 'includes/general/footer.php'; ?>
 
     <!-- Modal for index seance detail (moved out of hero to avoid stacking context issues) -->
@@ -474,6 +485,7 @@ include __DIR__ . "/includes/general/index-liens.php";
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/pwa-tutorials.js"></script>
 
 </body>
 

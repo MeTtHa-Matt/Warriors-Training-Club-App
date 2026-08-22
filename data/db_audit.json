@@ -5246,5 +5246,3127 @@
             "method": "GET",
             "uri": "/Warriors-Training-Club-App/connexion.php"
         }
+    },
+    {
+        "timestamp": "2026-08-20T22:15:54Z",
+        "event": "statement_exec",
+        "sql": "CREATE TABLE IF NOT EXISTS app_settings (\n            `setting_key` VARCHAR(100) NOT NULL PRIMARY KEY,\n            `value` TEXT NOT NULL\n        )",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/connexion.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/connexion.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:15:54Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/connexion.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/connexion.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:15:54Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/connexion.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/connexion.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:15:54Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_timeout_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/connexion.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/connexion.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:07Z",
+        "event": "statement_exec",
+        "sql": "CREATE TABLE IF NOT EXISTS app_settings (\n            `setting_key` VARCHAR(100) NOT NULL PRIMARY KEY,\n            `value` TEXT NOT NULL\n        )",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/connexion_process.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/connexion_process.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:07Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/connexion_process.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/connexion_process.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:07Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/connexion_process.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/connexion_process.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:07Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_timeout_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/connexion_process.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/connexion_process.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:07Z",
+        "event": "statement_prepare",
+        "sql": "DELETE FROM account_wtc\r\n     WHERE email_verified = 0\r\n       AND verification_token IS NOT NULL\r\n       AND verification_token_expires IS NOT NULL\r\n       AND verification_token_expires < NOW()",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/connexion_process.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/connexion_process.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:07Z",
+        "event": "statement_created",
+        "sql": "DELETE FROM account_wtc\r\n     WHERE email_verified = 0\r\n       AND verification_token IS NOT NULL\r\n       AND verification_token_expires IS NOT NULL\r\n       AND verification_token_expires < NOW()",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/connexion_process.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/connexion_process.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:07Z",
+        "event": "statement_execute",
+        "sql": "DELETE FROM account_wtc\r\n     WHERE email_verified = 0\r\n       AND verification_token IS NOT NULL\r\n       AND verification_token_expires IS NOT NULL\r\n       AND verification_token_expires < NOW()",
+        "params": [],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/connexion_process.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/connexion_process.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:07Z",
+        "event": "statement_exec",
+        "sql": "CREATE TABLE IF NOT EXISTS app_settings (\n            `setting_key` VARCHAR(100) NOT NULL PRIMARY KEY,\n            `value` TEXT NOT NULL\n        )",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/connexion.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/connexion.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:07Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/connexion.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/connexion.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:07Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/connexion.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/connexion.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:07Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_timeout_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/connexion.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/connexion.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:21Z",
+        "event": "statement_exec",
+        "sql": "CREATE TABLE IF NOT EXISTS app_settings (\n            `setting_key` VARCHAR(100) NOT NULL PRIMARY KEY,\n            `value` TEXT NOT NULL\n        )",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/connexion_process.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/connexion_process.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:21Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/connexion_process.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/connexion_process.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:21Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/connexion_process.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/connexion_process.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:21Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_timeout_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/connexion_process.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/connexion_process.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:21Z",
+        "event": "statement_prepare",
+        "sql": "DELETE FROM account_wtc\r\n     WHERE email_verified = 0\r\n       AND verification_token IS NOT NULL\r\n       AND verification_token_expires IS NOT NULL\r\n       AND verification_token_expires < NOW()",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/connexion_process.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/connexion_process.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:21Z",
+        "event": "statement_created",
+        "sql": "DELETE FROM account_wtc\r\n     WHERE email_verified = 0\r\n       AND verification_token IS NOT NULL\r\n       AND verification_token_expires IS NOT NULL\r\n       AND verification_token_expires < NOW()",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/connexion_process.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/connexion_process.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:21Z",
+        "event": "statement_execute",
+        "sql": "DELETE FROM account_wtc\r\n     WHERE email_verified = 0\r\n       AND verification_token IS NOT NULL\r\n       AND verification_token_expires IS NOT NULL\r\n       AND verification_token_expires < NOW()",
+        "params": [],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/connexion_process.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/connexion_process.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:21Z",
+        "event": "statement_prepare",
+        "sql": "SELECT * FROM account_wtc WHERE email = :email",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/connexion_process.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/connexion_process.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:21Z",
+        "event": "statement_created",
+        "sql": "SELECT * FROM account_wtc WHERE email = :email",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/connexion_process.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/connexion_process.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:21Z",
+        "event": "statement_execute",
+        "sql": "SELECT * FROM account_wtc WHERE email = :email",
+        "params": {
+            "email": "freddy@admin.fr"
+        },
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/connexion_process.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/connexion_process.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:21Z",
+        "event": "statement_prepare",
+        "sql": "INSERT INTO persistent_tokens (account_id, token, user_agent, ip_address, expires_at)\r\n            VALUES (?, ?, ?, ?, ?)",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/connexion_process.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/connexion_process.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:21Z",
+        "event": "statement_created",
+        "sql": "INSERT INTO persistent_tokens (account_id, token, user_agent, ip_address, expires_at)\r\n            VALUES (?, ?, ?, ?, ?)",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/connexion_process.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/connexion_process.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:21Z",
+        "event": "statement_execute",
+        "sql": "INSERT INTO persistent_tokens (account_id, token, user_agent, ip_address, expires_at)\r\n            VALUES (?, ?, ?, ?, ?)",
+        "params": [
+            "2",
+            "23c1ad3bd01c0cdfb390b9e627c33ef4651e9b9c92980c5a9b616ae8c0f970dc",
+            "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1",
+            "::1",
+            "2027-08-20 22:16:21"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/connexion_process.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/connexion_process.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:21Z",
+        "event": "statement_exec",
+        "sql": "CREATE TABLE IF NOT EXISTS app_settings (\n            `setting_key` VARCHAR(100) NOT NULL PRIMARY KEY,\n            `value` TEXT NOT NULL\n        )",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/index.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:21Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/index.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:21Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/index.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:21Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_timeout_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/index.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:21Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/index.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:21Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/index.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:21Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "2"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/index.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:21Z",
+        "event": "statement_exec",
+        "sql": "CREATE TABLE IF NOT EXISTS app_settings (\n            `setting_key` VARCHAR(100) NOT NULL PRIMARY KEY,\n            `value` TEXT NOT NULL\n        )",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/reglement-accept.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/reglement-accept.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:21Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/reglement-accept.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/reglement-accept.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:21Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/reglement-accept.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/reglement-accept.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:21Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_timeout_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/reglement-accept.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/reglement-accept.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:21Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/reglement-accept.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/reglement-accept.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:21Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/reglement-accept.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/reglement-accept.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:21Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "2"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/reglement-accept.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/reglement-accept.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:21Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/reglement-accept.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/reglement-accept.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:21Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/reglement-accept.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/reglement-accept.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:21Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_timeout_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/reglement-accept.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/reglement-accept.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:21Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/reglement-accept.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/reglement-accept.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:21Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/reglement-accept.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/reglement-accept.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:21Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_modal_threshold_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/reglement-accept.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/reglement-accept.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:28Z",
+        "event": "statement_exec",
+        "sql": "CREATE TABLE IF NOT EXISTS app_settings (\n            `setting_key` VARCHAR(100) NOT NULL PRIMARY KEY,\n            `value` TEXT NOT NULL\n        )",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/reglement-accept.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/reglement-accept.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:28Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/reglement-accept.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/reglement-accept.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:28Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/reglement-accept.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/reglement-accept.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:28Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_timeout_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/reglement-accept.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/reglement-accept.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:28Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/reglement-accept.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/reglement-accept.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:28Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/reglement-accept.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/reglement-accept.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:28Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "2"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/reglement-accept.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/reglement-accept.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:28Z",
+        "event": "statement_prepare",
+        "sql": "UPDATE account_wtc SET reglement_accepte = 1 WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/reglement-accept.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/reglement-accept.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:28Z",
+        "event": "statement_created",
+        "sql": "UPDATE account_wtc SET reglement_accepte = 1 WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/reglement-accept.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/reglement-accept.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:28Z",
+        "event": "statement_execute",
+        "sql": "UPDATE account_wtc SET reglement_accepte = 1 WHERE id = ?",
+        "params": [
+            "2"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/reglement-accept.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/reglement-accept.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:28Z",
+        "event": "statement_exec",
+        "sql": "CREATE TABLE IF NOT EXISTS app_settings (\n            `setting_key` VARCHAR(100) NOT NULL PRIMARY KEY,\n            `value` TEXT NOT NULL\n        )",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/index.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:28Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/index.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:28Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/index.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:28Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_timeout_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/index.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:28Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/index.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:28Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/index.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:28Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "2"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/index.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:28Z",
+        "event": "statement_query",
+        "sql": "SELECT link_key, url FROM index_links WHERE link_key IN ('hero_inscription', 'card_adhesion', 'card_boutique_barres', 'card_boutique_judo', 'card_boutique_vetements', 'card_map')",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/index.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:28Z",
+        "event": "statement_created",
+        "sql": "SELECT link_key, url FROM index_links WHERE link_key IN ('hero_inscription', 'card_adhesion', 'card_boutique_barres', 'card_boutique_judo', 'card_boutique_vetements', 'card_map')",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/index.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:28Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/index.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:28Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/index.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:28Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_timeout_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/index.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:28Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/index.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:28Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/index.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:28Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_modal_threshold_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/index.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:28Z",
+        "event": "statement_prepare",
+        "sql": "SELECT id, date_seance, heure_debut, heure_fin, type_seance, coach, lieu_seance\r\n     FROM seances\r\n     WHERE date_seance >= CURDATE()\r\n     ORDER BY date_seance ASC, heure_debut ASC\r\n     LIMIT 1",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/seances/upcoming.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/includes/seances/upcoming.php?limit=1"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:28Z",
+        "event": "statement_created",
+        "sql": "SELECT id, date_seance, heure_debut, heure_fin, type_seance, coach, lieu_seance\r\n     FROM seances\r\n     WHERE date_seance >= CURDATE()\r\n     ORDER BY date_seance ASC, heure_debut ASC\r\n     LIMIT 1",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/seances/upcoming.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/includes/seances/upcoming.php?limit=1"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:28Z",
+        "event": "statement_execute",
+        "sql": "SELECT id, date_seance, heure_debut, heure_fin, type_seance, coach, lieu_seance\r\n     FROM seances\r\n     WHERE date_seance >= CURDATE()\r\n     ORDER BY date_seance ASC, heure_debut ASC\r\n     LIMIT 1",
+        "params": [],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/seances/upcoming.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/includes/seances/upcoming.php?limit=1"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:29Z",
+        "event": "statement_prepare",
+        "sql": "SELECT * FROM seances WHERE id = :id",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/seances/detail.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/includes/seances/detail.php?id=1"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:29Z",
+        "event": "statement_created",
+        "sql": "SELECT * FROM seances WHERE id = :id",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/seances/detail.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/includes/seances/detail.php?id=1"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:29Z",
+        "event": "statement_execute",
+        "sql": "SELECT * FROM seances WHERE id = :id",
+        "params": {
+            "id": "1"
+        },
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/seances/detail.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/includes/seances/detail.php?id=1"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:29Z",
+        "event": "statement_prepare",
+        "sql": "SELECT COUNT(*) AS c FROM inscriptions_seances\r\n     WHERE seance_id = :seance_id\r\n       AND LOWER(TRIM(firstname)) = LOWER(TRIM(:firstname))\r\n       AND LOWER(TRIM(lastname)) = LOWER(TRIM(:lastname))",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/seances/detail.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/includes/seances/detail.php?id=1"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:29Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) AS c FROM inscriptions_seances\r\n     WHERE seance_id = :seance_id\r\n       AND LOWER(TRIM(firstname)) = LOWER(TRIM(:firstname))\r\n       AND LOWER(TRIM(lastname)) = LOWER(TRIM(:lastname))",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/seances/detail.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/includes/seances/detail.php?id=1"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:29Z",
+        "event": "statement_execute",
+        "sql": "SELECT COUNT(*) AS c FROM inscriptions_seances\r\n     WHERE seance_id = :seance_id\r\n       AND LOWER(TRIM(firstname)) = LOWER(TRIM(:firstname))\r\n       AND LOWER(TRIM(lastname)) = LOWER(TRIM(:lastname))",
+        "params": {
+            "seance_id": "1",
+            "firstname": "Freddy",
+            "lastname": "admin"
+        },
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/seances/detail.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/includes/seances/detail.php?id=1"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:29Z",
+        "event": "statement_prepare",
+        "sql": "SELECT COUNT(*) AS c FROM inscriptions_seances\r\n     WHERE seance_id = :seance_id\r\n       AND inscrit_par = :user_id",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/seances/detail.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/includes/seances/detail.php?id=1"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:29Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) AS c FROM inscriptions_seances\r\n     WHERE seance_id = :seance_id\r\n       AND inscrit_par = :user_id",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/seances/detail.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/includes/seances/detail.php?id=1"
+        }
+    },
+    {
+        "timestamp": "2026-08-20T22:16:29Z",
+        "event": "statement_execute",
+        "sql": "SELECT COUNT(*) AS c FROM inscriptions_seances\r\n     WHERE seance_id = :seance_id\r\n       AND inscrit_par = :user_id",
+        "params": {
+            "seance_id": "1",
+            "user_id": "2"
+        },
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/seances/detail.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/includes/seances/detail.php?id=1"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:18Z",
+        "event": "statement_exec",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:18Z",
+        "event": "background_cleanup",
+        "sql": "DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)",
+        "params": [],
+        "context": "db.php",
+        "status": "completed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:18Z",
+        "event": "statement_exec",
+        "sql": "CREATE TABLE IF NOT EXISTS app_settings (\n            `setting_key` VARCHAR(100) NOT NULL PRIMARY KEY,\n            `value` TEXT NOT NULL\n        )",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:18Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:18Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:18Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_timeout_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:18Z",
+        "event": "statement_prepare",
+        "sql": "SELECT pt.account_id, a.*, pt.id as token_id\r\n            FROM persistent_tokens pt\r\n            JOIN account_wtc a ON a.id = pt.account_id\r\n            WHERE pt.token = ? AND pt.expires_at > NOW()",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:18Z",
+        "event": "statement_created",
+        "sql": "SELECT pt.account_id, a.*, pt.id as token_id\r\n            FROM persistent_tokens pt\r\n            JOIN account_wtc a ON a.id = pt.account_id\r\n            WHERE pt.token = ? AND pt.expires_at > NOW()",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:18Z",
+        "event": "statement_execute",
+        "sql": "SELECT pt.account_id, a.*, pt.id as token_id\r\n            FROM persistent_tokens pt\r\n            JOIN account_wtc a ON a.id = pt.account_id\r\n            WHERE pt.token = ? AND pt.expires_at > NOW()",
+        "params": [
+            "23c1ad3bd01c0cdfb390b9e627c33ef4651e9b9c92980c5a9b616ae8c0f970dc"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:18Z",
+        "event": "statement_prepare",
+        "sql": "UPDATE persistent_tokens SET last_used = NOW() WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:18Z",
+        "event": "statement_created",
+        "sql": "UPDATE persistent_tokens SET last_used = NOW() WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:18Z",
+        "event": "statement_execute",
+        "sql": "UPDATE persistent_tokens SET last_used = NOW() WHERE id = ?",
+        "params": [
+            "10"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:18Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:18Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:18Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "2"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:18Z",
+        "event": "statement_prepare",
+        "sql": "DELETE FROM persistent_tokens WHERE expires_at < NOW()",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:18Z",
+        "event": "statement_created",
+        "sql": "DELETE FROM persistent_tokens WHERE expires_at < NOW()",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:18Z",
+        "event": "statement_execute",
+        "sql": "DELETE FROM persistent_tokens WHERE expires_at < NOW()",
+        "params": [],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:18Z",
+        "event": "statement_query",
+        "sql": "SELECT link_key, url FROM index_links WHERE link_key IN ('hero_inscription', 'card_adhesion', 'card_boutique_barres', 'card_boutique_judo', 'card_boutique_vetements', 'card_map')",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:18Z",
+        "event": "statement_created",
+        "sql": "SELECT link_key, url FROM index_links WHERE link_key IN ('hero_inscription', 'card_adhesion', 'card_boutique_barres', 'card_boutique_judo', 'card_boutique_vetements', 'card_map')",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:18Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:18Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:18Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_timeout_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:18Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:18Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:18Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_modal_threshold_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:18Z",
+        "event": "statement_prepare",
+        "sql": "SELECT id, date_seance, heure_debut, heure_fin, type_seance, coach, lieu_seance\r\n     FROM seances\r\n     WHERE date_seance >= CURDATE()\r\n     ORDER BY date_seance ASC, heure_debut ASC\r\n     LIMIT 1",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/seances/upcoming.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/includes/seances/upcoming.php?limit=1"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:18Z",
+        "event": "statement_created",
+        "sql": "SELECT id, date_seance, heure_debut, heure_fin, type_seance, coach, lieu_seance\r\n     FROM seances\r\n     WHERE date_seance >= CURDATE()\r\n     ORDER BY date_seance ASC, heure_debut ASC\r\n     LIMIT 1",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/seances/upcoming.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/includes/seances/upcoming.php?limit=1"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:18Z",
+        "event": "statement_execute",
+        "sql": "SELECT id, date_seance, heure_debut, heure_fin, type_seance, coach, lieu_seance\r\n     FROM seances\r\n     WHERE date_seance >= CURDATE()\r\n     ORDER BY date_seance ASC, heure_debut ASC\r\n     LIMIT 1",
+        "params": [],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/seances/upcoming.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/includes/seances/upcoming.php?limit=1"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:20Z",
+        "event": "statement_exec",
+        "sql": "CREATE TABLE IF NOT EXISTS app_settings (\n            `setting_key` VARCHAR(100) NOT NULL PRIMARY KEY,\n            `value` TEXT NOT NULL\n        )",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:20Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:20Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:20Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_timeout_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:20Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:20Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:20Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "2"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:20Z",
+        "event": "statement_query",
+        "sql": "SELECT link_key, url FROM index_links WHERE link_key IN ('hero_inscription', 'card_adhesion', 'card_boutique_barres', 'card_boutique_judo', 'card_boutique_vetements', 'card_map')",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:20Z",
+        "event": "statement_created",
+        "sql": "SELECT link_key, url FROM index_links WHERE link_key IN ('hero_inscription', 'card_adhesion', 'card_boutique_barres', 'card_boutique_judo', 'card_boutique_vetements', 'card_map')",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:20Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:20Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:20Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_timeout_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:20Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:20Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:20Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_modal_threshold_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:24Z",
+        "event": "statement_exec",
+        "sql": "CREATE TABLE IF NOT EXISTS app_settings (\n            `setting_key` VARCHAR(100) NOT NULL PRIMARY KEY,\n            `value` TEXT NOT NULL\n        )",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:24Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:24Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:24Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_timeout_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:24Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:24Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:24Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "2"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:24Z",
+        "event": "statement_query",
+        "sql": "SELECT link_key, url FROM index_links WHERE link_key IN ('hero_inscription', 'card_adhesion', 'card_boutique_barres', 'card_boutique_judo', 'card_boutique_vetements', 'card_map')",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:24Z",
+        "event": "statement_created",
+        "sql": "SELECT link_key, url FROM index_links WHERE link_key IN ('hero_inscription', 'card_adhesion', 'card_boutique_barres', 'card_boutique_judo', 'card_boutique_vetements', 'card_map')",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:24Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:24Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:24Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_timeout_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:24Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:24Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:24Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_modal_threshold_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:24Z",
+        "event": "statement_prepare",
+        "sql": "SELECT id, date_seance, heure_debut, heure_fin, type_seance, coach, lieu_seance\r\n     FROM seances\r\n     WHERE date_seance >= CURDATE()\r\n     ORDER BY date_seance ASC, heure_debut ASC\r\n     LIMIT 1",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/seances/upcoming.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/includes/seances/upcoming.php?limit=1"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:24Z",
+        "event": "statement_created",
+        "sql": "SELECT id, date_seance, heure_debut, heure_fin, type_seance, coach, lieu_seance\r\n     FROM seances\r\n     WHERE date_seance >= CURDATE()\r\n     ORDER BY date_seance ASC, heure_debut ASC\r\n     LIMIT 1",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/seances/upcoming.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/includes/seances/upcoming.php?limit=1"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:24Z",
+        "event": "statement_execute",
+        "sql": "SELECT id, date_seance, heure_debut, heure_fin, type_seance, coach, lieu_seance\r\n     FROM seances\r\n     WHERE date_seance >= CURDATE()\r\n     ORDER BY date_seance ASC, heure_debut ASC\r\n     LIMIT 1",
+        "params": [],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/seances/upcoming.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/includes/seances/upcoming.php?limit=1"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:32Z",
+        "event": "statement_exec",
+        "sql": "CREATE TABLE IF NOT EXISTS app_settings (\n            `setting_key` VARCHAR(100) NOT NULL PRIMARY KEY,\n            `value` TEXT NOT NULL\n        )",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:32Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:32Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:32Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_timeout_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:32Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:32Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:32Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "2"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:32Z",
+        "event": "statement_query",
+        "sql": "SELECT link_key, url FROM index_links WHERE link_key IN ('hero_inscription', 'card_adhesion', 'card_boutique_barres', 'card_boutique_judo', 'card_boutique_vetements', 'card_map')",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:32Z",
+        "event": "statement_created",
+        "sql": "SELECT link_key, url FROM index_links WHERE link_key IN ('hero_inscription', 'card_adhesion', 'card_boutique_barres', 'card_boutique_judo', 'card_boutique_vetements', 'card_map')",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:32Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:32Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:32Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_timeout_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:32Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:32Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:32Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_modal_threshold_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:32Z",
+        "event": "statement_prepare",
+        "sql": "SELECT id, date_seance, heure_debut, heure_fin, type_seance, coach, lieu_seance\r\n     FROM seances\r\n     WHERE date_seance >= CURDATE()\r\n     ORDER BY date_seance ASC, heure_debut ASC\r\n     LIMIT 1",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/seances/upcoming.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/includes/seances/upcoming.php?limit=1"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:32Z",
+        "event": "statement_created",
+        "sql": "SELECT id, date_seance, heure_debut, heure_fin, type_seance, coach, lieu_seance\r\n     FROM seances\r\n     WHERE date_seance >= CURDATE()\r\n     ORDER BY date_seance ASC, heure_debut ASC\r\n     LIMIT 1",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/seances/upcoming.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/includes/seances/upcoming.php?limit=1"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:32Z",
+        "event": "statement_execute",
+        "sql": "SELECT id, date_seance, heure_debut, heure_fin, type_seance, coach, lieu_seance\r\n     FROM seances\r\n     WHERE date_seance >= CURDATE()\r\n     ORDER BY date_seance ASC, heure_debut ASC\r\n     LIMIT 1",
+        "params": [],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/seances/upcoming.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/includes/seances/upcoming.php?limit=1"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:36Z",
+        "event": "statement_exec",
+        "sql": "CREATE TABLE IF NOT EXISTS app_settings (\n            `setting_key` VARCHAR(100) NOT NULL PRIMARY KEY,\n            `value` TEXT NOT NULL\n        )",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:36Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:36Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:36Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_timeout_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:36Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:36Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:36Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "2"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:36Z",
+        "event": "statement_query",
+        "sql": "SELECT link_key, url FROM index_links WHERE link_key IN ('hero_inscription', 'card_adhesion', 'card_boutique_barres', 'card_boutique_judo', 'card_boutique_vetements', 'card_map')",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:36Z",
+        "event": "statement_created",
+        "sql": "SELECT link_key, url FROM index_links WHERE link_key IN ('hero_inscription', 'card_adhesion', 'card_boutique_barres', 'card_boutique_judo', 'card_boutique_vetements', 'card_map')",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:36Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:36Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:36Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_timeout_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:36Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:36Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:36Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_modal_threshold_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:39Z",
+        "event": "statement_exec",
+        "sql": "CREATE TABLE IF NOT EXISTS app_settings (\n            `setting_key` VARCHAR(100) NOT NULL PRIMARY KEY,\n            `value` TEXT NOT NULL\n        )",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:39Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:39Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:39Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_timeout_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:39Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:39Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:39Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "2"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:39Z",
+        "event": "statement_query",
+        "sql": "SELECT link_key, url FROM index_links WHERE link_key IN ('hero_inscription', 'card_adhesion', 'card_boutique_barres', 'card_boutique_judo', 'card_boutique_vetements', 'card_map')",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:39Z",
+        "event": "statement_created",
+        "sql": "SELECT link_key, url FROM index_links WHERE link_key IN ('hero_inscription', 'card_adhesion', 'card_boutique_barres', 'card_boutique_judo', 'card_boutique_vetements', 'card_map')",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:39Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:39Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:39Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_timeout_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:39Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:39Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:39Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_modal_threshold_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:39Z",
+        "event": "statement_prepare",
+        "sql": "SELECT id, date_seance, heure_debut, heure_fin, type_seance, coach, lieu_seance\r\n     FROM seances\r\n     WHERE date_seance >= CURDATE()\r\n     ORDER BY date_seance ASC, heure_debut ASC\r\n     LIMIT 1",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/seances/upcoming.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/includes/seances/upcoming.php?limit=1"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:39Z",
+        "event": "statement_created",
+        "sql": "SELECT id, date_seance, heure_debut, heure_fin, type_seance, coach, lieu_seance\r\n     FROM seances\r\n     WHERE date_seance >= CURDATE()\r\n     ORDER BY date_seance ASC, heure_debut ASC\r\n     LIMIT 1",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/seances/upcoming.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/includes/seances/upcoming.php?limit=1"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:39Z",
+        "event": "statement_execute",
+        "sql": "SELECT id, date_seance, heure_debut, heure_fin, type_seance, coach, lieu_seance\r\n     FROM seances\r\n     WHERE date_seance >= CURDATE()\r\n     ORDER BY date_seance ASC, heure_debut ASC\r\n     LIMIT 1",
+        "params": [],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/seances/upcoming.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/includes/seances/upcoming.php?limit=1"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:50Z",
+        "event": "statement_exec",
+        "sql": "CREATE TABLE IF NOT EXISTS app_settings (\n            `setting_key` VARCHAR(100) NOT NULL PRIMARY KEY,\n            `value` TEXT NOT NULL\n        )",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:50Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:50Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:50Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_timeout_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:50Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:50Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:50Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "2"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:50Z",
+        "event": "statement_query",
+        "sql": "SELECT link_key, url FROM index_links WHERE link_key IN ('hero_inscription', 'card_adhesion', 'card_boutique_barres', 'card_boutique_judo', 'card_boutique_vetements', 'card_map')",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:50Z",
+        "event": "statement_created",
+        "sql": "SELECT link_key, url FROM index_links WHERE link_key IN ('hero_inscription', 'card_adhesion', 'card_boutique_barres', 'card_boutique_judo', 'card_boutique_vetements', 'card_map')",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:50Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:50Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:50Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_timeout_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:50Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:50Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:50Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_modal_threshold_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:50Z",
+        "event": "statement_prepare",
+        "sql": "SELECT id, date_seance, heure_debut, heure_fin, type_seance, coach, lieu_seance\r\n     FROM seances\r\n     WHERE date_seance >= CURDATE()\r\n     ORDER BY date_seance ASC, heure_debut ASC\r\n     LIMIT 1",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/seances/upcoming.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/includes/seances/upcoming.php?limit=1"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:50Z",
+        "event": "statement_created",
+        "sql": "SELECT id, date_seance, heure_debut, heure_fin, type_seance, coach, lieu_seance\r\n     FROM seances\r\n     WHERE date_seance >= CURDATE()\r\n     ORDER BY date_seance ASC, heure_debut ASC\r\n     LIMIT 1",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/seances/upcoming.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/includes/seances/upcoming.php?limit=1"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:50Z",
+        "event": "statement_execute",
+        "sql": "SELECT id, date_seance, heure_debut, heure_fin, type_seance, coach, lieu_seance\r\n     FROM seances\r\n     WHERE date_seance >= CURDATE()\r\n     ORDER BY date_seance ASC, heure_debut ASC\r\n     LIMIT 1",
+        "params": [],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/seances/upcoming.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/includes/seances/upcoming.php?limit=1"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:52Z",
+        "event": "statement_exec",
+        "sql": "CREATE TABLE IF NOT EXISTS app_settings (\n            `setting_key` VARCHAR(100) NOT NULL PRIMARY KEY,\n            `value` TEXT NOT NULL\n        )",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/tuto-install.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/tuto-install.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:52Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/tuto-install.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/tuto-install.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:52Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/tuto-install.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/tuto-install.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:52Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_timeout_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/tuto-install.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/tuto-install.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:52Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/tuto-install.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/tuto-install.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:52Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/tuto-install.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/tuto-install.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:52Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "2"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/tuto-install.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/tuto-install.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:52Z",
+        "event": "statement_query",
+        "sql": "SELECT link_key, url FROM index_links WHERE link_key IN ('hero_inscription', 'card_adhesion', 'card_boutique_barres', 'card_boutique_judo', 'card_boutique_vetements', 'card_map')",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/tuto-install.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/tuto-install.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:52Z",
+        "event": "statement_created",
+        "sql": "SELECT link_key, url FROM index_links WHERE link_key IN ('hero_inscription', 'card_adhesion', 'card_boutique_barres', 'card_boutique_judo', 'card_boutique_vetements', 'card_map')",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/tuto-install.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/tuto-install.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:52Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/tuto-install.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/tuto-install.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:52Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/tuto-install.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/tuto-install.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:52Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_timeout_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/tuto-install.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/tuto-install.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:52Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/tuto-install.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/tuto-install.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:52Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/tuto-install.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/tuto-install.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T16:30:52Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_modal_threshold_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/tuto-install.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/tuto-install.php"
+        }
     }
 ]
