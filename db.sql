@@ -15,7 +15,8 @@ CREATE TABLE IF NOT EXISTS account_wtc (
     verification_token VARCHAR(255) DEFAULT NULL,
     verification_token_expires DATETIME DEFAULT NULL,
     password_reset_token VARCHAR(255) DEFAULT NULL,
-    password_reset_expires DATETIME DEFAULT NULL
+    password_reset_expires DATETIME DEFAULT NULL,
+    last_seen DATETIME DEFAULT NULL
 );
 
 INSERT INTO account_wtc (firstname, lastname, email, `password`, admin, gerer_seances, email_verified) VALUES ("admin", "admin", "admin@admin.fr", "$2y$10$jgqlubHdvwg7cTs1V6C/a.RX92qQhmYV7wLzDMEA7K00g9zluuJmq", 1, 1, 1), ("Freddy", "admin", "freddy@admin.fr", "$2y$10$.DLWGa0n5s/Vxs5E/5Oz6u97tkyZedYFgGMyFAK34Qkxn1q.hUng2", 1, 1, 1);

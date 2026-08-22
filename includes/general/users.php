@@ -88,11 +88,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_account_action
 }
 
 $usersStmt = $pdo->query(
-    'SELECT id, firstname, lastname, email, pdp, admin, gerer_seances, ban, maintenance, email_verified
+    'SELECT id, firstname, lastname, email, pdp, admin, gerer_seances, ban, maintenance, email_verified,
+            CASE
+                WHEN last_seen IS NOT NULL AND TIMESTAMPDIFF(SECOND, last_seen, NOW()) <= 300 THEN 1
+                ELSE 0
+            END AS is_online
      FROM account_wtc
      ORDER BY lastname ASC, firstname ASC'
 );
 $users = $usersStmt->fetchAll(PDO::FETCH_ASSOC);
+$onlineUsersCount = 0;
+foreach ($users as $user) {
+    if (!empty($user['is_online'])) {
+        $onlineUsersCount++;
+    }
+}
 $maintenanceEnabled = (bool) $pdo->query('SELECT MAX(maintenance) FROM account_wtc')->fetchColumn();
 
 $pageTitle = "Warriors Training Club - Utilisateurs";

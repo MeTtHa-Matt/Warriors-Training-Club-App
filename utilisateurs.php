@@ -89,8 +89,11 @@ include __DIR__ . "/includes/general/users.php"
             <?php foreach ($users as $user): ?>
                 <div class="user-profile-card <?= $user['ban'] ? 'user-profile-card--banned' : '' ?>">
                     <div class="user-profile-card__content" role="button" tabindex="0" data-user-id="<?= (int) $user['id'] ?>" data-search>
-                        <img src="img/pdps/<?= htmlspecialchars($user['pdp']) ?>?v=<?= time() ?>"
-                             alt="" class="user-profile-card__avatar" width="64" height="64" loading="lazy" decoding="async">
+                        <div class="user-profile-card__avatar-wrap">
+                            <img src="img/pdps/<?= htmlspecialchars($user['pdp']) ?>?v=<?= time() ?>"
+                                 alt="" class="user-profile-card__avatar" width="64" height="64" loading="lazy" decoding="async">
+                            <span class="user-profile-card__status-dot <?= !empty($user['is_online']) ? 'is-online' : 'is-offline' ?>" aria-label="<?= !empty($user['is_online']) ? 'Utilisateur en ligne' : 'Utilisateur hors ligne' ?>"></span>
+                        </div>
                         <div class="user-profile-card__info">
                             <div class="user-profile-card__name">
                                 <?= htmlspecialchars($user['firstname'] . ' ' . $user['lastname']) ?>
@@ -178,6 +181,8 @@ include __DIR__ . "/includes/general/users.php"
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+    const usersApiUrl = new URL('includes/general/users-api.php', window.location.href).toString();
+
     document.addEventListener('DOMContentLoaded', function() {
         // Search functionality
         document.getElementById('userSearch').addEventListener('input', function (e) {
@@ -187,6 +192,112 @@ include __DIR__ . "/includes/general/users.php"
                 card.style.display = text.includes(query) ? '' : 'none';
             });
         });
+
+        let onlineStatusTimer = null;
+
+        function setAllOffline() {
+            document.querySelectorAll('.user-profile-card__status-dot').forEach(function(dot) {
+                dot.classList.remove('is-online');
+                dot.classList.add('is-offline');
+                dot.setAttribute('aria-label', 'Utilisateur hors ligne');
+            });
+        }
+
+        function refreshOnlineStatuses() {
+            const heartbeatPromise = fetch(usersApiUrl, {
+                method: 'POST',
+                credentials: 'same-origin',
+                cache: 'no-store',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'heartbeat' })
+            }).catch(function() {
+                return null;
+            });
+
+            const statusesPromise = fetch(usersApiUrl, {
+                method: 'POST',
+                credentials: 'same-origin',
+                cache: 'no-store',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'get_online_statuses' })
+            })
+            .then(async function(response) {
+                const text = await response.text();
+                let data = {};
+                try {
+                    data = text ? JSON.parse(text) : {};
+                } catch (e) {
+                    return;
+                }
+
+                if (data.authenticated === false || data.success === false && data.authenticated === false) {
+                    setAllOffline();
+                    if (onlineStatusTimer) {
+                        clearInterval(onlineStatusTimer);
+                        onlineStatusTimer = null;
+                    }
+                    return;
+                }
+
+                if (!data.success || !data.online_ids) {
+                    return;
+                }
+
+                document.querySelectorAll('.user-profile-card__content').forEach(function(card) {
+                    const userId = card.getAttribute('data-user-id');
+                    const dot = card.querySelector('.user-profile-card__status-dot');
+                    if (!dot) {
+                        return;
+                    }
+
+                    const isOnline = !!data.online_ids[userId];
+                    dot.classList.toggle('is-online', isOnline);
+                    dot.classList.toggle('is-offline', !isOnline);
+                    dot.setAttribute('aria-label', isOnline ? 'Utilisateur en ligne' : 'Utilisateur hors ligne');
+                });
+            })
+            .catch(function() {
+                // Gestion silencieuse des erreurs réseau : l’état précédent reste affiché
+            });
+
+            Promise.allSettled([heartbeatPromise, statusesPromise]);
+        }
+
+        function sendOfflineStatus() {
+            const payload = JSON.stringify({ action: 'mark_offline' });
+
+            try {
+                if (navigator.sendBeacon) {
+                    navigator.sendBeacon(usersApiUrl, new Blob([payload], { type: 'application/json' }));
+                    return;
+                }
+            } catch (e) {
+                // Fallback ci-dessous
+            }
+
+            fetch(usersApiUrl, {
+                method: 'POST',
+                credentials: 'same-origin',
+                cache: 'no-store',
+                keepalive: true,
+                headers: { 'Content-Type': 'application/json' },
+                body: payload
+            }).catch(function() {
+                // Ignorer les erreurs de fermeture de page
+            });
+        }
+
+        document.addEventListener('visibilitychange', function() {
+            if (document.visibilityState === 'hidden') {
+                sendOfflineStatus();
+            }
+        });
+
+        window.addEventListener('pagehide', sendOfflineStatus, { passive: true });
+        window.addEventListener('beforeunload', sendOfflineStatus, { passive: true });
+
+        refreshOnlineStatuses();
+        onlineStatusTimer = setInterval(refreshOnlineStatuses, 5000);
 
         // Menu toggle functionality
         document.querySelectorAll('.user-profile-card__content').forEach(function(element) {
@@ -255,7 +366,7 @@ include __DIR__ . "/includes/general/users.php"
                 button.disabled = true;
                 button.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Traitement...';
 
-                fetch('includes/general/users-api.php', {
+                fetch(usersApiUrl, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

@@ -5,6 +5,16 @@ require_once __DIR__ . '/../general/persistent-auth.php';
 
 $tokenManager = new PersistentToken($pdo);
 
+if (!empty($_SESSION['user_id'])) {
+    try {
+        $logoutUserId = (int) $_SESSION['user_id'];
+        $logoutStmt = $pdo->prepare('UPDATE account_wtc SET last_seen = NULL WHERE id = ?');
+        $logoutStmt->execute([$logoutUserId]);
+    } catch (Throwable $e) {
+        error_log('[deconnexion_process] impossible de marquer l’utilisateur comme inactif: ' . $e->getMessage());
+    }
+}
+
 // Fast response to client: clear session cookie and send redirect immediately,
 // then perform DB cleanup (token removal) after finishing the response.
 $_SESSION = [];

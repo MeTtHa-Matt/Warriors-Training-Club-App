@@ -3,14 +3,40 @@ require_once __DIR__ . "/session-config.php";
 require_once __DIR__ . "/db.php";
 
 header('Content-Type: application/json');
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Pragma: no-cache');
+header('Expires: 0');
 
 if (empty($_SESSION['user_id'])) {
-    http_response_code(401);
-    echo json_encode(['success' => false, 'message' => 'Non authentifié']);
+    http_response_code(200);
+    echo json_encode(['success' => false, 'message' => 'Non authentifié', 'authenticated' => false]);
     exit;
 }
 
-$currentId = $_SESSION['user_id'];
+$currentId = (int) $_SESSION['user_id'];
+
+$rawInput = file_get_contents('php://input');
+$data = json_decode($rawInput ?: '[]', true);
+if (!is_array($data)) {
+    $data = [];
+}
+
+$action = $data['action'] ?? null;
+$targetId = (int) ($data['target_id'] ?? 0);
+
+if (($action ?? null) === 'heartbeat') {
+    $heartbeatStmt = $pdo->prepare('UPDATE account_wtc SET last_seen = NOW() WHERE id = ?');
+    $heartbeatStmt->execute([$currentId]);
+    echo json_encode(['success' => true, 'heartbeat' => true]);
+    exit;
+}
+
+if (($action ?? null) === 'mark_offline') {
+    $offlineStmt = $pdo->prepare('UPDATE account_wtc SET last_seen = DATE_SUB(NOW(), INTERVAL 301 SECOND) WHERE id = ?');
+    $offlineStmt->execute([$currentId]);
+    echo json_encode(['success' => true, 'offline' => true]);
+    exit;
+}
 
 // Vérifier que l'utilisateur est admin
 $adminCheckStmt = $pdo->prepare('SELECT admin FROM account_wtc WHERE id = ?');
@@ -18,26 +44,45 @@ $adminCheckStmt->execute([$currentId]);
 $isAdmin = (bool) $adminCheckStmt->fetchColumn();
 
 if (!$isAdmin) {
-    http_response_code(403);
-    echo json_encode(['success' => false, 'message' => 'Accès non autorisé']);
+    http_response_code(200);
+    echo json_encode(['success' => false, 'message' => 'Accès non autorisé', 'authenticated' => true, 'admin' => false]);
     exit;
 }
 
-$data = json_decode(file_get_contents('php://input'), true);
-$action = $data['action'] ?? null;
-$targetId = (int) ($data['target_id'] ?? 0);
-
-if (!$action || $targetId <= 0) {
-    http_response_code(400);
+if (!$action) {
+    http_response_code(200);
     echo json_encode(['success' => false, 'message' => 'Paramètres invalides']);
     exit;
 }
 
-// Vérifier que l'utilisateur existe
+if ($action !== 'get_online_statuses' && $targetId <= 0) {
+    http_response_code(200);
+    echo json_encode(['success' => false, 'message' => 'Paramètres invalides']);
+    exit;
+}
+
+if ($action === 'get_online_statuses') {
+    $onlineStmt = $pdo->query(
+        'SELECT id
+         FROM account_wtc
+         WHERE last_seen IS NOT NULL
+           AND TIMESTAMPDIFF(SECOND, last_seen, NOW()) <= 300'
+    );
+
+    $onlineIds = [];
+    foreach ($onlineStmt->fetchAll(PDO::FETCH_COLUMN) as $userId) {
+        $onlineIds[(int) $userId] = true;
+    }
+
+    echo json_encode(['success' => true, 'online_ids' => $onlineIds]);
+    exit;
+}
+
+// Vérifier que l'utilisateur existe pour les actions qui ciblent un compte
 $userStmt = $pdo->prepare('SELECT id FROM account_wtc WHERE id = ?');
 $userStmt->execute([$targetId]);
 if ($userStmt->fetchColumn() === false) {
-    http_response_code(404);
+    http_response_code(200);
     echo json_encode(['success' => false, 'message' => 'Utilisateur introuvable']);
     exit;
 }
@@ -138,5 +183,5 @@ if ($action === 'delete_account') {
     exit;
 }
 
-http_response_code(400);
+http_response_code(200);
 echo json_encode(['success' => false, 'message' => 'Action inconnue']);

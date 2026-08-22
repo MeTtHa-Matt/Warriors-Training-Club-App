@@ -147,6 +147,16 @@ class AuditPDO extends PDO
 try {
     $pdo = new AuditPDO("mysql:host={$host};port={$port};dbname={$dbname};charset=utf8", $username, $password);
 
+    try {
+        $columnsStmt = $pdo->query("SHOW COLUMNS FROM account_wtc LIKE 'last_seen'");
+        if ($columnsStmt->rowCount() === 0) {
+            $pdo->exec('ALTER TABLE account_wtc ADD COLUMN last_seen DATETIME DEFAULT NULL');
+            appendDbAuditLog('schema_migration', 'ALTER TABLE account_wtc ADD COLUMN last_seen DATETIME DEFAULT NULL', [], 'db.php', 'completed');
+        }
+    } catch (Throwable $e) {
+        appendDbAuditLog('schema_migration_error', $e->getMessage(), [], 'db.php', 'error');
+    }
+
     // Nettoyage automatique des séances trop anciennes (plus de 3 mois).
     // To avoid running this expensive query on every request, throttle it to once per hour.
     $cleanupFile = __DIR__ . '/../../data/last_cleanup.txt';

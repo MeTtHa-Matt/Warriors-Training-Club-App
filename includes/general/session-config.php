@@ -1,9 +1,11 @@
 <?php
+$isSecureRequest = (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off') || (!empty($_SERVER['SERVER_PORT']) && (int) $_SERVER['SERVER_PORT'] === 443);
+
 ini_set('session.use_strict_mode', '1');
 ini_set('session.use_cookies', '1');
 ini_set('session.use_only_cookies', '1');
 ini_set('session.cookie_httponly', '1');
-ini_set('session.cookie_secure', '1');
+ini_set('session.cookie_secure', $isSecureRequest ? '1' : '0');
 ini_set('session.cookie_samesite', 'Lax');
 // Default session lifetime: 14 days (configurable via app settings)
 // Try to load DB-backed settings; if not available, fallback to 14 days.
@@ -25,7 +27,7 @@ session_set_cookie_params([
     'lifetime' => $timeoutSeconds,
     'path' => '/',
     'domain' => '',
-    'secure' => true,
+    'secure' => $isSecureRequest,
     'httponly' => true,
     'samesite' => 'Lax'
 ]);
@@ -37,6 +39,16 @@ if (session_status() === PHP_SESSION_NONE) {
 // Ensure we have a session creation timestamp (used for client-side timeout calculations)
 if (!isset($_SESSION['created_at'])) {
     $_SESSION['created_at'] = time();
+}
+
+if (!empty($_SESSION['user_id'])) {
+    try {
+        $sessionUserId = (int) $_SESSION['user_id'];
+        $sessionUpdateStmt = $pdo->prepare('UPDATE account_wtc SET last_seen = NOW() WHERE id = ?');
+        $sessionUpdateStmt->execute([$sessionUserId]);
+    } catch (Throwable $e) {
+        error_log('[session-config] impossible de mettre à jour last_seen: ' . $e->getMessage());
+    }
 }
 
 require_once __DIR__ . '/clear-cache.php';
