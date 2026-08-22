@@ -57,6 +57,21 @@ if (empty($errors)) {
 
 $pdpFilename = 'pdp_base.png';
 
+function ensureProfileUploadDirectoryWritable(string $directory): bool
+{
+    if (!is_dir($directory)) {
+        if (!@mkdir($directory, 0777, true) && !is_dir($directory)) {
+            return false;
+        }
+    }
+
+    if (!is_writable($directory)) {
+        @chmod($directory, 0777);
+    }
+
+    return is_dir($directory) && is_writable($directory);
+}
+
 if (empty($errors) && isset($_FILES['pdp']) && $_FILES['pdp']['error'] !== UPLOAD_ERR_NO_FILE) {
 
     if ($_FILES['pdp']['error'] !== UPLOAD_ERR_OK) {
@@ -84,17 +99,17 @@ if (empty($errors) && isset($_FILES['pdp']) && $_FILES['pdp']['error'] !== UPLOA
             $extension = $allowedTypes[$mimeType];
             $uploadDir = __DIR__ . '/../../img/pdps/';
 
-            if (!is_dir($uploadDir)) {
-                mkdir($uploadDir, 0755, true);
-            }
+            if (!ensureProfileUploadDirectoryWritable($uploadDir)) {
+                $errors[] = "Impossible d'enregistrer la photo de profil. Le dossier des photos n'est pas accessible en écriture.";
+            } else {
+                do {
+                    $pdpFilename = 'pdp_' . bin2hex(random_bytes(16)) . '.' . $extension;
+                    $destination = $uploadDir . $pdpFilename;
+                } while (file_exists($destination));
 
-            do {
-                $pdpFilename = 'pdp_' . bin2hex(random_bytes(16)) . '.' . $extension;
-                $destination = $uploadDir . $pdpFilename;
-            } while (file_exists($destination));
-
-            if (!move_uploaded_file($_FILES['pdp']['tmp_name'], $destination)) {
-                $errors[] = "Impossible d'enregistrer la photo de profil.";
+                if (!move_uploaded_file($_FILES['pdp']['tmp_name'], $destination)) {
+                    $errors[] = "Impossible d'enregistrer la photo de profil.";
+                }
             }
         }
     }

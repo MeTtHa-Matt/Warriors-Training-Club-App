@@ -2,6 +2,21 @@
 require_once __DIR__ . '/../general/session-config.php';
 require_once __DIR__ . '/../general/db.php';
 
+function ensureProfileUploadDirectoryWritable(string $directory): bool
+{
+    if (!is_dir($directory)) {
+        if (!@mkdir($directory, 0777, true) && !is_dir($directory)) {
+            return false;
+        }
+    }
+
+    if (!is_writable($directory)) {
+        @chmod($directory, 0777);
+    }
+
+    return is_dir($directory) && is_writable($directory);
+}
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: ../../modifier-profil.php');
     exit;
@@ -77,21 +92,23 @@ if (isset($_POST['update_infos'])) {
             if (empty($errors)) {
                 $extension = $allowedTypes[$mimeType];
                 $pdpsDir = __DIR__ . '/../../img/pdps/';
-                if (!is_dir($pdpsDir)) {
-                    mkdir($pdpsDir, 0755, true);
-                }
-                $newFilename = 'pdp_' . $accountId . '_' . time() . '.' . $extension;
-                $destination = $pdpsDir . $newFilename;
-                if (!move_uploaded_file($_FILES['pdp']['tmp_name'], $destination)) {
-                    $errors[] = 'Impossible d\'enregistrer la photo de profil.';
+
+                if (!ensureProfileUploadDirectoryWritable($pdpsDir)) {
+                    $errors[] = 'Impossible d\'enregistrer la photo de profil. Le dossier des photos n\'est pas accessible en écriture.';
                 } else {
-                    if ($account['pdp'] !== 'pdp_base.png') {
-                        $oldPath = $pdpsDir . $account['pdp'];
-                        if (file_exists($oldPath)) {
-                            @unlink($oldPath);
+                    $newFilename = 'pdp_' . $accountId . '_' . time() . '.' . $extension;
+                    $destination = $pdpsDir . $newFilename;
+                    if (!move_uploaded_file($_FILES['pdp']['tmp_name'], $destination)) {
+                        $errors[] = 'Impossible d\'enregistrer la photo de profil.';
+                    } else {
+                        if ($account['pdp'] !== 'pdp_base.png') {
+                            $oldPath = $pdpsDir . $account['pdp'];
+                            if (file_exists($oldPath)) {
+                                @unlink($oldPath);
+                            }
                         }
+                        $pdpFilename = $newFilename;
                     }
-                    $pdpFilename = $newFilename;
                 }
             }
         }

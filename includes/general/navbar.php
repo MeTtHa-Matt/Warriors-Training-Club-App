@@ -51,7 +51,7 @@ $isLoggedIn = isset($_SESSION['user_id']);
                     <button class="wtc-user-toggle" type="button" id="wtcUserMenu" data-bs-toggle="dropdown"
                         aria-expanded="false">
                         <?php $sessionPdp = !empty($_SESSION['pdp']) ? basename($_SESSION['pdp']) : 'pdp_base.png'; ?>
-                        <img src="img/pdps/<?php echo htmlspecialchars($sessionPdp); ?>" alt="Photo de profil"
+                        <img src="img/pdps/<?php echo htmlspecialchars($sessionPdp); ?>?v=<?php echo time(); ?>" alt="Photo de profil"
                             class="wtc-user-toggle__pdp">
                         <span class="wtc-user-toggle__name d-none d-lg-inline">
                             <?php echo htmlspecialchars($_SESSION['firstname']); ?>

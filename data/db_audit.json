@@ -7831,5 +7831,2035 @@
             "method": "GET",
             "uri": "/Warriors-Training-Club-App/maintenance.php"
         }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:45Z",
+        "event": "statement_exec",
+        "sql": "CREATE TABLE IF NOT EXISTS app_settings (\n            `setting_key` VARCHAR(100) NOT NULL PRIMARY KEY,\n            `value` TEXT NOT NULL\n        )",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:45Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:45Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:45Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_timeout_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:45Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:45Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:45Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:45Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE maintenance = 1",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:45Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE maintenance = 1",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:45Z",
+        "event": "statement_query",
+        "sql": "SELECT link_key, url FROM index_links WHERE link_key IN ('hero_inscription', 'card_adhesion', 'card_boutique_barres', 'card_boutique_judo', 'card_boutique_vetements', 'card_map')",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:45Z",
+        "event": "statement_created",
+        "sql": "SELECT link_key, url FROM index_links WHERE link_key IN ('hero_inscription', 'card_adhesion', 'card_boutique_barres', 'card_boutique_judo', 'card_boutique_vetements', 'card_map')",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:45Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:45Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:45Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_timeout_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:45Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:45Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:45Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_modal_threshold_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/index.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:46Z",
+        "event": "statement_prepare",
+        "sql": "SELECT id, date_seance, heure_debut, heure_fin, type_seance, coach, lieu_seance\r\n     FROM seances\r\n     WHERE date_seance >= CURDATE()\r\n     ORDER BY date_seance ASC, heure_debut ASC\r\n     LIMIT 1",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/seances/upcoming.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/includes/seances/upcoming.php?limit=1"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:46Z",
+        "event": "statement_created",
+        "sql": "SELECT id, date_seance, heure_debut, heure_fin, type_seance, coach, lieu_seance\r\n     FROM seances\r\n     WHERE date_seance >= CURDATE()\r\n     ORDER BY date_seance ASC, heure_debut ASC\r\n     LIMIT 1",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/seances/upcoming.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/includes/seances/upcoming.php?limit=1"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:46Z",
+        "event": "statement_execute",
+        "sql": "SELECT id, date_seance, heure_debut, heure_fin, type_seance, coach, lieu_seance\r\n     FROM seances\r\n     WHERE date_seance >= CURDATE()\r\n     ORDER BY date_seance ASC, heure_debut ASC\r\n     LIMIT 1",
+        "params": [],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/seances/upcoming.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/includes/seances/upcoming.php?limit=1"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:48Z",
+        "event": "statement_exec",
+        "sql": "CREATE TABLE IF NOT EXISTS app_settings (\n            `setting_key` VARCHAR(100) NOT NULL PRIMARY KEY,\n            `value` TEXT NOT NULL\n        )",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:48Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:48Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:48Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_timeout_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:48Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:48Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:48Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:48Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE maintenance = 1",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:48Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE maintenance = 1",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:48Z",
+        "event": "statement_prepare",
+        "sql": "SELECT id, firstname, lastname, pdp, accept_email FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:48Z",
+        "event": "statement_created",
+        "sql": "SELECT id, firstname, lastname, pdp, accept_email FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:48Z",
+        "event": "statement_execute",
+        "sql": "SELECT id, firstname, lastname, pdp, accept_email FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:48Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:48Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:48Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_timeout_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:48Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:48Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:48Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_modal_threshold_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "GET",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:58Z",
+        "event": "statement_exec",
+        "sql": "CREATE TABLE IF NOT EXISTS app_settings (\n            `setting_key` VARCHAR(100) NOT NULL PRIMARY KEY,\n            `value` TEXT NOT NULL\n        )",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:58Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:58Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:58Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_timeout_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:58Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:58Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:58Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:58Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE maintenance = 1",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:58Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE maintenance = 1",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:58Z",
+        "event": "statement_prepare",
+        "sql": "SELECT id, firstname, lastname, pdp, accept_email FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:58Z",
+        "event": "statement_created",
+        "sql": "SELECT id, firstname, lastname, pdp, accept_email FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:58Z",
+        "event": "statement_execute",
+        "sql": "SELECT id, firstname, lastname, pdp, accept_email FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:58Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:58Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:58Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_timeout_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:58Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:58Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:40:58Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_modal_threshold_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:41:11Z",
+        "event": "statement_exec",
+        "sql": "CREATE TABLE IF NOT EXISTS app_settings (\n            `setting_key` VARCHAR(100) NOT NULL PRIMARY KEY,\n            `value` TEXT NOT NULL\n        )",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:41:11Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:41:11Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:41:11Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_timeout_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:41:12Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:41:12Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:41:12Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:41:12Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE maintenance = 1",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:41:12Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE maintenance = 1",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:41:12Z",
+        "event": "statement_prepare",
+        "sql": "UPDATE account_wtc SET accept_email = ? WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:41:12Z",
+        "event": "statement_created",
+        "sql": "UPDATE account_wtc SET accept_email = ? WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:41:12Z",
+        "event": "statement_execute",
+        "sql": "UPDATE account_wtc SET accept_email = ? WHERE id = ?",
+        "params": [
+            "0",
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/includes/account/update-accept-email.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/includes/account/update-accept-email.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:41:12Z",
+        "event": "statement_exec",
+        "sql": "CREATE TABLE IF NOT EXISTS app_settings (\n            `setting_key` VARCHAR(100) NOT NULL PRIMARY KEY,\n            `value` TEXT NOT NULL\n        )",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:41:12Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:41:12Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:41:12Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_timeout_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:41:12Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:41:12Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:41:12Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:41:12Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE maintenance = 1",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:41:12Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE maintenance = 1",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:41:12Z",
+        "event": "statement_prepare",
+        "sql": "SELECT id, firstname, lastname, pdp, accept_email FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:41:12Z",
+        "event": "statement_created",
+        "sql": "SELECT id, firstname, lastname, pdp, accept_email FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:41:12Z",
+        "event": "statement_execute",
+        "sql": "SELECT id, firstname, lastname, pdp, accept_email FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:41:12Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:41:12Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:41:12Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_timeout_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:41:12Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:41:12Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:41:12Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_modal_threshold_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:35Z",
+        "event": "statement_exec",
+        "sql": "CREATE TABLE IF NOT EXISTS app_settings (\n            `setting_key` VARCHAR(100) NOT NULL PRIMARY KEY,\n            `value` TEXT NOT NULL\n        )",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:35Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:35Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:35Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_timeout_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:35Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:35Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:35Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:35Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE maintenance = 1",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:35Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE maintenance = 1",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:35Z",
+        "event": "statement_prepare",
+        "sql": "SELECT id, firstname, lastname, pdp, accept_email FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:35Z",
+        "event": "statement_created",
+        "sql": "SELECT id, firstname, lastname, pdp, accept_email FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:35Z",
+        "event": "statement_execute",
+        "sql": "SELECT id, firstname, lastname, pdp, accept_email FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:35Z",
+        "event": "statement_prepare",
+        "sql": "UPDATE account_wtc SET firstname = ?, lastname = ?, pdp = ?, accept_email = ? WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:35Z",
+        "event": "statement_created",
+        "sql": "UPDATE account_wtc SET firstname = ?, lastname = ?, pdp = ?, accept_email = ? WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:35Z",
+        "event": "statement_execute",
+        "sql": "UPDATE account_wtc SET firstname = ?, lastname = ?, pdp = ?, accept_email = ? WHERE id = ?",
+        "params": [
+            "admin",
+            "admin",
+            "pdp_1.jpg",
+            "0",
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:35Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:35Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:35Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_timeout_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:35Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:35Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:35Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_modal_threshold_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:41Z",
+        "event": "statement_exec",
+        "sql": "CREATE TABLE IF NOT EXISTS app_settings (\n            `setting_key` VARCHAR(100) NOT NULL PRIMARY KEY,\n            `value` TEXT NOT NULL\n        )",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:41Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:41Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:41Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_timeout_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:41Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:41Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:41Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:41Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE maintenance = 1",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:41Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE maintenance = 1",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:41Z",
+        "event": "statement_prepare",
+        "sql": "SELECT id, firstname, lastname, pdp, accept_email FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:41Z",
+        "event": "statement_created",
+        "sql": "SELECT id, firstname, lastname, pdp, accept_email FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:41Z",
+        "event": "statement_execute",
+        "sql": "SELECT id, firstname, lastname, pdp, accept_email FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:41Z",
+        "event": "statement_prepare",
+        "sql": "UPDATE account_wtc SET firstname = ?, lastname = ?, pdp = ?, accept_email = ? WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:41Z",
+        "event": "statement_created",
+        "sql": "UPDATE account_wtc SET firstname = ?, lastname = ?, pdp = ?, accept_email = ? WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:41Z",
+        "event": "statement_execute",
+        "sql": "UPDATE account_wtc SET firstname = ?, lastname = ?, pdp = ?, accept_email = ? WHERE id = ?",
+        "params": [
+            "admin",
+            "admin",
+            "pdp_1.png",
+            "0",
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:41Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:41Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:41Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_timeout_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:41Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:41Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:44:41Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_modal_threshold_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:46:29Z",
+        "event": "statement_exec",
+        "sql": "CREATE TABLE IF NOT EXISTS app_settings (\n            `setting_key` VARCHAR(100) NOT NULL PRIMARY KEY,\n            `value` TEXT NOT NULL\n        )",
+        "params": [],
+        "context": "auto",
+        "status": "exec",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:46:29Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:46:29Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:46:29Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_timeout_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:46:29Z",
+        "event": "statement_prepare",
+        "sql": "SELECT admin, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:46:29Z",
+        "event": "statement_created",
+        "sql": "SELECT admin, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:46:29Z",
+        "event": "statement_execute",
+        "sql": "SELECT admin, ban, reglement_accepte FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:46:29Z",
+        "event": "statement_query",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE maintenance = 1",
+        "params": [],
+        "context": "auto",
+        "status": "query",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:46:29Z",
+        "event": "statement_created",
+        "sql": "SELECT COUNT(*) FROM account_wtc WHERE maintenance = 1",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:46:29Z",
+        "event": "statement_prepare",
+        "sql": "SELECT id, firstname, lastname, pdp, accept_email FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:46:30Z",
+        "event": "statement_created",
+        "sql": "SELECT id, firstname, lastname, pdp, accept_email FROM account_wtc WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:46:30Z",
+        "event": "statement_execute",
+        "sql": "SELECT id, firstname, lastname, pdp, accept_email FROM account_wtc WHERE id = ?",
+        "params": [
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:46:30Z",
+        "event": "statement_prepare",
+        "sql": "UPDATE account_wtc SET firstname = ?, lastname = ?, pdp = ?, accept_email = ? WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:46:30Z",
+        "event": "statement_created",
+        "sql": "UPDATE account_wtc SET firstname = ?, lastname = ?, pdp = ?, accept_email = ? WHERE id = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:46:30Z",
+        "event": "statement_execute",
+        "sql": "UPDATE account_wtc SET firstname = ?, lastname = ?, pdp = ?, accept_email = ? WHERE id = ?",
+        "params": [
+            "admin",
+            "admin",
+            "pdp_1.jpg",
+            "0",
+            "1"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:46:30Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:46:30Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:46:30Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_timeout_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:46:30Z",
+        "event": "statement_prepare",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "prepared",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:46:30Z",
+        "event": "statement_created",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [],
+        "context": "auto",
+        "status": "created",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
+    },
+    {
+        "timestamp": "2026-08-22T17:46:30Z",
+        "event": "statement_execute",
+        "sql": "SELECT `value` FROM app_settings WHERE `setting_key` = ?",
+        "params": [
+            "session_modal_threshold_seconds"
+        ],
+        "context": "auto",
+        "status": "executed",
+        "request": {
+            "script": "/Warriors-Training-Club-App/modifier-profil.php",
+            "method": "POST",
+            "uri": "/Warriors-Training-Club-App/modifier-profil.php"
+        }
     }
 ]

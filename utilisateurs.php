@@ -89,7 +89,7 @@ include __DIR__ . "/includes/general/users.php"
             <?php foreach ($users as $user): ?>
                 <div class="user-profile-card <?= $user['ban'] ? 'user-profile-card--banned' : '' ?>">
                     <div class="user-profile-card__content" role="button" tabindex="0" data-user-id="<?= (int) $user['id'] ?>" data-search>
-                        <img src="img/pdps/<?= htmlspecialchars($user['pdp']) ?>"
+                        <img src="img/pdps/<?= htmlspecialchars($user['pdp']) ?>?v=<?= time() ?>"
                              alt="" class="user-profile-card__avatar" width="64" height="64" loading="lazy" decoding="async">
                         <div class="user-profile-card__info">
                             <div class="user-profile-card__name">

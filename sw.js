@@ -67,6 +67,14 @@ self.addEventListener("fetch", (event) => {
 
   if (
     isSameOrigin &&
+    requestURL.pathname.includes("/img/pdps/")
+  ) {
+    event.respondWith(fetch(event.request, { cache: "no-store" }));
+    return;
+  }
+
+  if (
+    isSameOrigin &&
     (event.request.destination === "style" ||
       event.request.destination === "script" ||
       event.request.destination === "image" ||

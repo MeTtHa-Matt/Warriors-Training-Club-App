@@ -64,7 +64,7 @@ include __DIR__ . '/includes/general/modifier-profil.php';
 
                         <form class="auth-form" method="POST" enctype="multipart/form-data" novalidate>
                             <div class="text-center mb-4">
-                                <img src="img/pdps/<?= htmlspecialchars($account['pdp']) ?>" alt="Photo de profil"
+                                <img src="img/pdps/<?= htmlspecialchars($account['pdp']) ?>?v=<?= time() ?>" alt="Photo de profil"
                                     class="profil-avatar mb-3">
                                 <div>
                                     <label for="pdp" class="form-label d-block">Photo de profil <span
