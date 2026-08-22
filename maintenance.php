@@ -23,6 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $enable = isset($_POST['enable']) ? (int) $_POST['enable'] : 0;
     $enable = $enable ? 1 : 0;
 
+    // Update maintenance flag in database for all accounts
     $pdo->prepare('UPDATE account_wtc SET maintenance = ?')->execute([$enable]);
 
     $_SESSION['success'] = $enable ? 'La maintenance a été activée.' : 'La maintenance a été désactivée.';

@@ -33,13 +33,12 @@ if (empty($_SESSION['user_id'])) {
         $_SESSION['admin'] = (int) $userData['admin'];
         $_SESSION['gerer_seances'] = (int) $userData['gerer_seances'];
         $_SESSION['ban'] = (int) $userData['ban'];
-        $_SESSION['maintenance'] = (int) $userData['maintenance'];
     }
 }
 
 if (!empty($_SESSION['user_id'])) {
     $userId = (int) $_SESSION['user_id'];
-    $stmt = $pdo->prepare('SELECT admin, maintenance, ban, reglement_accepte FROM account_wtc WHERE id = ?');
+    $stmt = $pdo->prepare('SELECT admin, ban, reglement_accepte FROM account_wtc WHERE id = ?');
     $stmt->execute([$userId]);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -50,10 +49,7 @@ if (!empty($_SESSION['user_id'])) {
             app_redirect('ban.php');
         }
 
-        if ((int) $result['admin'] === 0 && (int) $result['maintenance'] === 1) {
-            app_redirect('maintenance.php');
-        }
-
+        $isAdmin = ((int) $result['admin'] === 1);
         // store reglement status in session for quick checks
         $_SESSION['reglement_accepte'] = (int) $result['reglement_accepte'];
 
@@ -84,4 +80,18 @@ if (!empty($_SESSION['user_id'])) {
 if (!isset($_SESSION['last_token_cleanup']) || time() - $_SESSION['last_token_cleanup'] > 3600) {
     $tokenManager->cleanupExpired();
     $_SESSION['last_token_cleanup'] = time();
+}
+
+// If maintenance marker exists, prevent anonymous users from accessing pages
+// Global DB-driven maintenance check: if any account has maintenance=1, redirect
+// users (anonymous or non-admin logged-in) to maintenance.php, except connexion.php
+$currentPage = basename($_SERVER['PHP_SELF']);
+if ($currentPage !== 'connexion.php' && $currentPage !== 'maintenance.php') {
+    $count = (int) $pdo->query('SELECT COUNT(*) FROM account_wtc WHERE maintenance = 1')->fetchColumn();
+    if ($count > 0) {
+        $isAdmin = (int) ($_SESSION['admin'] ?? 0);
+        if (empty($_SESSION['user_id']) || $isAdmin === 0) {
+            app_redirect('maintenance.php');
+        }
+    }
 }

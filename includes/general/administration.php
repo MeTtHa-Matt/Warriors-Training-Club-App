@@ -16,6 +16,7 @@ unset($_SESSION['errors'], $_SESSION['success']);
 $totalUsers = (int) $pdo->query('SELECT COUNT(*) FROM account_wtc')->fetchColumn();
 $totalAdmins = (int) $pdo->query('SELECT COUNT(*) FROM account_wtc WHERE admin = 1')->fetchColumn();
 $totalMaintenanceUsers = (int) $pdo->query('SELECT COUNT(*) FROM account_wtc WHERE maintenance = 1')->fetchColumn();
+$maintenanceEnabled = (bool) $pdo->query('SELECT MAX(maintenance) FROM account_wtc')->fetchColumn();
 $totalSessions = (int) $pdo->query('SELECT COUNT(*) FROM seances')->fetchColumn();
 $upcomingSessions = (int) $pdo->query('SELECT COUNT(*) FROM seances WHERE date_seance >= CURDATE()')->fetchColumn();
 $totalInscriptions = (int) $pdo->query('SELECT COUNT(*) FROM inscriptions_seances')->fetchColumn();
