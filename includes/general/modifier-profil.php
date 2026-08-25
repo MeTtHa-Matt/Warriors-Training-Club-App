@@ -225,18 +225,19 @@ $passwordErrors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_password'])) {
 
-    $currentPassword = $_POST['current_password'] ?? '';
-    $newPassword = $_POST['new_password'] ?? '';
-    $confirmPassword = $_POST['confirm_password'] ?? '';
+    $currentPassword = isset($_POST['current_password']) ? (string)$_POST['current_password'] : '';
+    $newPassword = isset($_POST['new_password']) ? (string)$_POST['new_password'] : '';
+    $confirmPassword = isset($_POST['confirm_password']) ? (string)$_POST['confirm_password'] : '';
 
     $pwdStmt = $pdo->prepare('SELECT `password` FROM account_wtc WHERE id = ?');
     $pwdStmt->execute([$accountId]);
     $currentHash = $pwdStmt->fetchColumn();
 
-    if (!password_verify($currentPassword, $currentHash)) {
+    if (!is_string($currentHash) || !password_verify($currentPassword, $currentHash)) {
         $passwordErrors[] = "Le mot de passe actuel est incorrect.";
     }
-    if (strlen($newPassword) < 8) {
+
+    if (mb_strlen($newPassword) < 8) {
         $passwordErrors[] = "Le nouveau mot de passe doit contenir au moins 8 caractères.";
     }
     if ($newPassword !== $confirmPassword) {
@@ -244,11 +245,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_password'])) {
     }
 
     if (empty($passwordErrors)) {
-        $newHash = password_hash($newPassword, PASSWORD_DEFAULT);
-        $updatePwdStmt = $pdo->prepare('UPDATE account_wtc SET `password` = ? WHERE id = ?');
-        $updatePwdStmt->execute([$newHash, $accountId]);
+        try {
+            $newHash = password_hash($newPassword, PASSWORD_DEFAULT);
+            $updatePwdStmt = $pdo->prepare('UPDATE account_wtc SET `password` = ? WHERE id = ?');
+            $updatePwdStmt->execute([$newHash, $accountId]);
 
-        $passwordSuccess = "Ton mot de passe a bien été modifié.";
+            $passwordSuccess = "Ton mot de passe a bien été modifié.";
+        } catch (Throwable $e) {
+            error_log('[modifier-profil] erreur modification mot de passe: ' . $e->getMessage());
+            $passwordErrors[] = "Une erreur est survenue lors de la modification du mot de passe.";
+        }
     }
 }
 

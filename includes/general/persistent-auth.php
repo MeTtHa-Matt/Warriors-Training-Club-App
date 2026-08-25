@@ -15,6 +15,9 @@ class PersistentToken
 
     public function create($accountId)
     {
+        if (empty($this->pdo)) {
+            return null;
+        }
         $token = bin2hex(random_bytes(32));
         $expiresAt = date('Y-m-d H:i:s', time() + $this->tokenDuration);
         $userAgent = substr($_SERVER['HTTP_USER_AGENT'] ?? '', 0, 255);
@@ -33,6 +36,10 @@ class PersistentToken
 
     public function validate()
     {
+        if (empty($this->pdo)) {
+            $this->clearToken();
+            return null;
+        }
         $token = $_COOKIE[$this->tokenCookieName] ?? null;
 
         if (!$token) {
@@ -92,8 +99,10 @@ class PersistentToken
         $token = $_COOKIE[$this->tokenCookieName] ?? null;
 
         if ($token) {
-            $stmt = $this->pdo->prepare('DELETE FROM persistent_tokens WHERE token = ?');
-            $stmt->execute([$token]);
+            if (!empty($this->pdo)) {
+                $stmt = $this->pdo->prepare('DELETE FROM persistent_tokens WHERE token = ?');
+                $stmt->execute([$token]);
+            }
         }
 
         $this->clearToken();
@@ -129,6 +138,9 @@ class PersistentToken
 
     public function cleanupExpired()
     {
+        if (empty($this->pdo)) {
+            return;
+        }
         $stmt = $this->pdo->prepare('DELETE FROM persistent_tokens WHERE expires_at < NOW()');
         $stmt->execute();
     }

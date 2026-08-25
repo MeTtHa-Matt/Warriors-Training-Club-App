@@ -132,18 +132,18 @@ if (isset($_POST['update_infos'])) {
 }
 
 if (isset($_POST['update_password'])) {
-    $currentPassword = $_POST['current_password'] ?? '';
-    $newPassword = $_POST['new_password'] ?? '';
-    $confirmPassword = $_POST['confirm_password'] ?? '';
+    $currentPassword = isset($_POST['current_password']) ? (string)$_POST['current_password'] : '';
+    $newPassword = isset($_POST['new_password']) ? (string)$_POST['new_password'] : '';
+    $confirmPassword = isset($_POST['confirm_password']) ? (string)$_POST['confirm_password'] : '';
 
     $pwdStmt = $pdo->prepare('SELECT `password` FROM account_wtc WHERE id = ?');
     $pwdStmt->execute([$accountId]);
     $currentHash = $pwdStmt->fetchColumn();
 
-    if (!password_verify($currentPassword, $currentHash)) {
+    if (!is_string($currentHash) || !password_verify($currentPassword, $currentHash)) {
         $errors[] = 'Le mot de passe actuel est incorrect.';
     }
-    if (strlen($newPassword) < 8) {
+    if (mb_strlen($newPassword) < 8) {
         $errors[] = 'Le nouveau mot de passe doit contenir au moins 8 caractères.';
     }
     if ($newPassword !== $confirmPassword) {
@@ -151,10 +151,16 @@ if (isset($_POST['update_password'])) {
     }
 
     if (empty($errors)) {
-        $newHash = password_hash($newPassword, PASSWORD_DEFAULT);
-        $updatePwdStmt = $pdo->prepare('UPDATE account_wtc SET `password` = ? WHERE id = ?');
-        $updatePwdStmt->execute([$newHash, $accountId]);
-        $_SESSION['password_success'] = 'Ton mot de passe a bien été modifié.';
+        try {
+            $newHash = password_hash($newPassword, PASSWORD_DEFAULT);
+            $updatePwdStmt = $pdo->prepare('UPDATE account_wtc SET `password` = ? WHERE id = ?');
+            $updatePwdStmt->execute([$newHash, $accountId]);
+            $_SESSION['password_success'] = 'Ton mot de passe a bien été modifié.';
+        } catch (Throwable $e) {
+            error_log('[modifier_profil_process] erreur modification mot de passe: ' . $e->getMessage());
+            $errors[] = 'Une erreur est survenue lors de la modification du mot de passe.';
+            $_SESSION['password_errors'] = $errors;
+        }
     } else {
         $_SESSION['password_errors'] = $errors;
     }

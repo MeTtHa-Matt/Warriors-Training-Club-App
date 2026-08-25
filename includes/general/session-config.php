@@ -1,4 +1,5 @@
 <?php
+@file_put_contents('/tmp/wtc_mdp_debug.log', gmdate('c') . ' entered session-config.php' . PHP_EOL, FILE_APPEND | LOCK_EX);
 $isSecureRequest = (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off') || (!empty($_SERVER['SERVER_PORT']) && (int) $_SERVER['SERVER_PORT'] === 443);
 
 ini_set('session.use_strict_mode', '1');
