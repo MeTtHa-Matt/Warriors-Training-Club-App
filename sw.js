@@ -1,4 +1,4 @@
-const CACHE_NAME = "wtc-cache-v10";
+const CACHE_NAME = "wtc-cache-v11";
 const BASE_PATH = self.location.pathname.replace(/\/sw\.js$/, "") || "/";
 const BASE_PREFIX = BASE_PATH === "/" ? "" : BASE_PATH;
 const PRECACHE_URLS = [
@@ -6,7 +6,15 @@ const PRECACHE_URLS = [
   `${BASE_PREFIX}/js/bootstrap.bundle.min.js`,
   `${BASE_PREFIX}/css/bootstrap-icons.min.css`,
   `${BASE_PREFIX}/css/fonts/bootstrap-icons.woff2`,
-  `${BASE_PREFIX}/css/style.css?v=202607102200`,
+  `${BASE_PREFIX}/css/fonts/anton.ttf`,
+  `${BASE_PREFIX}/css/fonts/oswald-400.ttf`,
+  `${BASE_PREFIX}/css/fonts/oswald-500.ttf`,
+  `${BASE_PREFIX}/css/fonts/oswald-600.ttf`,
+  `${BASE_PREFIX}/css/fonts/inter-400.ttf`,
+  `${BASE_PREFIX}/css/fonts/inter-500.ttf`,
+  `${BASE_PREFIX}/css/fonts/inter-600.ttf`,
+  `${BASE_PREFIX}/css/fonts/inter-700.ttf`,
+  `${BASE_PREFIX}/css/style.css`,
   `${BASE_PREFIX}/js/seances.js?v=202607102200`,
   `${BASE_PREFIX}/img/wtc.png`,
   `${BASE_PREFIX}/manifest.json`,
@@ -93,7 +101,7 @@ self.addEventListener("fetch", (event) => {
 });
 
 function cacheFirst(request) {
-  return caches.match(request).then((cached) => {
+  return caches.match(request, { ignoreSearch: true }).then((cached) => {
     return (
       cached ||
       fetch(request, { cache: "no-store" }).then((response) => {

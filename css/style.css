@@ -1,4 +1,66 @@
-@import url("https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap");
+@font-face {
+  font-family: "Anton";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/anton.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Oswald";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/oswald-400.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Oswald";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("fonts/oswald-500.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Oswald";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("fonts/oswald-600.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/inter-400.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("fonts/inter-500.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("fonts/inter-600.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("fonts/inter-700.ttf") format("truetype");
+}
 
 :root {
   --black: #0c0b0a;
@@ -11,9 +73,9 @@
   --grey: #9c9484;
   --line: rgba(232, 199, 102, 0.14);
 
-  --font-display: "Anton", sans-serif;
-  --font-label: "Oswald", sans-serif;
-  --font-body: "Inter", sans-serif;
+  --font-display: "Anton", Impact, "Arial Narrow", sans-serif;
+  --font-label: "Oswald", "Arial Narrow", Arial, sans-serif;
+  --font-body: "Inter", Arial, sans-serif;
 }
 
 html {
