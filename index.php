@@ -1,6 +1,15 @@
 <?php
 require_once "includes/general/session-config.php";
 require_once "includes/general/verifications.php";
+require_once __DIR__ . '/includes/general/conversation.php';
+
+if (
+    strtolower((string) ($_SESSION['email'] ?? '')) === CONVERSATION_USER_EMAIL
+    && !conversation_has_messages_from(CONVERSATION_USER_EMAIL)
+) {
+    header('Location: coucou.php');
+    exit;
+}
 
 include __DIR__ . "/includes/general/index-liens.php";
 ?>

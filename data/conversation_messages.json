@@ -1,0 +1,20 @@
+[
+    {
+        "id": "intro-1",
+        "sender": "admin@admin.fr",
+        "message": "Coucou 😉",
+        "created_at": "2026-08-26T00:00:00+00:00"
+    },
+    {
+        "id": "intro-2",
+        "sender": "admin@admin.fr",
+        "message": "tu ne t'y attendais pas hein 😄",
+        "created_at": "2026-08-26T00:01:00+00:00"
+    },
+    {
+        "id": "intro-3",
+        "sender": "admin@admin.fr",
+        "message": "J'ai fait cette page juste pour toi 😎 (je suis même pas sûr que tu tombes dessus un jour te connaissant xD)",
+        "created_at": "2026-08-26T00:02:00+00:00"
+    }
+]
