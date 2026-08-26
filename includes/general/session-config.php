@@ -91,6 +91,7 @@ header(
     "img-src 'self' data: https:; " .
     "font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; " .
     "connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://cdn.jsdelivr.net; " .
+    "frame-src 'self' https://www.google.com https://maps.google.com; " .
     "frame-ancestors 'none'; " .
     "base-uri 'self'; " .
     "form-action 'self'"
