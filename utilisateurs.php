@@ -183,6 +183,11 @@ include __DIR__ . "/includes/general/users.php"
 <script>
     const usersApiUrl = new URL('includes/general/users-api.php', window.location.href).toString();
 
+    function csrfToken() {
+        const cookie = document.cookie.split('; ').find(entry => entry.startsWith('wtc_csrf='));
+        return cookie ? decodeURIComponent(cookie.split('=')[1]) : '';
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         // Search functionality
         document.getElementById('userSearch').addEventListener('input', function (e) {
@@ -208,8 +213,8 @@ include __DIR__ . "/includes/general/users.php"
                 method: 'POST',
                 credentials: 'same-origin',
                 cache: 'no-store',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: 'heartbeat' })
+                headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrfToken() },
+                body: JSON.stringify({ action: 'heartbeat', csrf_token: csrfToken() })
             }).catch(function() {
                 return null;
             });
@@ -218,8 +223,8 @@ include __DIR__ . "/includes/general/users.php"
                 method: 'POST',
                 credentials: 'same-origin',
                 cache: 'no-store',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: 'get_online_statuses' })
+                headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrfToken() },
+                body: JSON.stringify({ action: 'get_online_statuses', csrf_token: csrfToken() })
             })
             .then(async function(response) {
                 const text = await response.text();
@@ -264,7 +269,7 @@ include __DIR__ . "/includes/general/users.php"
         }
 
         function sendOfflineStatus() {
-            const payload = JSON.stringify({ action: 'mark_offline' });
+            const payload = JSON.stringify({ action: 'mark_offline', csrf_token: csrfToken() });
 
             try {
                 if (navigator.sendBeacon) {
@@ -280,7 +285,7 @@ include __DIR__ . "/includes/general/users.php"
                 credentials: 'same-origin',
                 cache: 'no-store',
                 keepalive: true,
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrfToken() },
                 body: payload
             }).catch(function() {
                 // Ignorer les erreurs de fermeture de page
@@ -369,11 +374,13 @@ include __DIR__ . "/includes/general/users.php"
                 fetch(usersApiUrl, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'X-CSRF-Token': csrfToken()
                     },
                     body: JSON.stringify({
                         action: action,
-                        target_id: userId
+                        target_id: userId,
+                        csrf_token: csrfToken()
                     })
                 })
                 .then(response => response.json())

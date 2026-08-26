@@ -9,13 +9,13 @@ $assetVersion = date('YmdHis');
 function ensureProfileUploadDirectoryWritable(string $directory): bool
 {
     if (!is_dir($directory)) {
-        if (!@mkdir($directory, 0777, true) && !is_dir($directory)) {
+        if (!@mkdir($directory, 0755, true) && !is_dir($directory)) {
             return false;
         }
     }
 
     if (!is_writable($directory)) {
-        @chmod($directory, 0777);
+        @chmod($directory, 0755);
     }
 
     return is_dir($directory) && is_writable($directory);

@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../general/session-config.php';
 require_once __DIR__ . '/../general/db.php';
 require_once __DIR__ . '/../general/mailer.php';
+require_once __DIR__ . '/../security/SecureFileUploadHandler.php';
 
 $cleanupStmt = $pdo->prepare(
     'DELETE FROM account_wtc
@@ -57,60 +58,20 @@ if (empty($errors)) {
 
 $pdpFilename = 'pdp_base.png';
 
-function ensureProfileUploadDirectoryWritable(string $directory): bool
-{
-    if (!is_dir($directory)) {
-        if (!@mkdir($directory, 0777, true) && !is_dir($directory)) {
-            return false;
-        }
-    }
-
-    if (!is_writable($directory)) {
-        @chmod($directory, 0777);
-    }
-
-    return is_dir($directory) && is_writable($directory);
-}
-
 if (empty($errors) && isset($_FILES['pdp']) && $_FILES['pdp']['error'] !== UPLOAD_ERR_NO_FILE) {
 
     if ($_FILES['pdp']['error'] !== UPLOAD_ERR_OK) {
         $errors[] = "Erreur lors de l'envoi de la photo de profil.";
     } else {
-        $maxSize = 5 * 1024 * 1024; // 5 Mo
-        if ($_FILES['pdp']['size'] > $maxSize) {
-            $errors[] = "La photo de profil ne doit pas dépasser 5 Mo.";
-        }
-
-        $allowedTypes = [
-            'image/jpeg' => 'jpg',
-            'image/png' => 'png',
-            'image/webp' => 'webp',
-        ];
-
-        $finfo = new finfo(FILEINFO_MIME_TYPE);
-        $mimeType = $finfo->file($_FILES['pdp']['tmp_name']);
-
-        if (!isset($allowedTypes[$mimeType])) {
-            $errors[] = "Le format de la photo de profil doit être JPG, PNG ou WEBP.";
-        }
-
-        if (empty($errors)) {
-            $extension = $allowedTypes[$mimeType];
+        try {
             $uploadDir = __DIR__ . '/../../img/pdps/';
-
-            if (!ensureProfileUploadDirectoryWritable($uploadDir)) {
-                $errors[] = "Impossible d'enregistrer la photo de profil. Le dossier des photos n'est pas accessible en écriture.";
-            } else {
-                do {
-                    $pdpFilename = 'pdp_' . bin2hex(random_bytes(16)) . '.' . $extension;
-                    $destination = $uploadDir . $pdpFilename;
-                } while (file_exists($destination));
-
-                if (!move_uploaded_file($_FILES['pdp']['tmp_name'], $destination)) {
-                    $errors[] = "Impossible d'enregistrer la photo de profil.";
-                }
-            }
+            $pdpFilename = SecureFileUploadHandler::saveUploadedFile(
+                $_FILES['pdp'],
+                $uploadDir,
+                'new_user'
+            );
+        } catch (Exception $e) {
+            $errors[] = htmlspecialchars($e->getMessage());
         }
     }
 }

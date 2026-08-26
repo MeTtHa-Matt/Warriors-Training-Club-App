@@ -1,8 +1,7 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+require_once __DIR__ . '/../general/session-config.php';
 require_once __DIR__ . '/../general/db.php';
+require_once __DIR__ . '/../security/CsrfTokenManager.php';
 header('Content-Type: application/json; charset=utf-8');
 
 if (!isset($_SESSION['user_id'])) {
@@ -14,6 +13,13 @@ if (!isset($_SESSION['user_id'])) {
 if ((int) ($_SESSION['gerer_seances'] ?? 0) !== 1) {
     http_response_code(403);
     echo json_encode(['error' => 'forbidden']);
+    exit;
+}
+
+$csrfToken = $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '';
+if (!hash_equals((string) ($_SESSION['csrf_token'] ?? ''), (string) $csrfToken)) {
+    http_response_code(403);
+    echo json_encode(['error' => 'csrf_failed']);
     exit;
 }
 

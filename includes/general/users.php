@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/../security/UserPermissionsManager.php';
+
 if (empty($_SESSION['user_id'])) {
     header('Location: connexion.php');
     exit;
@@ -32,17 +34,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_action'], $_PO
     } elseif ($targetId === (int) $currentId && $action === 'admin') {
         $errors[] = "Tu ne peux pas retirer tes propres droits administrateur.";
     } else {
-        $currentValueStmt = $pdo->prepare("SELECT `$action` FROM account_wtc WHERE id = ?");
-        $currentValueStmt->execute([$targetId]);
-        $currentValue = $currentValueStmt->fetchColumn();
+        try {
+            $currentValue = UserPermissionsManager::getUserPermission($pdo, $targetId, $action);
 
-        if ($currentValue === false) {
-            $errors[] = "Utilisateur introuvable.";
-        } else {
-            $newValue = $currentValue ? 0 : 1;
-            $updateStmt = $pdo->prepare("UPDATE account_wtc SET `$action` = ? WHERE id = ?");
-            $updateStmt->execute([$newValue, $targetId]);
-            $success = "Le statut a bien été mis à jour.";
+            if ($currentValue === null) {
+                $errors[] = "Utilisateur introuvable.";
+            } else {
+                $newValue = $currentValue ? 0 : 1;
+                UserPermissionsManager::updateUserPermission($pdo, $targetId, $action, $newValue);
+                $success = "Le statut a bien été mis à jour.";
+            }
+        } catch (InvalidArgumentException $e) {
+            $errors[] = htmlspecialchars($e->getMessage());
         }
     }
 }

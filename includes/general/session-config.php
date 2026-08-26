@@ -1,5 +1,9 @@
 <?php
-@file_put_contents('/tmp/wtc_mdp_debug.log', gmdate('c') . ' entered session-config.php' . PHP_EOL, FILE_APPEND | LOCK_EX);
+// Charger les classes de sécurité
+require_once __DIR__ . '/../security/CsrfTokenManager.php';
+require_once __DIR__ . '/../security/IpAddressValidator.php';
+require_once __DIR__ . '/../security/RateLimiter.php';
+
 $isSecureRequest = (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off') || (!empty($_SERVER['SERVER_PORT']) && (int) $_SERVER['SERVER_PORT'] === 443);
 
 ini_set('session.use_strict_mode', '1');
@@ -37,6 +41,17 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+setcookie('wtc_csrf', $_SESSION['csrf_token'], [
+    'expires' => 0,
+    'path' => '/',
+    'secure' => $isSecureRequest,
+    'httponly' => false,
+    'samesite' => 'Lax'
+]);
+
 // Ensure we have a session creation timestamp (used for client-side timeout calculations)
 if (!isset($_SESSION['created_at'])) {
     $_SESSION['created_at'] = time();
@@ -64,3 +79,34 @@ header('Expires: -1');
 header('X-Content-Type-Options: nosniff');
 header('X-Frame-Options: SAMEORIGIN');
 header('X-XSS-Protection: 1; mode=block');
+
+// Politique de Sécurité des Contenus (CSP)
+header(
+    "Content-Security-Policy: " .
+    "default-src 'self'; " .
+    "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; " .
+    "script-src-elem 'self' 'unsafe-inline' https://cdn.jsdelivr.net; " .
+    "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; " .
+    "style-src-elem 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; " .
+    "img-src 'self' data: https:; " .
+    "font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; " .
+    "connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://cdn.jsdelivr.net; " .
+    "frame-ancestors 'none'; " .
+    "base-uri 'self'; " .
+    "form-action 'self'"
+);
+
+// Forcer HTTPS en production
+if ($isSecureRequest) {
+    header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload");
+}
+
+// Politique de referer
+header("Referrer-Policy: strict-origin-when-cross-origin");
+
+// Permissions
+header("Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=()");
+
+// Éviter les infos de version du serveur
+header_remove("Server");
+header("Server: WebServer");

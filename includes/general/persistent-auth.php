@@ -1,12 +1,14 @@
 <?php
 
 require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/../security/IpAddressValidator.php';
+require_once __DIR__ . '/../security/SecurePersistentAuthToken.php';
 
 class PersistentToken
 {
     private $pdo;
     private $tokenCookieName = 'wtc_auth_token';
-    private $tokenDuration = 31536000; // 1 an en secondes
+    private $tokenDuration = 2592000; // 30 jours en secondes
 
     public function __construct($pdo)
     {
@@ -18,20 +20,15 @@ class PersistentToken
         if (empty($this->pdo)) {
             return null;
         }
-        $token = bin2hex(random_bytes(32));
-        $expiresAt = date('Y-m-d H:i:s', time() + $this->tokenDuration);
-        $userAgent = substr($_SERVER['HTTP_USER_AGENT'] ?? '', 0, 255);
-        $ipAddress = $this->getClientIp();
-
-        $stmt = $this->pdo->prepare('
-            INSERT INTO persistent_tokens (account_id, token, user_agent, ip_address, expires_at)
-            VALUES (?, ?, ?, ?, ?)
-        ');
-        $stmt->execute([$accountId, $token, $userAgent, $ipAddress, $expiresAt]);
-
-        $this->setTokenCookie($token);
-
-        return $token;
+        
+        try {
+            $token = SecurePersistentAuthToken::generateToken($accountId, $this->pdo);
+            $this->setTokenCookie($token);
+            return $token;
+        } catch (Exception $e) {
+            error_log("Erreur création token persistant: " . $e->getMessage());
+            return null;
+        }
     }
 
     public function validate()
@@ -40,42 +37,68 @@ class PersistentToken
             $this->clearToken();
             return null;
         }
+        
         $token = $_COOKIE[$this->tokenCookieName] ?? null;
 
         if (!$token) {
             return null;
         }
 
-        $stmt = $this->pdo->prepare('
-            SELECT pt.account_id, a.*, pt.id as token_id
-            FROM persistent_tokens pt
-            JOIN account_wtc a ON a.id = pt.account_id
-            WHERE pt.token = ? AND pt.expires_at > NOW()
-        ');
-        $stmt->execute([$token]);
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        try {
+            $tokenHash = hash('sha256', $token);
+            $accountStmt = $this->pdo->prepare(
+                'SELECT account_id FROM persistent_tokens WHERE token = ? AND expires_at > NOW() LIMIT 1'
+            );
+            $accountStmt->execute([$tokenHash]);
+            $accountId = (int) $accountStmt->fetchColumn();
+            if ($accountId <= 0) {
+                $this->clearToken();
+                return null;
+            }
 
-        if (!$result) {
+            // Valider et potentiellement rotater le token
+            $newToken = SecurePersistentAuthToken::validateAndRotateToken($token, $accountId, $this->pdo);
+            
+            if (!$newToken) {
+                $this->clearToken();
+                return null;
+            }
+            
+            // Si le token a été rotaté, mettre à jour le cookie
+            if ($newToken !== $token) {
+                $this->setTokenCookie($newToken);
+            }
+            
+            // Récupérer les infos utilisateur
+            $stmt = $this->pdo->prepare('
+                SELECT *
+                FROM account_wtc
+                WHERE id = ?
+            ');
+            $stmt->execute([$accountId]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if (!$result) {
+                $this->clearToken();
+                return null;
+            }
+
+            if ((int)$result['ban'] === 1) {
+                $this->clearToken();
+                return null;
+            }
+
+            if ((int)$result['email_verified'] !== 1) {
+                $this->clearToken();
+                return null;
+            }
+
+            return $result;
+        } catch (Exception $e) {
+            error_log("Erreur validation token: " . $e->getMessage());
             $this->clearToken();
             return null;
         }
-
-        $updateStmt = $this->pdo->prepare('
-            UPDATE persistent_tokens SET last_used = NOW() WHERE id = ?
-        ');
-        $updateStmt->execute([$result['token_id']]);
-
-        if ((int)$result['ban'] === 1) {
-            $this->clearToken();
-            return null;
-        }
-
-        if ((int)$result['email_verified'] !== 1) {
-            $this->clearToken();
-            return null;
-        }
-
-        return $result;
     }
     
     private function setTokenCookie($token)
@@ -89,7 +112,7 @@ class PersistentToken
                 'domain' => '',
                 'secure' => true,
                 'httponly' => true,
-                'samesite' => 'Lax'
+                'samesite' => 'Strict'
             ]
         );
     }
@@ -98,10 +121,11 @@ class PersistentToken
     {
         $token = $_COOKIE[$this->tokenCookieName] ?? null;
 
-        if ($token) {
-            if (!empty($this->pdo)) {
-                $stmt = $this->pdo->prepare('DELETE FROM persistent_tokens WHERE token = ?');
-                $stmt->execute([$token]);
+        if ($token && !empty($this->pdo)) {
+            try {
+                SecurePersistentAuthToken::invalidateToken($_SESSION['user_id'] ?? 0, $this->pdo);
+            } catch (Exception $e) {
+                error_log("Erreur suppression token: " . $e->getMessage());
             }
         }
 
@@ -119,21 +143,10 @@ class PersistentToken
                 'domain' => '',
                 'secure' => true,
                 'httponly' => true,
-                'samesite' => 'Lax'
+                'samesite' => 'Strict'
             ]
         );
         unset($_COOKIE[$this->tokenCookieName]);
-    }
-
-    private function getClientIp()
-    {
-        if (!empty($_SERVER['HTTP_CF_CONNECTING_IP'])) {
-            return $_SERVER['HTTP_CF_CONNECTING_IP'];
-        }
-        if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            return explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0];
-        }
-        return $_SERVER['REMOTE_ADDR'] ?? '';
     }
 
     public function cleanupExpired()
@@ -141,7 +154,12 @@ class PersistentToken
         if (empty($this->pdo)) {
             return;
         }
-        $stmt = $this->pdo->prepare('DELETE FROM persistent_tokens WHERE expires_at < NOW()');
-        $stmt->execute();
+        
+        try {
+            $stmt = $this->pdo->prepare('DELETE FROM persistent_tokens WHERE expires_at < NOW()');
+            $stmt->execute();
+        } catch (Exception $e) {
+            error_log("Erreur nettoyage tokens expirés: " . $e->getMessage());
+        }
     }
 }

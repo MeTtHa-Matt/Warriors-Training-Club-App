@@ -6,6 +6,7 @@ if (defined('WTC_DB_LOADED')) {
 define('WTC_DB_LOADED', true);
 
 require_once __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__ . '/../security/SecureAuditLogger.php';
 
 try {
     $dotenvPath = __DIR__ . '/../../';
@@ -23,92 +24,30 @@ $dbname = getenv('DB_DATABASE');
 $username = getenv('DB_USERNAME');
 $password = getenv('DB_PASSWORD');
 
-$dbAuditPath = __DIR__ . '/../../data/db_audit.json';
-$dbAuditDir = dirname($dbAuditPath);
-if (!is_dir($dbAuditDir)) {
-    @mkdir($dbAuditDir, 0775, true);
-}
-
 // Allow disabling DB audit logging for performance-sensitive environments
 $auditDisabled = (getenv('DISABLE_DB_AUDIT') === '1');
-
-if (!function_exists('maskAuditValue')) {
-    function maskAuditValue(string $key, mixed $value): mixed
-    {
-    $normalizedKey = strtolower($key);
-    if (str_contains($normalizedKey, 'password') || str_contains($normalizedKey, 'token') || str_contains($normalizedKey, 'secret')) {
-        return '[masqué]';
-    }
-
-    if (is_scalar($value)) {
-        $text = trim((string) $value);
-        return $text === '' ? '[vide]' : $text;
-    }
-
-    if (is_array($value)) {
-        return '[tableau]';
-    }
-
-    return '[valeur complexe]';
-    }
-}
-
-if (!function_exists('sanitizeAuditParams')) {
-    function sanitizeAuditParams(array $params): array
-    {
-        $sanitized = [];
-        foreach ($params as $key => $value) {
-            if (is_string($key)) {
-                $sanitized[$key] = maskAuditValue($key, $value);
-            } else {
-                $sanitized[] = maskAuditValue((string) $key, $value);
-            }
-        }
-
-        return $sanitized;
-    }
-}
 
 if (!function_exists('appendDbAuditLog')) {
     function appendDbAuditLog(string $event, string $sql, array $params = [], ?string $context = null, ?string $status = 'ok'): void
     {
-        global $dbAuditPath, $auditDisabled;
+        global $auditDisabled;
         if (!empty($auditDisabled)) {
             return;
         }
-        global $dbAuditPath;
 
-        $entry = [
-            'timestamp' => gmdate('Y-m-d\TH:i:s\Z'),
-            'event' => $event,
-            'sql' => trim($sql),
-            'params' => sanitizeAuditParams($params),
-            'context' => $context ?? 'auto',
-            'status' => $status,
-            'request' => [
-                'script' => $_SERVER['SCRIPT_NAME'] ?? null,
-                'method' => $_SERVER['REQUEST_METHOD'] ?? null,
-                'uri' => $_SERVER['REQUEST_URI'] ?? null,
-            ],
-        ];
-
-        $logs = [];
-        if (is_file($dbAuditPath)) {
-            $raw = @file_get_contents($dbAuditPath);
-            if ($raw !== false) {
-                $decoded = json_decode($raw, true);
-                if (is_array($decoded)) {
-                    $logs = $decoded;
-                }
+        try {
+            if (str_contains(strtoupper($sql), 'SELECT')) {
+                SecureAuditLogger::logQuery('SELECT', 'query', $params);
+            } elseif (str_contains(strtoupper($sql), 'INSERT')) {
+                SecureAuditLogger::logQuery('INSERT', 'query', $params);
+            } elseif (str_contains(strtoupper($sql), 'UPDATE')) {
+                SecureAuditLogger::logQuery('UPDATE', 'query', $params);
+            } elseif (str_contains(strtoupper($sql), 'DELETE')) {
+                SecureAuditLogger::logQuery('DELETE', 'query', $params);
             }
+        } catch (Exception $e) {
+            error_log("Audit logging error: " . $e->getMessage());
         }
-
-        $logs[] = $entry;
-        if (count($logs) > 5000) {
-            $logs = array_slice($logs, -5000);
-        }
-
-        @file_put_contents($dbAuditPath, json_encode($logs, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     }
 }
 

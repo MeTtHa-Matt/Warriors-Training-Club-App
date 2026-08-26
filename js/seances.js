@@ -106,6 +106,12 @@
   async function apiRequest(url, options = {}) {
     const method = options.method || "GET";
     const headers = { Accept: "application/json", ...(options.headers || {}) };
+    if (method !== "GET") {
+      const csrfCookie = document.cookie
+        .split("; ")
+        .find((entry) => entry.startsWith("wtc_csrf="));
+      if (csrfCookie) headers["X-CSRF-Token"] = decodeURIComponent(csrfCookie.split("=")[1]);
+    }
     const fetchOptions = { method, headers };
 
     if (options.body !== undefined) {

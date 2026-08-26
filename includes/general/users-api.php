@@ -21,6 +21,13 @@ if (!is_array($data)) {
     $data = [];
 }
 
+$csrfToken = $_SERVER['HTTP_X_CSRF_TOKEN'] ?? ($data['csrf_token'] ?? '');
+if (!hash_equals((string) ($_SESSION['csrf_token'] ?? ''), (string) $csrfToken)) {
+    http_response_code(403);
+    echo json_encode(['success' => false, 'message' => 'Jeton CSRF invalide']);
+    exit;
+}
+
 $action = $data['action'] ?? null;
 $targetId = (int) ($data['target_id'] ?? 0);
 

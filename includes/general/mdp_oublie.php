@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../security/RateLimiter.php';
 
 $pageTitle = "Warriors Training Club - Mot de passe oublié";
 
@@ -8,6 +9,12 @@ $success = null;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $email = trim((string)($_POST['email'] ?? ''));
+
+        if (!hash_equals((string) ($_SESSION['csrf_token'] ?? ''), (string) ($_POST['csrf_token'] ?? ''))) {
+            throw new RuntimeException('Invalid CSRF token');
+        }
+        RateLimiter::checkRateLimit('password-reset-email:' . strtolower($email), 3, 3600);
+        RateLimiter::checkRateLimit('password-reset-ip:' . ($_SERVER['REMOTE_ADDR'] ?? ''), 10, 3600);
 
         if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $errors[] = "Merci d’entrer une adresse email valide.";

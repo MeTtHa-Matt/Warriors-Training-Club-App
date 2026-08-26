@@ -1,4 +1,7 @@
 <?php
+
+require_once __DIR__ . '/../security/EmailHeaderValidator.php';
+
 if (empty($_SESSION['user_id'])) {
     header('Location: connexion.php');
     exit;
@@ -55,14 +58,21 @@ $postedStylePreset = 'classique';
 $postedMessageHtml = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $postedSubject = trim($_POST['subject'] ?? '');
-    $postedSignature = trim($_POST['signature'] ?? 'L’équipe du club');
-    $postedStylePreset = $_POST['style_preset'] ?? 'classique';
-    $postedStylePreset = array_key_exists($postedStylePreset, $stylePresets) ? $postedStylePreset : 'classique';
-    $postedMessageHtml = trim($_POST['message_html'] ?? '');
-    $subject = $postedSubject;
-    $signature = $postedSignature;
-    $stylePreset = $postedStylePreset;
+    try {
+        $postedSubject = trim($_POST['subject'] ?? '');
+        $postedSignature = trim($_POST['signature'] ?? "L'équipe du club");
+        
+        // Valider les en-têtes d'email
+        EmailHeaderValidator::validateSubject($postedSubject);
+        EmailHeaderValidator::validateSignature($postedSignature);
+        
+        $subject = EmailHeaderValidator::validateSubject($postedSubject);
+        $signature = EmailHeaderValidator::validateSignature($postedSignature);
+        
+        $postedStylePreset = $_POST['style_preset'] ?? 'classique';
+        $postedStylePreset = array_key_exists($postedStylePreset, $stylePresets) ? $postedStylePreset : 'classique';
+        $postedMessageHtml = trim($_POST['message_html'] ?? '');
+        $stylePreset = $postedStylePreset;
 
     if ($subject === '') {
         $errors[] = 'Ajoute un objet pour ce mail.';
@@ -75,10 +85,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (empty($errors)) {
-        $uploadDir = __DIR__ . '/uploads/mail-attachments';
-        if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0777, true);
-        }
+            $uploadDir = __DIR__ . '/uploads/mail-attachments';
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0755, true);
+            }
 
         $attachments = [];
         if (!empty($_FILES['attachments']['name'][0])) {
@@ -122,6 +132,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             $errors[] = $result['error'] ?? 'Impossible d’envoyer le mail.';
         }
+    }
+    } catch (Throwable $e) {
+        error_log('[envoyer-mail] exception: ' . $e->getMessage());
+        $errors[] = 'Une erreur est survenue lors de la préparation du mail.';
     }
 }
 

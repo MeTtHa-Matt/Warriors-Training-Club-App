@@ -1,33 +1,9 @@
 <?php
-@ini_set('display_errors', '1');
-@ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
-
-function wtc_debug_log(string $msg): void
-{
-    @file_put_contents('/tmp/wtc_mdp_debug.log', gmdate('c') . ' ' . $msg . PHP_EOL, FILE_APPEND | LOCK_EX);
-}
-
-wtc_debug_log('start mot-de-passe-oublie.php');
-wtc_debug_log('before require session-config');
 require_once "includes/general/session-config.php";
-wtc_debug_log('after require session-config');
-
-wtc_debug_log('before require verifications');
 require_once "includes/general/verifications.php";
-wtc_debug_log('after require verifications');
-
-wtc_debug_log('before require db');
 require 'includes/general/db.php';
-wtc_debug_log('after require db');
-
-wtc_debug_log('before require mailer');
 require 'includes/general/mailer.php';
-wtc_debug_log('after require mailer');
-
-wtc_debug_log('before include mdp_oublie');
 include __DIR__ . '/includes/general/mdp_oublie.php';
-wtc_debug_log('after include mdp_oublie');
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -84,6 +60,7 @@ wtc_debug_log('after include mdp_oublie');
                 <form method="post" class="auth-form" novalidate>
                     <div class="mb-3">
                         <label for="email" class="form-label">Adresse email</label>
+                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
                         <input type="email" class="form-control auth-input" id="email" name="email" required
                             maxlength="255">
                     </div>

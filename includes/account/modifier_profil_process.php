@@ -1,21 +1,7 @@
 <?php
 require_once __DIR__ . '/../general/session-config.php';
 require_once __DIR__ . '/../general/db.php';
-
-function ensureProfileUploadDirectoryWritable(string $directory): bool
-{
-    if (!is_dir($directory)) {
-        if (!@mkdir($directory, 0777, true) && !is_dir($directory)) {
-            return false;
-        }
-    }
-
-    if (!is_writable($directory)) {
-        @chmod($directory, 0777);
-    }
-
-    return is_dir($directory) && is_writable($directory);
-}
+require_once __DIR__ . '/../security/SecureFileUploadHandler.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: ../../modifier-profil.php');
@@ -74,42 +60,24 @@ if (isset($_POST['update_infos'])) {
         if ($_FILES['pdp']['error'] !== UPLOAD_ERR_OK) {
             $errors[] = 'Erreur lors de l\'envoi de la photo de profil.';
         } else {
-            $maxSize = 2 * 1024 * 1024;
-            $allowedTypes = [
-                'image/jpeg' => 'jpg',
-                'image/png' => 'png',
-                'image/webp' => 'webp',
-            ];
-            $finfo = new finfo(FILEINFO_MIME_TYPE);
-            $mimeType = $finfo->file($_FILES['pdp']['tmp_name']);
-            if (!isset($allowedTypes[$mimeType])) {
-                $errors[] = 'Le format de la photo de profil doit être JPG, PNG ou WEBP.';
-            }
-            if ($_FILES['pdp']['size'] > $maxSize) {
-                $errors[] = 'La photo de profil ne doit pas dépasser 2 Mo.';
-            }
-
-            if (empty($errors)) {
-                $extension = $allowedTypes[$mimeType];
+            try {
                 $pdpsDir = __DIR__ . '/../../img/pdps/';
-
-                if (!ensureProfileUploadDirectoryWritable($pdpsDir)) {
-                    $errors[] = 'Impossible d\'enregistrer la photo de profil. Le dossier des photos n\'est pas accessible en écriture.';
-                } else {
-                    $newFilename = 'pdp_' . $accountId . '_' . time() . '.' . $extension;
-                    $destination = $pdpsDir . $newFilename;
-                    if (!move_uploaded_file($_FILES['pdp']['tmp_name'], $destination)) {
-                        $errors[] = 'Impossible d\'enregistrer la photo de profil.';
-                    } else {
-                        if ($account['pdp'] !== 'pdp_base.png') {
-                            $oldPath = $pdpsDir . $account['pdp'];
-                            if (file_exists($oldPath)) {
-                                @unlink($oldPath);
-                            }
-                        }
-                        $pdpFilename = $newFilename;
+                $newFilename = SecureFileUploadHandler::saveUploadedFile(
+                    $_FILES['pdp'],
+                    $pdpsDir,
+                    $accountId
+                );
+                
+                // Supprimer l'ancienne photo si elle existe
+                if ($account['pdp'] !== 'pdp_base.png') {
+                    $oldPath = $pdpsDir . $account['pdp'];
+                    if (file_exists($oldPath)) {
+                        @unlink($oldPath);
                     }
                 }
+                $pdpFilename = $newFilename;
+            } catch (Exception $e) {
+                $errors[] = htmlspecialchars($e->getMessage());
             }
         }
     }
