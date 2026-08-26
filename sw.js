@@ -1,7 +1,11 @@
-const CACHE_NAME = "wtc-cache-v9";
+const CACHE_NAME = "wtc-cache-v10";
 const BASE_PATH = self.location.pathname.replace(/\/sw\.js$/, "") || "/";
 const BASE_PREFIX = BASE_PATH === "/" ? "" : BASE_PATH;
 const PRECACHE_URLS = [
+  `${BASE_PREFIX}/css/bootstrap.min.css`,
+  `${BASE_PREFIX}/js/bootstrap.bundle.min.js`,
+  `${BASE_PREFIX}/css/bootstrap-icons.min.css`,
+  `${BASE_PREFIX}/css/fonts/bootstrap-icons.woff2`,
   `${BASE_PREFIX}/css/style.css?v=202607102200`,
   `${BASE_PREFIX}/js/seances.js?v=202607102200`,
   `${BASE_PREFIX}/img/wtc.png`,

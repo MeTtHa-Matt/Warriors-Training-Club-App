@@ -9,8 +9,8 @@ $pageTitle = "Warriors Training Club - Règlement intérieur";
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Warriors Training Club - Règlement intérieur</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css?v=202607102000">
     <link rel="manifest" href="./manifest.json">
     <link rel="icon" type="image/png" sizes="any" href="./img/wtc.png">
@@ -289,7 +289,7 @@ $pageTitle = "Warriors Training Club - Règlement intérieur";
 
     <?php require 'includes/general/footer.php'; ?>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
 
 </body>
 

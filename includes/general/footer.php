@@ -60,7 +60,7 @@ if (session_status() === PHP_SESSION_NONE) {
 </div>
 
 <script>
-const WTC_CACHE_BUST_VERSION = '202607102200';
+const WTC_CACHE_BUST_VERSION = '202608262200';
 const WTC_CACHE_BUSTER_KEY = 'wtc-cache-buster';
 
 if (window.localStorage && window.localStorage.getItem(WTC_CACHE_BUSTER_KEY) !== WTC_CACHE_BUST_VERSION) {

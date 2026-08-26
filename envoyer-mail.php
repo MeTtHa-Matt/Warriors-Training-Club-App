@@ -17,8 +17,8 @@ include __DIR__ . '/includes/general/envoyer-mail.php'
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>Warriors Training Club - Envoyer un mail</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css?v=202607102000">
     <link rel="icon" type="image/png" href="/WTC-App/img/wtc.png">
 </head>
@@ -138,7 +138,7 @@ include __DIR__ . '/includes/general/envoyer-mail.php'
 
     <?php require 'includes/general/footer.php'; ?>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
     <script src="js/envoyer-mail.js"></script>
 
 </body>
