@@ -477,3 +477,30 @@ function buildVerificationEmailHtml($firstname, $link)
 </html>
 HTML;
 }
+
+function sendReportVerificationEmail(string $email, string $code): array
+{
+    $mail = new PHPMailer(true);
+    $settings = getMailerSettings();
+    try {
+        configureMailerCharacterEncoding($mail);
+        $mail->isSMTP();
+        $mail->Host = $settings['host'];
+        $mail->SMTPAuth = true;
+        $mail->Username = $settings['username'];
+        $mail->Password = getenv('MAIL_PASSWORD');
+        $mail->SMTPSecure = $settings['secure'];
+        $mail->Port = $settings['port'];
+        $mail->setFrom($settings['from'], $settings['fromName']);
+        $mail->addAddress($email);
+        $mail->isHTML(true);
+        $mail->Subject = 'Code de confirmation de ton signalement - Warriors Training Club';
+        $safeCode = htmlspecialchars($code, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        $mail->Body = '<div style="font-family:Arial,sans-serif;color:#17150f"><h2>Confirmation du signalement</h2><p>Ton code de confirmation est :</p><p style="font-size:30px;font-weight:bold;letter-spacing:8px">' . $safeCode . '</p><p>Ce code expire dans 10 minutes. Si tu n’es pas à l’origine de cette demande, ignore cet e-mail.</p></div>';
+        $mail->AltBody = "Ton code de confirmation pour le signalement Warriors Training Club est : {$code}\n\nIl expire dans 10 minutes.";
+        $mail->send();
+        return ['success' => true];
+    } catch (Exception $e) {
+        return ['success' => false, 'error' => $mail->ErrorInfo ?: $e->getMessage()];
+    }
+}

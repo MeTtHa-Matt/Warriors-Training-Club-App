@@ -66,12 +66,6 @@ $isLoggedIn = isset($_SESSION['user_id']);
                             </a>
                         </li>
                         <li>
-                            <a class="dropdown-item wtc-user-menu__item" href="signalements.php">
-                                <i class="bi bi-exclamation-circle"></i>Signaler un problème
-                            </a>
-                        </li>
-
-                        <li>
                             <hr class="dropdown-divider wtc-user-menu__divider">
                         </li>
 

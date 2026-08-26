@@ -20,12 +20,20 @@ $maintenanceEnabled = (bool) $pdo->query('SELECT MAX(maintenance) FROM account_w
 $totalSessions = (int) $pdo->query('SELECT COUNT(*) FROM seances')->fetchColumn();
 $upcomingSessions = (int) $pdo->query('SELECT COUNT(*) FROM seances WHERE date_seance >= CURDATE()')->fetchColumn();
 $totalInscriptions = (int) $pdo->query('SELECT COUNT(*) FROM inscriptions_seances')->fetchColumn();
-$totalReports = (int) $pdo->query('SELECT COUNT(*) FROM signalements_wtc')->fetchColumn();
+$reportsFile = __DIR__ . '/../../data/reports.json';
+$reportsData = is_file($reportsFile) ? json_decode(file_get_contents($reportsFile) ?: '[]', true) : [];
+$totalReports = is_array($reportsData) ? count($reportsData) : 0;
 $totalEmailsOptOut = (int) $pdo->query('SELECT COUNT(*) FROM account_wtc WHERE accept_email = 0')->fetchColumn();
 
 $pageTitle = 'Warriors Training Club - Administration';
 
 $adminActions = [
+    [
+        'url' => 'reports.php',
+        'icon' => 'bi bi-chat-left-text',
+        'label' => 'Boîte des signalements',
+        'description' => 'Lire les problèmes vérifiés envoyés par les utilisateurs.',
+    ],
     [
         'url' => 'utilisateurs.php',
         'icon' => 'bi bi-people',

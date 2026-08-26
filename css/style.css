@@ -1667,6 +1667,90 @@ h3,
   background: var(--black-soft);
   box-shadow: inset 0 1px 0 rgba(244, 239, 226, 0.04);
 }
+
+.wtc-report-fab {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 1030;
+  width: 3.5rem;
+  height: 3.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--gold-soft);
+  border-radius: 50%;
+  background: var(--gold);
+  color: var(--black);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  font-size: 1.45rem;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+.wtc-report-fab:hover,
+.wtc-report-fab:focus-visible {
+  background: var(--gold-soft);
+  color: var(--black);
+  transform: translateY(-3px);
+}
+.report-inbox {
+  display: grid;
+  gap: 1rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.report-thread {
+  padding: 1.25rem;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: linear-gradient(145deg, var(--black-soft), var(--charcoal));
+}
+.report-thread__head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0.85rem;
+}
+.report-thread__head h2 {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  text-transform: none;
+  margin: 0.2rem 0 0;
+  overflow-wrap: anywhere;
+}
+.report-thread__head time,
+.report-thread__label {
+  color: var(--grey);
+  font-size: 0.75rem;
+}
+.report-thread__bubble {
+  margin-top: 1rem;
+  padding: 0.9rem 1rem;
+  border-left: 3px solid var(--gold);
+  background: rgba(244, 239, 226, 0.05);
+  color: var(--paper);
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.admin-empty-state {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 4rem 1rem;
+  text-align: center;
+  color: var(--grey);
+  border: 1px dashed var(--line);
+}
+.admin-empty-state i {
+  display: block;
+  color: var(--gold);
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+@media (max-width: 575.98px) {
+  .wtc-report-fab { right: 0.85rem; bottom: 0.85rem; }
+  .report-thread__head { flex-direction: column; }
+}
 .users-maintenance-card__title {
   font-family: var(--font-label);
   font-size: 0.72rem;

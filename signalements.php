@@ -1,7 +1,6 @@
 <?php
 require_once "includes/general/session-config.php";
 require_once "includes/general/verifications.php";
-require_once 'includes/general/db.php';
 require 'includes/general/mailer.php';
 
 include __DIR__ . '/includes/general/signalements.php';
@@ -25,9 +24,9 @@ include __DIR__ . '/includes/general/signalements.php';
     <div class="container">
         <div class="row">
             <div class="col-12 col-lg-8">
-                <span class="hero-badge mb-3"><span class="dot"></span>Mon compte</span>
+                <span class="hero-badge mb-3"><span class="dot"></span>Assistance</span>
                 <h1 class="mt-3 mb-3">Signaler un <span class="accent">problème</span></h1>
-                <p class="lead">Envoie un signalement si tu rencontres un souci sur le site ou dans l’organisation d’une séance.</p>
+                <p class="lead">Décris le problème rencontré. Ton adresse e-mail sera vérifiée avant l’envoi.</p>
             </div>
         </div>
     </div>
@@ -52,25 +51,33 @@ include __DIR__ . '/includes/general/signalements.php';
                         </div>
                     <?php endif; ?>
 
-                    <p class="auth-hint mb-3">
-                        Tu peux envoyer jusqu'à 3 signalements par semaine. Tu as déjà envoyé <?= (int) $reportCountThisWeek ?> signalement(s) cette semaine.
-                    </p>
-
+                    <?php if ($step === 'message'): ?>
                     <form class="auth-form" method="POST" novalidate>
-                        <div class="mb-3">
-                            <label for="report_subject" class="form-label">Sujet</label>
-                            <input type="text" class="form-control auth-input" id="report_subject" name="report_subject" maxlength="150" required>
-                        </div>
-
+                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['report_csrf']) ?>">
                         <div class="mb-3">
                             <label for="report_message" class="form-label">Description du problème</label>
-                            <textarea class="form-control auth-input" id="report_message" name="report_message" rows="6" maxlength="4000" required></textarea>
+                            <textarea class="form-control auth-input" id="report_message" name="report_message" rows="7" maxlength="4000" required><?= htmlspecialchars($reportData['message'] ?? '') ?></textarea>
                         </div>
-
-                        <button type="submit" name="submit_report" class="btn btn-wtc-outline rounded-pill w-100">
-                            Envoyer le signalement
+                        <button type="submit" name="prepare_report" class="btn btn-wtc-gold rounded-pill w-100">
+                            Continuer
                         </button>
                     </form>
+                    <?php elseif ($step === 'email'): ?>
+                    <form class="auth-form" method="POST" novalidate>
+                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['report_csrf']) ?>">
+                        <label for="report_email" class="form-label">Ton adresse e-mail</label>
+                        <input type="email" class="form-control auth-input mb-3" id="report_email" name="email" maxlength="254" autocomplete="email" required>
+                        <p class="auth-hint">Un code de confirmation valable 10 minutes sera envoyé à cette adresse.</p>
+                        <button type="submit" name="send_code" class="btn btn-wtc-gold rounded-pill w-100">Recevoir le code</button>
+                    </form>
+                    <?php else: ?>
+                    <form class="auth-form" method="POST" novalidate>
+                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['report_csrf']) ?>">
+                        <label for="verification_code" class="form-label">Code reçu par e-mail</label>
+                        <input type="text" class="form-control auth-input mb-3" id="verification_code" name="verification_code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="one-time-code" required>
+                        <button type="submit" name="verify_report" class="btn btn-wtc-gold rounded-pill w-100">Envoyer le signalement</button>
+                    </form>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

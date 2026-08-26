@@ -41,6 +41,24 @@ if (session_status() === PHP_SESSION_NONE) {
     </div>
 </footer>
 
+<button type="button" class="wtc-report-fab" data-bs-toggle="modal" data-bs-target="#reportHelpModal" aria-label="Signaler un problème" title="Signaler un problème">
+    <i class="bi bi-exclamation-lg"></i>
+</button>
+<div class="modal fade wtc-modal" id="reportHelpModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content wtc-modal__content">
+            <div class="modal-header wtc-modal__header">
+                <h5 class="modal-title">Besoin d’aide ?</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fermer"></button>
+            </div>
+            <div class="modal-body"><p class="mb-0">Vous avez un problème ? Signalez-le :</p></div>
+            <div class="modal-footer wtc-modal__footer">
+                <a href="signalements.php" class="btn btn-wtc-gold w-100">Signaler un problème</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 const WTC_CACHE_BUST_VERSION = '202607102200';
 const WTC_CACHE_BUSTER_KEY = 'wtc-cache-buster';
