@@ -15,8 +15,14 @@ if (!empty($_SESSION['user_id'])) {
     }
 }
 
-// Fast response to client: clear session cookie and send redirect immediately,
-// then perform DB cleanup (token removal) after finishing the response.
+// Invalidate the persistent token before clearing the session, so the current
+// user id is still available and the cookie-clearing header reaches the client.
+try {
+    $tokenManager->clear();
+} catch (Throwable $e) {
+    error_log('[deconnexion_process] token clear error: ' . $e->getMessage());
+}
+
 $_SESSION = [];
 if (ini_get('session.use_cookies')) {
     $params = session_get_cookie_params();
@@ -35,25 +41,10 @@ if (ini_get('session.use_cookies')) {
 $next = basename($_GET['next'] ?? '');
 $redirect = ($next === 'connexion.php') ? '../../connexion.php' : '../../index.php';
 
-// Send redirect header and flush response to client
+// Send redirect header
 header('Location: ' . $redirect);
 header('Content-Length: 0');
-// ensure session is saved
 session_write_close();
-if (function_exists('fastcgi_finish_request')) {
-    fastcgi_finish_request();
-}
-
-// Now perform heavier cleanup (can run after response delivered)
-try {
-    $tokenManager->clear();
-} catch (Throwable $e) {
-    error_log('[deconnexion_process] token clear error: ' . $e->getMessage());
-}
-
-// Finally destroy session as a safeguard
-@session_start();
-$_SESSION = [];
 session_destroy();
 
 exit;
