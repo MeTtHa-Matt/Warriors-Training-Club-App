@@ -1,0 +1,22 @@
+User-agent: *
+Allow: /
+
+Disallow: /administration.php
+Disallow: /ban.php
+Disallow: /chat.php
+Disallow: /commits-dashboard.php
+Disallow: /db-audit.php
+Disallow: /envoyer-mail.php
+Disallow: /github-webhook.php
+Disallow: /maintenance.php
+Disallow: /modifier-profil.php
+Disallow: /reports.php
+Disallow: /settings.php
+Disallow: /signalements.php
+Disallow: /utilisateurs.php
+Disallow: /api/
+Disallow: /data/
+Disallow: /includes/
+Disallow: /vendor/
+
+Sitemap: https://warriors-training-club.judo-club-mormant.fr/sitemap.xml

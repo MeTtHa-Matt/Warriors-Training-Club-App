@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://example.com/</loc>
+    <loc>https://warriors-training-club.judo-club-mormant.fr/</loc>
     <lastmod>2026-08-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://example.com/index.php</loc>
+    <loc>https://warriors-training-club.judo-club-mormant.fr/index.php</loc>
     <lastmod>2026-08-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://example.com/seances.php</loc>
+    <loc>https://warriors-training-club.judo-club-mormant.fr/seances.php</loc>
     <lastmod>2026-08-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://example.com/inscription.php</loc>
+    <loc>https://warriors-training-club.judo-club-mormant.fr/inscription.php</loc>
     <lastmod>2026-08-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://example.com/connexion.php</loc>
+    <loc>https://warriors-training-club.judo-club-mormant.fr/connexion.php</loc>
     <lastmod>2026-08-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://example.com/mot-de-passe-oublie.php</loc>
+    <loc>https://warriors-training-club.judo-club-mormant.fr/mot-de-passe-oublie.php</loc>
     <lastmod>2026-08-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://example.com/reglement-interieur.php</loc>
+    <loc>https://warriors-training-club.judo-club-mormant.fr/reglement-interieur.php</loc>
     <lastmod>2026-08-21</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>

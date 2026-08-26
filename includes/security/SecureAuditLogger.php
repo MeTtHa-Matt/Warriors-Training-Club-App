@@ -11,7 +11,13 @@ class SecureAuditLogger {
      */
     public static function logQuery($query, $params = []) {
         if (!is_dir(self::LOG_DIR)) {
-            @mkdir(self::LOG_DIR, 0750, true);
+            if (!@mkdir(self::LOG_DIR, 0750, true) && !is_dir(self::LOG_DIR)) {
+                return;
+            }
+        }
+
+        if (!is_writable(self::LOG_DIR)) {
+            return;
         }
 
         $logFile = self::LOG_DIR . 'db_audit_' . date('Y-m-d') . '.log';
@@ -25,7 +31,7 @@ class SecureAuditLogger {
             'line' => debug_backtrace()[1]['line'] ?? ''
         ];
 
-        file_put_contents($logFile, json_encode($logEntry) . "\n", FILE_APPEND | LOCK_EX);
+        @file_put_contents($logFile, json_encode($logEntry) . "\n", FILE_APPEND | LOCK_EX);
         @chmod($logFile, 0640);
     }
 
