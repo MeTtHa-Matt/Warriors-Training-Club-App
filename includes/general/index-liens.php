@@ -9,31 +9,34 @@ $cardBoutiqueJudoLink = 'https://www.helloasso.com/associations/judo-club-morman
 $cardBoutiqueVetementsLink = 'https://market-factory.fr/warriors-training-club/';
 $cardMapLink = 'https://www.google.com/maps/search/?api=1&query=48.6113915%2C2.8807517';
 
-try {
-    $stmt = $pdo->query("SELECT link_key, url FROM index_links WHERE link_key IN ('hero_inscription', 'card_adhesion', 'card_boutique_barres', 'card_boutique_judo', 'card_boutique_vetements', 'card_map')");
-    foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
-        switch ($row['link_key']) {
-            case 'hero_inscription':
-                $heroInscriptionLink = $row['url'];
-                break;
-            case 'card_adhesion':
-                $cardAdhesionLink = $row['url'];
-                break;
-            case 'card_boutique_barres':
-                $cardBoutiqueBarresLink = $row['url'];
-                break;
-            case 'card_boutique_judo':
-                $cardBoutiqueJudoLink = $row['url'];
-                break;
-            case 'card_boutique_vetements':
-                $cardBoutiqueVetementsLink = $row['url'];
-                break;
-            case 'card_map':
-                $cardMapLink = $row['url'];
-                break;
+if ($pdo instanceof PDO) {
+    try {
+        $stmt = $pdo->query("SELECT link_key, url FROM index_links WHERE link_key IN ('hero_inscription', 'card_adhesion', 'card_boutique_barres', 'card_boutique_judo', 'card_boutique_vetements', 'card_map')");
+        foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
+            switch ($row['link_key']) {
+                case 'hero_inscription':
+                    $heroInscriptionLink = $row['url'];
+                    break;
+                case 'card_adhesion':
+                    $cardAdhesionLink = $row['url'];
+                    break;
+                case 'card_boutique_barres':
+                    $cardBoutiqueBarresLink = $row['url'];
+                    break;
+                case 'card_boutique_judo':
+                    $cardBoutiqueJudoLink = $row['url'];
+                    break;
+                case 'card_boutique_vetements':
+                    $cardBoutiqueVetementsLink = $row['url'];
+                    break;
+                case 'card_map':
+                    $cardMapLink = $row['url'];
+                    break;
+            }
         }
+    } catch (Throwable $e) {
+        error_log('[index-liens] impossible de charger les liens: ' . $e->getMessage());
     }
-} catch (PDOException $e) {
 }
 
 $heroInscriptionLink = htmlspecialchars($heroInscriptionLink);
