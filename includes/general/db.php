@@ -18,14 +18,24 @@ try {
     // Missing or unreadable .env is non-fatal; proceed with getenv defaults.
 }
 
-$host = getenv('DB_HOST') ?: '127.0.0.1';
-$port = getenv('DB_PORT') ?: '3306';
-$dbname = getenv('DB_DATABASE');
-$username = getenv('DB_USERNAME');
-$password = getenv('DB_PASSWORD');
+$env = static function (string $name, ?string $default = null): ?string {
+    $value = getenv($name);
+    if ($value !== false && $value !== '') {
+        return $value;
+    }
+
+    $value = $_ENV[$name] ?? $_SERVER[$name] ?? null;
+    return ($value === null || $value === '') ? $default : (string) $value;
+};
+
+$host = $env('DB_HOST', '127.0.0.1');
+$port = $env('DB_PORT', '3306');
+$dbname = $env('DB_DATABASE');
+$username = $env('DB_USERNAME');
+$password = $env('DB_PASSWORD');
 
 // Allow disabling DB audit logging for performance-sensitive environments
-$auditDisabled = (getenv('DISABLE_DB_AUDIT') === '1');
+$auditDisabled = ($env('DISABLE_DB_AUDIT') === '1');
 
 if (!function_exists('appendDbAuditLog')) {
     function appendDbAuditLog(string $event, string $sql, array $params = [], ?string $context = null, ?string $status = 'ok'): void

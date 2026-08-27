@@ -4,7 +4,7 @@
  * Implémente une escalade exponentielle des blocages
  */
 class LoginAttemptThrottler {
-    private const STORAGE_PATH = '/var/log/warriors-training-app/login_attempts.json';
+    private const STORAGE_PATH = __DIR__ . '/../../data/login_attempts.json';
     private const THROTTLING_CONFIG = [
         1 => ['max_attempts' => 5, 'lockout_seconds' => 60],
         2 => ['max_attempts' => 3, 'lockout_seconds' => 300],

@@ -4,6 +4,12 @@ require_once __DIR__ . '/../general/db.php';
 require_once __DIR__ . '/../general/persistent-auth.php';
 require_once __DIR__ . '/../security/LoginAttemptThrottler.php';
 
+if (!isset($pdo) || !$pdo instanceof PDO) {
+    $_SESSION['errors'] = ["Le service est temporairement indisponible. Réessaie plus tard."];
+    header('Location: ../../connexion.php');
+    exit;
+}
+
 $clientIp = IpAddressValidator::getClientIp();
 
 $cleanupStmt = $pdo->prepare(
