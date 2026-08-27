@@ -2,7 +2,6 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-require_once __DIR__ . '/conversation.php';
 
 $current = basename($_SERVER['PHP_SELF']);
 function wtc_active($page, $current)
@@ -11,8 +10,6 @@ function wtc_active($page, $current)
 }
 
 $isLoggedIn = isset($_SESSION['user_id']);
-$isConversationUser = strtolower((string) ($_SESSION['email'] ?? '')) === CONVERSATION_USER_EMAIL;
-$hasConversationMessages = $isConversationUser && conversation_has_messages_from(CONVERSATION_USER_EMAIL);
 ?>
 <nav class="navbar navbar-expand-lg wtc-navbar sticky-top py-3">
     <div class="container">
@@ -44,18 +41,6 @@ $hasConversationMessages = $isConversationUser && conversation_has_messages_from
                     <li class="nav-item">
                         <a class="nav-link <?php echo wtc_active('administration.php', $current); ?>"
                             href="administration.php">Administration</a>
-                    </li>
-                <?php endif; ?>
-                <?php if (strtolower((string) ($_SESSION['email'] ?? '')) === 'admin@admin.fr'): ?>
-                    <li class="nav-item">
-                        <a class="nav-link <?php echo wtc_active('conversation-admin.php', $current); ?>"
-                            href="conversation-admin.php">Messagerie</a>
-                    </li>
-                <?php endif; ?>
-                <?php if ($hasConversationMessages): ?>
-                    <li class="nav-item">
-                        <a class="nav-link <?php echo wtc_active('coucou.php', $current); ?>"
-                            href="coucou.php">Messagerie</a>
                     </li>
                 <?php endif; ?>
             </ul>

@@ -72,11 +72,3 @@ $adminActions = [
     ],
 ];
 
-if (strtolower((string) ($_SESSION['email'] ?? '')) === 'admin@admin.fr') {
-    array_unshift($adminActions, [
-        'url' => 'conversation-admin.php',
-        'icon' => 'bi bi-chat-heart',
-        'label' => 'Conversation privée',
-        'description' => 'Lire les messages et répondre à Matthieu.',
-    ]);
-}
