@@ -36,8 +36,8 @@ include __DIR__ . '/includes/general/modifier-liens-index.php'
 
     <section class="section section--compact">
         <div class="container mb-4">
-            <a href="administration.php" class="btn btn-wtc-outline rounded-pill">
-                <i class="bi bi-arrow-left me-2"></i>Retour à l'administration
+            <a href="index.php" class="btn btn-wtc-outline rounded-pill">
+                <i class="bi bi-arrow-left me-2"></i>Retour à l'accueil
             </a>
         </div>
     </section>

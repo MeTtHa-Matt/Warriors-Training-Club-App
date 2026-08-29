@@ -198,10 +198,96 @@ h3,
   box-shadow: 0 0 0 3px var(--gold-glow);
 }
 
+.navbar-nav .dropdown-menu {
+  background: rgba(12, 11, 10, 0.98);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  box-shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.6);
+}
+
+.navbar-nav .dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  color: var(--paper);
+  font-family: var(--font-label);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-radius: 10px;
+  padding: 0.65rem 0.8rem;
+}
+
+.navbar-nav .dropdown-item:hover,
+.navbar-nav .dropdown-item.active {
+  background: rgba(244, 239, 226, 0.05);
+  color: var(--gold-soft);
+}
+
+.navbar-nav .dropdown-item .bi {
+  color: var(--gold);
+  font-size: 0.95rem;
+}
+
 @media (max-width: 991.98px) {
   .wtc-navbar__auth {
     border-top: 1px solid var(--line);
     padding-top: 1rem;
+  }
+
+  .navbar-nav {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .navbar-nav .nav-item {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .navbar-nav .nav-item.dropdown {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: relative;
+  }
+
+  .navbar-nav .dropdown-toggle {
+    display: inline-block;
+    width: auto;
+    text-align: center;
+    margin: 0 auto;
+  }
+
+  .navbar-nav .dropdown-menu {
+    position: absolute !important;
+    left: 50% !important;
+    right: auto !important;
+    top: calc(100% + 0.4rem) !important;
+    transform: translateX(-50%) !important;
+    width: min(88vw, 320px) !important;
+    min-width: 0 !important;
+    max-width: 320px !important;
+    margin: 0 !important;
+    background: rgba(12, 11, 10, 0.92);
+    box-shadow: none;
+    border-color: var(--line);
+  }
+
+  .navbar-nav .dropdown-menu.show {
+    display: block;
+  }
+
+  .navbar-nav .dropdown-item {
+    justify-content: center;
+    text-align: center;
+    padding: 0.75rem 1rem;
+    width: 100%;
   }
 }
 

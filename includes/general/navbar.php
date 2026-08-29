@@ -38,9 +38,33 @@ $isLoggedIn = isset($_SESSION['user_id']);
                         href="reglement-interieur.php">Règlement intérieur</a>
                 </li>
                 <?php if ((int) ($_SESSION['admin'] ?? 0) === 1): ?>
-                    <li class="nav-item">
-                        <a class="nav-link <?php echo wtc_active('administration.php', $current); ?>"
-                            href="administration.php">Administration</a>
+                    <?php
+                    $adminMenuItems = [
+                        ['url' => 'reports.php', 'icon' => 'bi bi-chat-left-text', 'label' => 'Signalements'],
+                        ['url' => 'utilisateurs.php', 'icon' => 'bi bi-people', 'label' => 'Utilisateurs'],
+                        ['url' => 'db-audit.php', 'icon' => 'bi bi-journal-text', 'label' => 'Audit DB'],
+                        ['url' => 'envoyer-mail.php', 'icon' => 'bi bi-envelope', 'label' => 'Envoyer un mail'],
+                        ['url' => 'liens-index.php', 'icon' => 'bi bi-link-45deg', 'label' => 'Liens accueil'],
+                        ['url' => 'commits-dashboard.php', 'icon' => 'bi bi-git', 'label' => 'GitHub commits'],
+                        ['url' => 'settings.php', 'icon' => 'bi bi-gear', 'label' => 'Paramètres'],
+                    ];
+                    $adminDropdownActive = in_array($current, array_column($adminMenuItems, 'url'), true);
+                    ?>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle <?php echo $adminDropdownActive ? 'active' : ''; ?>"
+                            href="#" id="adminMenuDropdown" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">Administration</a>
+                        <ul class="dropdown-menu dropdown-menu-lg-end wtc-user-menu" aria-labelledby="adminMenuDropdown">
+                            <?php foreach ($adminMenuItems as $item): ?>
+                                <li>
+                                    <a class="dropdown-item wtc-user-menu__item <?php echo $current === $item['url'] ? 'active' : ''; ?>"
+                                        href="<?= htmlspecialchars($item['url']) ?>">
+                                        <i class="<?= htmlspecialchars($item['icon']) ?>"></i>
+                                        <?= htmlspecialchars($item['label']) ?>
+                                    </a>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
                     </li>
                 <?php endif; ?>
             </ul>
