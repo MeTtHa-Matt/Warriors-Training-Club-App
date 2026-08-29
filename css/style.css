@@ -251,8 +251,9 @@ h3,
   }
 
   .navbar-nav .nav-item.dropdown {
-    width: 100%;
-    display: flex;
+    width: auto;
+    display: inline-flex;
+    align-self: center;
     justify-content: center;
     position: relative;
   }
