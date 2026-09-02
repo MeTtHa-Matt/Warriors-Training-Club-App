@@ -66,6 +66,10 @@ include __DIR__ . "/includes/general/index-liens.php";
                     </div>
                     <script>
                     (async function(){
+                        function csrfToken() {
+                            const cookie = document.cookie.split('; ').find(entry => entry.startsWith('wtc_csrf='));
+                            return cookie ? decodeURIComponent(cookie.split('=')[1]) : '';
+                        }
                         try{
                             const res = await fetch('includes/seances/upcoming.php?limit=1', { headers: { Accept: 'application/json' }, credentials: 'same-origin', cache: 'no-store' });
                             if (res.status === 401) {
@@ -143,10 +147,12 @@ include __DIR__ . "/includes/general/index-liens.php";
                                 const prevText = inlineBtn.textContent;
                                 inlineBtn.textContent = 'Envoi...';
                                 try{
+                                    const token = csrfToken();
                                     const resp = await fetch('includes/seances/inscrire.php', {
                                         method: 'POST',
-                                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                                        body: JSON.stringify({ seance_id: s.id, mode: 'self' })
+                                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-Token': token },
+                                        credentials: 'same-origin',
+                                        body: JSON.stringify({ seance_id: s.id, mode: 'self', csrf_token: token })
                                     });
                                     if (resp.ok) {
                                         inlineBtn.textContent = 'Inscrit';
@@ -238,10 +244,12 @@ include __DIR__ . "/includes/general/index-liens.php";
                                             modalBtn.disabled = true;
                                             modalBtn.textContent = 'Envoi...';
                                             try{
+                                                const token = csrfToken();
                                                 const resp = await fetch('includes/seances/inscrire.php', {
                                                     method: 'POST',
-                                                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                                                    body: JSON.stringify({ seance_id: Number(id), mode: 'self' })
+                                                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-Token': token },
+                                                    credentials: 'same-origin',
+                                                    body: JSON.stringify({ seance_id: Number(id), mode: 'self', csrf_token: token })
                                                 });
                                                 if (resp.ok) {
                                                     modalBtn.textContent = 'Inscrit';
