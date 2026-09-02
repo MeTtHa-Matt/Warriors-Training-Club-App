@@ -64,6 +64,25 @@ warriors-training-club/
 
 ## 🌐 Pages publiques
 
+### IndexNow
+
+Le script `indexnow.php` envoie les URL du site à IndexNow. Il peut être appelé depuis la ligne de commande :
+
+```bash
+php indexnow.php https://warriors-training-club.judo-club-mormant.fr/index.php
+```
+
+Ou par POST JSON :
+
+```bash
+curl -X POST https://warriors-training-club.judo-club-mormant.fr/indexnow.php \
+	-H 'X-IndexNow-Token: votre-jeton-http' \
+	-H 'Content-Type: application/json' \
+	-d '{"urlList":["https://warriors-training-club.judo-club-mormant.fr/index.php"]}'
+```
+
+Pour l’appel HTTP, configurez aussi `INDEXNOW_HTTP_TOKEN`. La clé est lue dans `INDEXNOW_KEY` ou dans le fichier de clé placé à la racine du site. `INDEXNOW_SITE_URL` permet de remplacer `APP_BASE_URL` si nécessaire.
+
 | Page | Rôle |
 |---|---|
 | `index.php` | Accueil : présentation du club, horaires de saison, liens vers l'inscription et la boutique, documents de santé, carte de localisation, liens externes (HelloAsso, Market Factory) |
