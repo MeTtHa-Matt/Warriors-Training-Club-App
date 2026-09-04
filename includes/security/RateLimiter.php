@@ -35,17 +35,36 @@ class RateLimiter {
     }
 
     private static function loadLimits() {
-        if (!file_exists(self::STORAGE_FILE)) {
+        if (!is_file(self::STORAGE_FILE) || !is_readable(self::STORAGE_FILE)) {
             return [];
         }
 
-        $data = json_decode(file_get_contents(self::STORAGE_FILE), true);
+        $content = @file_get_contents(self::STORAGE_FILE);
+        if ($content === false) {
+            return [];
+        }
+
+        $data = json_decode($content, true);
         return is_array($data) ? $data : [];
     }
 
     private static function saveLimits($data) {
-        @mkdir(dirname(self::STORAGE_FILE), 0750, true);
-        file_put_contents(self::STORAGE_FILE, json_encode($data), LOCK_EX);
+        $directory = dirname(self::STORAGE_FILE);
+        if (!is_dir($directory) && !@mkdir($directory, 0750, true) && !is_dir($directory)) {
+            error_log('[RateLimiter] impossible de créer le répertoire de stockage: ' . $directory);
+            return;
+        }
+
+        if (!is_writable($directory)) {
+            error_log('[RateLimiter] répertoire de stockage non accessible en écriture: ' . $directory);
+            return;
+        }
+
+        if (@file_put_contents(self::STORAGE_FILE, json_encode($data), LOCK_EX) === false) {
+            error_log('[RateLimiter] impossible d’écrire le fichier de stockage: ' . self::STORAGE_FILE);
+            return;
+        }
+
         @chmod(self::STORAGE_FILE, 0640);
     }
 }
