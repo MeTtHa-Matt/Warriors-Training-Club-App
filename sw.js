@@ -1,4 +1,4 @@
-const CACHE_NAME = "wtc-cache-v14";
+const CACHE_NAME = "wtc-cache-v15";
 const BASE_PATH = self.location.pathname.replace(/\/sw\.js$/, "") || "/";
 const BASE_PREFIX = BASE_PATH === "/" ? "" : BASE_PATH;
 const PRECACHE_URLS = [

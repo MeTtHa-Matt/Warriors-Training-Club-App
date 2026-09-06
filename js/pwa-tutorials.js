@@ -1,26 +1,65 @@
-document.addEventListener('DOMContentLoaded', function(){
-    try{
-        var ua = navigator.userAgent || '';
-        var isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(ua);
-        if (!isMobile) return; // only mobile
+(function () {
+    var deferredPrompt = null;
 
-        var isBrowser = /Mozilla|Chrome|Safari|Firefox|CriOS|FxiOS/i.test(ua);
-        if (!isBrowser) return;
+    function addManifestLink() {
+        if (document.querySelector('link[rel="manifest"]')) return;
+        var link = document.createElement('link');
+        link.rel = 'manifest';
+        link.href = 'manifest.json';
+        document.head.appendChild(link);
+    }
 
-        var isInstalled = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || (window.navigator && window.navigator.standalone === true);
-        if (isInstalled) return;
+    function isInstalled() {
+        return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) ||
+            (window.navigator && window.navigator.standalone === true);
+    }
 
+    function isMobile() {
+        return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent || '');
+    }
+
+    function showPopup() {
         var popup = document.getElementById('pwa-install-popup');
-        if (!popup) return;
-        popup.style.display = 'flex';
+        if (popup && !isInstalled()) popup.style.display = 'flex';
+    }
 
-        document.getElementById('pwa-install-close').addEventListener('click', function(){
+    addManifestLink();
+
+    window.addEventListener('beforeinstallprompt', function (event) {
+        if (!isMobile()) return;
+        event.preventDefault();
+        deferredPrompt = event;
+        showPopup();
+    });
+
+    window.addEventListener('appinstalled', function () {
+        deferredPrompt = null;
+        var popup = document.getElementById('pwa-install-popup');
+        if (popup) popup.style.display = 'none';
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var popup = document.getElementById('pwa-install-popup');
+        var closeButton = document.getElementById('pwa-install-close');
+        var openButton = document.getElementById('pwa-install-open');
+        if (!popup || !closeButton || !openButton || isInstalled()) return;
+
+        closeButton.addEventListener('click', function () {
             popup.style.display = 'none';
         });
 
-        document.getElementById('pwa-install-open').addEventListener('click', function(){
-            // go to installer page
+        openButton.addEventListener('click', function () {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.finally(function () {
+                    deferredPrompt = null;
+                    popup.style.display = 'none';
+                });
+                return;
+            }
             window.location.href = 'tuto-install.php';
         });
-    }catch(e){ /* ignore errors */ }
-});
+
+        if (isMobile()) showPopup();
+    });
+}());
