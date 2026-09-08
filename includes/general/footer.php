@@ -44,16 +44,18 @@ if (session_status() === PHP_SESSION_NONE) {
 <button type="button" class="wtc-report-fab" data-bs-toggle="modal" data-bs-target="#reportHelpModal" aria-label="Signaler un problème" title="Signaler un problème">
     <i class="bi bi-exclamation-lg"></i>
 </button>
+<?php if (basename($_SERVER['SCRIPT_NAME'] ?? '') !== 'tuto-install.php'): ?>
 <div id="pwa-install-popup" style="display:none;position:fixed;inset:0;align-items:center;justify-content:center;background:rgba(0,0,0,0.45);z-index:2000;">
     <div style="max-width:520px;width:92%;background:#0b0b0b;color:var(--paper);border-radius:12px;padding:1.25rem;box-shadow:0 8px 30px rgba(0,0,0,0.6);">
         <h5 style="margin:0 0 0.5rem 0;">Installer la web app</h5>
         <p style="margin:0 0 1rem 0;color:var(--grey);">Installez Warriors Training Club sur votre appareil pour y accéder rapidement.</p>
         <div class="d-flex" style="gap:0.5rem;">
             <button id="pwa-install-close" class="btn btn-wtc-outline rounded-pill">Plus tard</button>
-            <button id="pwa-install-open" class="btn btn-wtc-gold rounded-pill ms-auto">Installer</button>
+            <button id="pwa-install-open" class="btn btn-wtc-gold rounded-pill ms-auto">Comment l'installer ?</button>
         </div>
     </div>
 </div>
+<?php endif; ?>
 <div class="modal fade wtc-modal" id="reportHelpModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content wtc-modal__content">
@@ -70,7 +72,7 @@ if (session_status() === PHP_SESSION_NONE) {
 </div>
 
 <script>
-const WTC_CACHE_BUST_VERSION = '2026090602';
+const WTC_CACHE_BUST_VERSION = '2026090801';
 const WTC_CACHE_BUSTER_KEY = 'wtc-cache-buster';
 
 if (window.localStorage && window.localStorage.getItem(WTC_CACHE_BUSTER_KEY) !== WTC_CACHE_BUST_VERSION) {
@@ -94,7 +96,7 @@ if ('serviceWorker' in navigator) {
     });
 }
 </script>
-<script src="js/pwa-tutorials.js?v=2026090602"></script>
+<script src="js/pwa-tutorials.js?v=2026090801"></script>
 <?php
 // Global session timeout modal and script included on every page when user is logged in
 if (!empty($_SESSION['user_id'])):

@@ -49,14 +49,6 @@
         });
 
         openButton.addEventListener('click', function () {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.finally(function () {
-                    deferredPrompt = null;
-                    popup.style.display = 'none';
-                });
-                return;
-            }
             window.location.href = 'tuto-install.php';
         });
 
