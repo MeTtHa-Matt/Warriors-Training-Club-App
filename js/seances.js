@@ -314,19 +314,13 @@
                     <span class="seance-detail__label">Lieu de rendez-vous</span>
                     <span class="seance-detail__value">${escapeHtml(s.lieu_rdv)}</span>
                 </div>
-                ${
-                  s.description
-                    ? `
-                <div class="seance-detail__row seance-detail__row--full">
-                    <span class="seance-detail__label">Descriptif</span>
-                    <p class="seance-detail__value">${escapeHtml(s.description)}</p>
-                </div>`
-                    : ""
-                }
             `;
 
       let actionsHtml = "";
       actionsHtml += `<button type="button" class="btn btn-wtc-outline rounded-pill" id="btnVoirInscrits">Voir les inscrits</button>`;
+      if (data.has_exercices) {
+        actionsHtml += `<button type="button" class="btn btn-wtc-gold rounded-pill" id="btnVoirExercices">Voir les exercices</button>`;
+      }
       if (data.is_creator) {
         actionsHtml += `<button type="button" class="btn btn-wtc-outline rounded-pill" id="btnModifierSeance">Modifier</button>`;
         actionsHtml += `<button type="button" class="btn btn-wtc-outline rounded-pill" id="btnSupprimerSeance" style="color: #d32f2f;">Supprimer</button>`;
@@ -343,6 +337,10 @@
       const btnVoirInscrits = document.getElementById("btnVoirInscrits");
       if (btnVoirInscrits)
         btnVoirInscrits.addEventListener("click", () => openInscrits(id));
+
+      const btnVoirExercices = document.getElementById("btnVoirExercices");
+      if (btnVoirExercices)
+        btnVoirExercices.addEventListener("click", () => openExercicesNote(id, false));
 
       if (data.is_creator) {
         const btnModifierSeance = document.getElementById("btnModifierSeance");
@@ -366,6 +364,58 @@
     } catch (e) {
       body.innerHTML =
         '<p class="seance-detail__loading">Impossible de charger cette séance.</p>';
+    }
+  }
+
+  async function openExercicesNote(id, editable, showModal = true) {
+    const note = document.getElementById("exercicesNote");
+    const alertBox = document.getElementById("exercicesAlert");
+    const saveButton = document.getElementById("btnEnregistrerExercices");
+    const title = document.getElementById("exercicesModalTitle");
+    note.value = "";
+    note.readOnly = !editable;
+    saveButton.style.display = editable ? "" : "none";
+    alertBox.style.display = "none";
+    title.textContent = editable ? "Ecrire une séance" : "Exercices de la séance";
+    if (showModal) getModal("exercicesModal").show();
+
+    try {
+      const data = await apiGet(`includes/seances/exercices.php?id=${id}`);
+      note.value = data.content || "";
+      if (editable) {
+        saveButton.onclick = async () => {
+          saveButton.disabled = true;
+          try {
+            await apiPost("includes/seances/exercices.php", {
+              id,
+              content: note.value,
+            });
+            showToast("La séance a bien été enregistrée.");
+          } catch (e) {
+            alertBox.textContent = "Impossible d'enregistrer la séance.";
+            alertBox.style.display = "";
+          } finally {
+            saveButton.disabled = false;
+          }
+        };
+      }
+    } catch (e) {
+      alertBox.textContent = "Impossible de charger la séance.";
+      alertBox.style.display = "";
+    }
+  }
+
+  async function openExerciseChooser() {
+    const select = document.getElementById("exercicesSeanceSelect");
+    select.innerHTML = '<option value="">Chargement des séances…</option>';
+    getModal("choixExercicesModal").show();
+    try {
+      const data = await apiGet("includes/seances/exercices.php");
+      select.innerHTML = data.seances.length
+        ? data.seances.map((s) => `<option value="${s.id}">${escapeHtml(formatDateFr(s.date_seance))} · ${escapeHtml(formatHeure(s.heure_debut))} · ${escapeHtml(s.type_seance)}</option>`).join("")
+        : '<option value="">Aucune séance disponible</option>';
+    } catch (e) {
+      select.innerHTML = '<option value="">Impossible de charger les séances</option>';
     }
   }
 
@@ -827,6 +877,21 @@
     });
   }
 
+  const btnEcrireSeance = document.getElementById("btnEcrireSeance");
+  if (btnEcrireSeance) {
+    btnEcrireSeance.addEventListener("click", openExerciseChooser);
+  }
+
+  const btnOuvrirNoteExercices = document.getElementById("btnOuvrirNoteExercices");
+  if (btnOuvrirNoteExercices) {
+    btnOuvrirNoteExercices.addEventListener("click", () => {
+      const id = parseInt(document.getElementById("exercicesSeanceSelect").value, 10);
+      if (!id) return;
+      switchModal("choixExercicesModal", "exercicesModal");
+      openExercicesNote(id, true, false);
+    });
+  }
+
   const formAjouterSeance = document.getElementById("formAjouterSeance");
   if (formAjouterSeance) {
     formAjouterSeance.addEventListener("submit", async (e) => {
@@ -847,7 +912,6 @@
         coach: document.getElementById("newCoach").value.trim(),
         lieu_seance: document.getElementById("newLieuSeance").value.trim(),
         lieu_rdv: document.getElementById("newLieuRdv").value.trim(),
-        description: document.getElementById("newDescription").value.trim(),
       };
 
       try {

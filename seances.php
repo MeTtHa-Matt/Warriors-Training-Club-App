@@ -55,6 +55,9 @@ $canManage = (int) ($_SESSION['gerer_seances'] ?? 0) === 1;
                         <button type="button" class="btn btn-wtc-gold rounded-pill" id="btnAjouterSeance">
                             <i class="bi bi-plus-lg me-1"></i>Ajouter une séance
                         </button>
+                        <button type="button" class="btn btn-wtc-outline rounded-pill" id="btnEcrireSeance">
+                            <i class="bi bi-pencil-square me-1"></i>Ecrire une séance
+                        </button>
                         <button type="button" class="btn btn-wtc-outline rounded-pill" id="btnTemplateManager"
                             data-bs-toggle="modal" data-bs-target="#templateManagerModal">
                             <i class="bi bi-diagram-3 me-1"></i>Appliquer un template
@@ -124,6 +127,51 @@ $canManage = (int) ($_SESSION['gerer_seances'] ?? 0) === 1;
                     <div class="seance-detail" id="seanceDetailBody"></div>
                 </div>
                 <div class="modal-footer wtc-modal__footer" id="seanceModalActions"></div>
+            </div>
+        </div>
+    </div>
+
+    <?php if ($canManage): ?>
+        <div class="modal fade wtc-modal" id="choixExercicesModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content wtc-modal__content">
+                    <div class="modal-header wtc-modal__header">
+                        <h5 class="modal-title">Ecrire une séance</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                            aria-label="Fermer"></button>
+                    </div>
+                    <div class="modal-body">
+                        <label for="exercicesSeanceSelect" class="form-label">Choisir la séance</label>
+                        <select class="form-select auth-input" id="exercicesSeanceSelect">
+                            <option value="">Chargement des séances…</option>
+                        </select>
+                        <button type="button" class="btn btn-wtc-gold rounded-pill w-100 mt-4" id="btnOuvrirNoteExercices">
+                            Ouvrir la note
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php endif; ?>
+
+    <div class="modal fade wtc-modal" id="exercicesModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content wtc-modal__content">
+                <div class="modal-header wtc-modal__header">
+                    <h5 class="modal-title" id="exercicesModalTitle">Exercices de la séance</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Fermer"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="exercicesAlert" class="auth-alert auth-alert--error" style="display:none;"></div>
+                    <textarea class="form-control auth-input" id="exercicesNote" rows="22"
+                        placeholder="Ecrivez les exercices de la séance…"></textarea>
+                </div>
+                <div class="modal-footer wtc-modal__footer">
+                    <button type="button" class="btn btn-wtc-gold rounded-pill" id="btnEnregistrerExercices" style="display:none;">
+                        Enregistrer
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -445,12 +493,6 @@ $canManage = (int) ($_SESSION['gerer_seances'] ?? 0) === 1;
                                     <label for="newLieuRdv" class="form-label">Lieu de rendez-vous</label>
                                     <input type="text" class="form-control auth-input" id="newLieuRdv" required
                                         maxlength="150">
-                                </div>
-                                <div class="col-12">
-                                    <label for="newDescription" class="form-label">Descriptif <span
-                                            class="auth-optional">(facultatif)</span></label>
-                                    <textarea class="form-control auth-input" id="newDescription" rows="3"
-                                        maxlength="2000"></textarea>
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-wtc-gold rounded-pill w-100 mt-4">Créer la séance</button>

@@ -43,7 +43,6 @@ $type = trim($input['type_seance'] ?? '');
 $coach = trim($input['coach'] ?? '');
 $lieuSeance = trim($input['lieu_seance'] ?? '');
 $lieuRdv = trim($input['lieu_rdv'] ?? '');
-$description = trim($input['description'] ?? '');
 
 if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date) || strtotime($date) === false) {
     $errors[] = "La date est invalide.";
@@ -77,8 +76,8 @@ if (!empty($errors)) {
 }
 
 $stmt = $pdo->prepare(
-    'INSERT INTO seances (date_seance, heure_debut, heure_fin, type_seance, coach, lieu_seance, lieu_rdv, description, created_by)
-     VALUES (:date_seance, :heure_debut, :heure_fin, :type_seance, :coach, :lieu_seance, :lieu_rdv, :description, :created_by)'
+    'INSERT INTO seances (date_seance, heure_debut, heure_fin, type_seance, coach, lieu_seance, lieu_rdv, created_by)
+     VALUES (:date_seance, :heure_debut, :heure_fin, :type_seance, :coach, :lieu_seance, :lieu_rdv, :created_by)'
 );
 $stmt->execute([
     'date_seance' => $date,
@@ -88,7 +87,6 @@ $stmt->execute([
     'coach' => $coach,
     'lieu_seance' => $lieuSeance,
     'lieu_rdv' => $lieuRdv,
-    'description' => $description !== '' ? $description : null,
     'created_by' => $_SESSION['user_id'],
 ]);
 

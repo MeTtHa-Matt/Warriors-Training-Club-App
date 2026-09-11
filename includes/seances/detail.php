@@ -58,6 +58,14 @@ $stmtHasInscriptions->execute([
 ]);
 $hasInscriptions = (int) $stmtHasInscriptions->fetch()['c'] > 0;
 
+$exercisesPath = __DIR__ . '/../../data/exercices.json';
+$exercisesData = is_file($exercisesPath)
+    ? json_decode(file_get_contents($exercisesPath) ?: '{}', true)
+    : [];
+$hasExercices = is_array($exercisesData)
+    && isset($exercisesData[(string) $id]['content'])
+    && trim((string) $exercisesData[(string) $id]['content']) !== '';
+
 echo json_encode([
     'seance' => $seance,
     'can_manage' => (int) ($_SESSION['gerer_seances'] ?? 0) === 1,
@@ -66,4 +74,5 @@ echo json_encode([
     'is_registered' => $isRegistered,
     'has_inscriptions' => $hasInscriptions,
     'registration_allowed' => $registrationAllowed,
+    'has_exercices' => $hasExercices,
 ]);
