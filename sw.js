@@ -1,4 +1,4 @@
-const CACHE_NAME = "wtc-cache-v16";
+const CACHE_NAME = "wtc-cache-v17";
 const BASE_PATH = self.location.pathname.replace(/\/sw\.js$/, "") || "/";
 const BASE_PREFIX = BASE_PATH === "/" ? "" : BASE_PATH;
 const PRECACHE_URLS = [
@@ -85,6 +85,15 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
+  if (isSameOrigin && requestURL.pathname.endsWith("/favicon.ico")) {
+    event.respondWith(
+      caches
+        .match(`${BASE_PREFIX}/img/wtc.png`, { ignoreSearch: true })
+        .then((response) => response || new Response(null, { status: 204 })),
+    );
+    return;
+  }
+
   if (
     isSameOrigin &&
     (event.request.destination === "style" ||
@@ -109,7 +118,7 @@ function cacheFirst(request) {
           cache.put(request, response.clone());
           return response;
         });
-      })
+      }).catch(() => Response.error())
     );
   });
 }
