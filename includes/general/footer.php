@@ -72,7 +72,7 @@ if (session_status() === PHP_SESSION_NONE) {
 </div>
 
 <script>
-const WTC_CACHE_BUST_VERSION = '2026090801';
+const WTC_CACHE_BUST_VERSION = '2026091401';
 const WTC_CACHE_BUSTER_KEY = 'wtc-cache-buster';
 
 if (window.localStorage && window.localStorage.getItem(WTC_CACHE_BUSTER_KEY) !== WTC_CACHE_BUST_VERSION) {
@@ -87,9 +87,9 @@ if (window.localStorage && window.localStorage.getItem(WTC_CACHE_BUSTER_KEY) !==
 
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        const basePath = window.location.pathname.replace(/\/[^\/]*$/, '') || '/';
-        const path = basePath === '/' ? './sw.js' : `${basePath}/sw.js`;
-        const scope = basePath === '/' ? './' : `${basePath}/`;
+        const serviceWorkerUrl = new URL('sw.js', window.location.href);
+        const scope = new URL('./', serviceWorkerUrl).pathname;
+        const path = serviceWorkerUrl.pathname;
         navigator.serviceWorker.register(path, { scope })
             .then(reg => console.log('WTC service worker registered:', reg.scope))
             .catch(err => console.warn('WTC service worker registration failed:', err));

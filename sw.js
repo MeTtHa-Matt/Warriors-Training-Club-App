@@ -1,6 +1,6 @@
 const CACHE_NAME = "wtc-cache-v17";
-const BASE_PATH = self.location.pathname.replace(/\/sw\.js$/, "") || "/";
-const BASE_PREFIX = BASE_PATH === "/" ? "" : BASE_PATH;
+const BASE_URL = new URL(".", self.location.href);
+const BASE_PREFIX = BASE_URL.pathname === "/" ? "" : BASE_URL.pathname.replace(/\/$/, "");
 const PRECACHE_URLS = [
   `${BASE_PREFIX}/css/bootstrap.min.css`,
   `${BASE_PREFIX}/js/bootstrap.bundle.min.js`,
@@ -25,7 +25,7 @@ self.addEventListener("install", (event) => {
   event.waitUntil(
     caches
       .open(CACHE_NAME)
-      .then((cache) => cache.addAll(PRECACHE_URLS))
+      .then((cache) => Promise.allSettled(PRECACHE_URLS.map((url) => cache.add(url))))
       .then(() => self.skipWaiting()),
   );
 });
@@ -114,6 +114,7 @@ function cacheFirst(request) {
     return (
       cached ||
       fetch(request, { cache: "no-store" }).then((response) => {
+        if (!response.ok) return response;
         return caches.open(CACHE_NAME).then((cache) => {
           cache.put(request, response.clone());
           return response;
