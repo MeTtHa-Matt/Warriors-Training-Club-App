@@ -37,6 +37,10 @@ $isLoggedIn = isset($_SESSION['user_id']);
                     <a class="nav-link <?php echo wtc_active('reglement-interieur.php', $current); ?>"
                         href="reglement-interieur.php">Règlement intérieur</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link <?php echo wtc_active('whatsapp.php', $current); ?>"
+                        href="whatsapp.php">Rejoindre le groupe WhatsApp</a>
+                </li>
                 <?php if ((int) ($_SESSION['admin'] ?? 0) === 1): ?>
                     <?php
                     $adminMenuItems = [
