@@ -104,5 +104,7 @@ try {
     error_log("Erreur enregistrement succès login: " . $e->getMessage());
 }
 
-header('Location: ../../index.php');
+$returnToGame = isset($_SESSION['ilyc_pending_score']) || !empty($_SESSION['ilyc_return_after_login']);
+unset($_SESSION['ilyc_return_after_login']);
+header('Location: ' . ($returnToGame ? '../../ilyc.php' : '../../index.php'));
 exit;

@@ -118,6 +118,25 @@ $stmt->execute([
     'verification_token_expires' => $verificationExpires,
 ]);
 
+if (isset($_SESSION['ilyc_pending_score'])) {
+    $pendingScore = filter_var($_SESSION['ilyc_pending_score'], FILTER_VALIDATE_INT);
+    if ($pendingScore !== false && $pendingScore >= 0 && $pendingScore <= 1000000) {
+        try {
+            $scoreStmt = $pdo->prepare(
+                'INSERT INTO ilyc_scores (account_id, score) VALUES (:account_id, :score)
+                 ON DUPLICATE KEY UPDATE
+                    updated_at = IF(VALUES(score) > score, CURRENT_TIMESTAMP, updated_at),
+                    score = GREATEST(score, VALUES(score))'
+            );
+            $scoreStmt->execute(['account_id' => (int) $pdo->lastInsertId(), 'score' => $pendingScore]);
+            unset($_SESSION['ilyc_pending_score']);
+        } catch (Throwable $e) {
+            error_log('[inscription] Impossible de rattacher le score invité: ' . $e->getMessage());
+        }
+        $_SESSION['ilyc_return_after_login'] = true;
+    }
+}
+
 $mailResult = sendVerificationEmail($email, $firstname, $verificationToken);
 
 if (!empty($mailResult['success'])) {

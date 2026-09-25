@@ -4,8 +4,28 @@ require_once __DIR__ . '/includes/general/session-config.php';
 $isLoggedIn = !empty($_SESSION['user_id']);
 $currentUserId = $isLoggedIn ? (int) $_SESSION['user_id'] : 0;
 $rankingAvailable = isset($pdo) && $pdo instanceof PDO && !empty($ilycScoresAvailable);
+$pendingScoreSaved = false;
 
-if (isset($_GET['ranking']) || isset($_GET['score'])) {
+if ($isLoggedIn && $rankingAvailable && isset($_SESSION['ilyc_pending_score'])) {
+  $pendingScore = filter_var($_SESSION['ilyc_pending_score'], FILTER_VALIDATE_INT);
+  if ($pendingScore !== false && $pendingScore >= 0 && $pendingScore <= 1000000) {
+    try {
+      $stmt = $pdo->prepare(
+        'INSERT INTO ilyc_scores (account_id, score) VALUES (:account_id, :score)
+         ON DUPLICATE KEY UPDATE
+          updated_at = IF(VALUES(score) > score, CURRENT_TIMESTAMP, updated_at),
+          score = GREATEST(score, VALUES(score))'
+      );
+      $stmt->execute(['account_id' => $currentUserId, 'score' => $pendingScore]);
+      unset($_SESSION['ilyc_pending_score']);
+      $pendingScoreSaved = true;
+    } catch (Throwable $e) {
+      error_log('[ilyc] Impossible de rattacher le score invité: ' . $e->getMessage());
+    }
+  }
+}
+
+if (isset($_GET['ranking']) || isset($_GET['score']) || isset($_GET['guest_score'])) {
   header('Content-Type: application/json; charset=utf-8');
   header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
 
@@ -15,13 +35,14 @@ if (isset($_GET['ranking']) || isset($_GET['score'])) {
     exit;
   }
 
-  if (isset($_GET['score'])) {
+  if (isset($_GET['score']) || isset($_GET['guest_score'])) {
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
       http_response_code(405);
       echo json_encode(['error' => 'method_not_allowed']);
       exit;
     }
-    if (!$isLoggedIn) {
+    $isGuestScore = isset($_GET['guest_score']);
+    if (!$isLoggedIn && !$isGuestScore) {
       http_response_code(401);
       echo json_encode(['error' => 'login_required']);
       exit;
@@ -39,6 +60,12 @@ if (isset($_GET['ranking']) || isset($_GET['score'])) {
     if ($score === false || $score < 0 || $score > 1000000) {
       http_response_code(400);
       echo json_encode(['error' => 'invalid_score']);
+      exit;
+    }
+
+    if ($isGuestScore) {
+      $_SESSION['ilyc_pending_score'] = max((int) ($_SESSION['ilyc_pending_score'] ?? 0), $score);
+      echo json_encode(['saved' => true, 'pending' => true]);
       exit;
     }
 
@@ -64,7 +91,7 @@ if (isset($_GET['ranking']) || isset($_GET['score'])) {
       'SELECT s.account_id, a.firstname, a.lastname, s.score, s.updated_at
        FROM ilyc_scores s
        INNER JOIN account_wtc a ON a.id = s.account_id
-       WHERE a.ban = 0
+      WHERE a.ban = 0 AND a.email_verified = 1
        ORDER BY s.score DESC, s.updated_at ASC, s.account_id ASC
        LIMIT 10'
     );
@@ -81,7 +108,7 @@ if (isset($_GET['ranking']) || isset($_GET['score'])) {
         $positionStmt = $pdo->prepare(
           'SELECT COUNT(*) + 1 FROM ilyc_scores s
            INNER JOIN account_wtc a ON a.id = s.account_id
-           WHERE a.ban = 0 AND (
+           WHERE a.ban = 0 AND a.email_verified = 1 AND (
             s.score > :score
             OR (s.score = :tie_score AND s.updated_at < :updated_at)
             OR (s.score = :id_score AND s.updated_at = :id_updated_at AND s.account_id < :account_id)
@@ -424,6 +451,10 @@ if (isset($_GET['ranking']) || isset($_GET['score'])) {
   .ranking-empty,.ranking-note{color:var(--phosphor-dim);font-size:10px;line-height:1.6}
   .ranking-note{margin:10px 0 0}
   .ranking-personal{margin-top:8px;padding-top:8px;border-top:1px solid var(--phosphor-dim);color:var(--amber);font-size:10px}
+  .guest-score-prompt{display:flex;flex-direction:column;align-items:center;gap:8px;width:100%;max-width:280px}
+  .guest-score-prompt[hidden]{display:none}
+  .guest-score-prompt .overlay-sub{font-size:10px}
+  .guest-score-prompt .btn,.guest-score-prompt .side-btn{width:100%}
 
   @media (min-width: 560px){
     .dpad{
@@ -450,7 +481,7 @@ if (isset($_GET['ranking']) || isset($_GET['score'])) {
   <section class="ranking" aria-labelledby="rankingTitle">
     <div class="ranking-head">
       <h2 class="ranking-title" id="rankingTitle">CLASSEMENT GLOBAL</h2>
-      <span class="ranking-status" id="rankingStatus" aria-live="polite">Connexion...</span>
+      <span class="ranking-status" id="rankingStatus" aria-live="polite"><?php echo $pendingScoreSaved ? 'Score ajouté au classement' : 'Connexion...'; ?></span>
     </div>
     <div class="ranking-list" id="rankingList" aria-live="polite">
       <div class="ranking-empty">Chargement des meilleurs scores...</div>
@@ -493,6 +524,14 @@ if (isset($_GET['ranking']) || isset($_GET['score'])) {
     <div class="overlay-msg" id="gameOverOverlay">
       <div class="overlay-title dead">GAME OVER</div>
       <div class="overlay-sub">Score final : <b id="finalScore">0</b></div>
+      <?php if (!$isLoggedIn): ?>
+        <div class="guest-score-prompt" id="guestScorePrompt" hidden>
+          <div class="overlay-sub">Connecte-toi pour enregistrer ton score dans le classement !</div>
+          <button class="btn" id="guestLoginBtn" type="button">SE CONNECTER</button>
+          <button class="side-btn" id="guestSignupBtn" type="button">CRÉER UN COMPTE</button>
+          <div class="ranking-status" id="guestScoreStatus" aria-live="polite"></div>
+        </div>
+      <?php endif; ?>
       <button class="btn" id="retryBtn">REJOUER</button>
     </div>
   </div>
@@ -537,6 +576,8 @@ if (isset($_GET['ranking']) || isset($_GET['score'])) {
   const rankingListEl = document.getElementById('rankingList');
   const rankingStatusEl = document.getElementById('rankingStatus');
   const rankingPersonalEl = document.getElementById('rankingPersonal');
+  const guestScorePromptEl = document.getElementById('guestScorePrompt');
+  const guestScoreStatusEl = document.getElementById('guestScoreStatus');
   const rankingCsrfToken = <?php echo json_encode($_SESSION['csrf_token'] ?? ''); ?>;
   const rankingCurrentUserId = <?php echo $currentUserId; ?>;
   let rankingRequestInFlight = false;
@@ -697,10 +738,30 @@ if (isset($_GET['ranking']) || isset($_GET['score'])) {
     finalScoreEl.textContent = score;
     saveBestScore();
     showOverlay(gameOverOverlay);
+    if(!rankingCurrentUserId){
+      guestScorePromptEl.hidden = false;
+      guestScoreStatusEl.textContent = 'Sauvegarde de ton score...';
+      storeGuestScore().then(() => {
+        guestScoreStatusEl.textContent = 'Score gardé pour ta connexion.';
+      }).catch(() => {
+        guestScoreStatusEl.textContent = 'Impossible de garder le score. Réessaie.';
+      });
+    }
+  }
+
+  function storeGuestScore(){
+    return fetch('ilyc.php?guest_score=1', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', 'X-CSRF-Token': rankingCsrfToken},
+      body: JSON.stringify({score})
+    }).then(response => {
+      if(!response.ok) throw new Error('guest_score_save_failed');
+      return response.json();
+    });
   }
 
   function saveBestScore(){
-    if(score <= 0) return;
+    if(score < 0) return;
     if(score > bestScore){
       bestScore = score;
       localStorage.setItem('ilycBestScore', String(bestScore));
@@ -848,6 +909,18 @@ if (isset($_GET['ranking']) || isset($_GET['score'])) {
   // ---------- Buttons ----------
   document.getElementById('startBtn').addEventListener('click', startGame);
   document.getElementById('retryBtn').addEventListener('click', startGame);
+  if(guestScorePromptEl){
+    const continueToAuth = (destination) => {
+      guestScoreStatusEl.textContent = 'Sauvegarde de ton score...';
+      storeGuestScore().then(() => {
+        window.location.href = destination;
+      }).catch(() => {
+        guestScoreStatusEl.textContent = 'Impossible de garder le score. Réessaie.';
+      });
+    };
+    document.getElementById('guestLoginBtn').addEventListener('click', () => continueToAuth('connexion.php'));
+    document.getElementById('guestSignupBtn').addEventListener('click', () => continueToAuth('inscription.php'));
+  }
   document.getElementById('resumeBtn').addEventListener('click', togglePause);
   document.getElementById('pauseBtn').addEventListener('click', togglePause);
   document.getElementById('restartBtn').addEventListener('click', startGame);

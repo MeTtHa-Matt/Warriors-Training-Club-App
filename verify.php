@@ -40,7 +40,23 @@ if (!empty($account['verification_token_expires']) && strtotime($account['verifi
 
 $pdo->prepare('UPDATE account_wtc SET email_verified = 1, verification_token = NULL, verification_token_expires = NULL WHERE id = :id')->execute(['id' => $account['id']]);
 
-$_SESSION['success'] = 'Votre adresse email a bien été vérifiée. Vous pouvez maintenant vous connecter.';
+$hasGameScore = !empty($_SESSION['ilyc_return_after_login']);
+if (!$hasGameScore) {
+    try {
+        $scoreStmt = $pdo->prepare('SELECT 1 FROM ilyc_scores WHERE account_id = :account_id LIMIT 1');
+        $scoreStmt->execute(['account_id' => $account['id']]);
+        $hasGameScore = (bool) $scoreStmt->fetchColumn();
+    } catch (Throwable $e) {
+        error_log('[verify] Impossible de vérifier le score du jeu: ' . $e->getMessage());
+    }
+}
+
+if ($hasGameScore) {
+    $_SESSION['ilyc_return_after_login'] = true;
+    $_SESSION['success'] = 'Adresse vérifiée. Connecte-toi pour revenir au jeu et retrouver ton score dans le classement.';
+} else {
+    $_SESSION['success'] = 'Votre adresse email a bien été vérifiée. Vous pouvez maintenant vous connecter.';
+}
 header('Location: connexion.php');
 exit;
 
