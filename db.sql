@@ -21,6 +21,14 @@ CREATE TABLE IF NOT EXISTS account_wtc (
 
 INSERT INTO account_wtc (firstname, lastname, email, `password`, admin, gerer_seances, email_verified) VALUES ("admin", "admin", "admin@admin.fr", "$2y$10$jgqlubHdvwg7cTs1V6C/a.RX92qQhmYV7wLzDMEA7K00g9zluuJmq", 1, 1, 1), ("Freddy", "admin", "freddy@admin.fr", "$2y$10$.DLWGa0n5s/Vxs5E/5Oz6u97tkyZedYFgGMyFAK34Qkxn1q.hUng2", 1, 1, 1);
 
+CREATE TABLE IF NOT EXISTS ilyc_scores (
+    account_id INT NOT NULL PRIMARY KEY,
+    score INT UNSIGNED NOT NULL DEFAULT 0,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_ilyc_scores_account FOREIGN KEY (account_id) REFERENCES account_wtc(id) ON DELETE CASCADE,
+    INDEX idx_ilyc_scores_ranking (score, updated_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 CREATE TABLE IF NOT EXISTS seance_templates (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,

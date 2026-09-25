@@ -115,8 +115,31 @@ if (!class_exists('AuditPDO', false)) {
     }
 }
 
+$ilycScoresAvailable = false;
+
 try {
     $pdo = new AuditPDO("mysql:host={$host};port={$port};dbname={$dbname};charset=utf8", $username, $password);
+
+    try {
+        $pdo->exec(
+            'CREATE TABLE IF NOT EXISTS ilyc_scores (
+                account_id INT NOT NULL PRIMARY KEY,
+                score INT UNSIGNED NOT NULL DEFAULT 0,
+                updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                CONSTRAINT fk_ilyc_scores_account FOREIGN KEY (account_id) REFERENCES account_wtc(id) ON DELETE CASCADE,
+                INDEX idx_ilyc_scores_ranking (score, updated_at)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4'
+        );
+        $ilycScoresAvailable = true;
+    } catch (Throwable $e) {
+        try {
+            $pdo->query('SELECT 1 FROM ilyc_scores LIMIT 1');
+            $ilycScoresAvailable = true;
+        } catch (Throwable $tableError) {
+            appendDbAuditLog('schema_migration_error', $tableError->getMessage(), [], 'db.php:ilyc_scores', 'error');
+            error_log('[db.php] Impossible de préparer la table ilyc_scores: ' . $tableError->getMessage());
+        }
+    }
 
     try {
         $columnsStmt = $pdo->query("SHOW COLUMNS FROM account_wtc LIKE 'last_seen'");

@@ -1,3 +1,118 @@
+<?php
+require_once __DIR__ . '/includes/general/session-config.php';
+
+$isLoggedIn = !empty($_SESSION['user_id']);
+$currentUserId = $isLoggedIn ? (int) $_SESSION['user_id'] : 0;
+$rankingAvailable = isset($pdo) && $pdo instanceof PDO && !empty($ilycScoresAvailable);
+
+if (isset($_GET['ranking']) || isset($_GET['score'])) {
+  header('Content-Type: application/json; charset=utf-8');
+  header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+
+  if (!$rankingAvailable) {
+    http_response_code(503);
+    echo json_encode(['error' => 'ranking_unavailable']);
+    exit;
+  }
+
+  if (isset($_GET['score'])) {
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+      http_response_code(405);
+      echo json_encode(['error' => 'method_not_allowed']);
+      exit;
+    }
+    if (!$isLoggedIn) {
+      http_response_code(401);
+      echo json_encode(['error' => 'login_required']);
+      exit;
+    }
+
+    $csrfToken = $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '';
+    if (!isset($_SESSION['csrf_token']) || !is_string($csrfToken) || !hash_equals($_SESSION['csrf_token'], $csrfToken)) {
+      http_response_code(403);
+      echo json_encode(['error' => 'csrf_failed']);
+      exit;
+    }
+
+    $input = json_decode(file_get_contents('php://input'), true);
+    $score = filter_var($input['score'] ?? null, FILTER_VALIDATE_INT);
+    if ($score === false || $score < 0 || $score > 1000000) {
+      http_response_code(400);
+      echo json_encode(['error' => 'invalid_score']);
+      exit;
+    }
+
+    try {
+      $stmt = $pdo->prepare(
+        'INSERT INTO ilyc_scores (account_id, score) VALUES (:account_id, :score)
+         ON DUPLICATE KEY UPDATE
+          updated_at = IF(VALUES(score) > score, CURRENT_TIMESTAMP, updated_at),
+          score = GREATEST(score, VALUES(score))'
+      );
+      $stmt->execute(['account_id' => $currentUserId, 'score' => $score]);
+      echo json_encode(['saved' => true]);
+    } catch (Throwable $e) {
+      error_log('[ilyc] Impossible d’enregistrer un score: ' . $e->getMessage());
+      http_response_code(500);
+      echo json_encode(['error' => 'score_save_failed']);
+    }
+    exit;
+  }
+
+  try {
+    $stmt = $pdo->query(
+      'SELECT s.account_id, a.firstname, a.lastname, s.score, s.updated_at
+       FROM ilyc_scores s
+       INNER JOIN account_wtc a ON a.id = s.account_id
+       WHERE a.ban = 0
+       ORDER BY s.score DESC, s.updated_at ASC, s.account_id ASC
+       LIMIT 10'
+    );
+    $entries = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $currentRank = null;
+    $currentScore = null;
+
+    if ($isLoggedIn) {
+      $rankStmt = $pdo->prepare('SELECT score, updated_at FROM ilyc_scores WHERE account_id = :account_id');
+      $rankStmt->execute(['account_id' => $currentUserId]);
+      $personalScore = $rankStmt->fetch(PDO::FETCH_ASSOC);
+      if ($personalScore !== false) {
+        $currentScore = (int) $personalScore['score'];
+        $positionStmt = $pdo->prepare(
+          'SELECT COUNT(*) + 1 FROM ilyc_scores s
+           INNER JOIN account_wtc a ON a.id = s.account_id
+           WHERE a.ban = 0 AND (
+            s.score > :score
+            OR (s.score = :tie_score AND s.updated_at < :updated_at)
+            OR (s.score = :id_score AND s.updated_at = :id_updated_at AND s.account_id < :account_id)
+           )'
+        );
+        $positionStmt->execute([
+          'score' => $currentScore,
+          'tie_score' => $currentScore,
+          'updated_at' => $personalScore['updated_at'],
+          'id_score' => $currentScore,
+          'id_updated_at' => $personalScore['updated_at'],
+          'account_id' => $currentUserId,
+        ]);
+        $currentRank = (int) $positionStmt->fetchColumn();
+      }
+    }
+
+    echo json_encode([
+      'entries' => $entries,
+      'current_rank' => $currentRank,
+      'current_score' => $currentScore,
+      'updated_at' => date(DATE_ATOM),
+    ], JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE);
+  } catch (Throwable $e) {
+    error_log('[ilyc] Impossible de lire le classement: ' . $e->getMessage());
+    http_response_code(500);
+    echo json_encode(['error' => 'ranking_load_failed']);
+  }
+  exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -29,7 +144,7 @@
     color: var(--ink);
     font-family: var(--font-mono);
     overscroll-behavior: none;
-    touch-action: none;
+    touch-action: pan-y;
     user-select: none;
   }
 
@@ -39,6 +154,7 @@
     align-items:center;
     min-height:100vh;
     min-height:100dvh;
+    height:auto;
     padding: 14px 12px calc(14px + env(safe-area-inset-bottom));
     gap: 12px;
     background:
@@ -134,6 +250,7 @@
     width: 100%;
     max-width: 480px;
     aspect-ratio: 1 / 1;
+    touch-action: none;
     background: var(--bg-panel);
     border: 2px solid var(--phosphor-dim);
     box-shadow:
@@ -262,6 +379,52 @@
     max-width: 480px;
   }
 
+  .ranking{
+    width:100%;
+    max-width:480px;
+    background:var(--bg-panel);
+    border:1px solid var(--phosphor-dim);
+    padding:12px;
+  }
+  .ranking-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    margin-bottom:10px;
+  }
+  .ranking-title{
+    margin:0;
+    color:var(--phosphor);
+    font:10px var(--font-display);
+  }
+  .ranking-status{
+    color:var(--phosphor-dim);
+    font-size:9px;
+  }
+  .ranking-list{
+    display:grid;
+    gap:4px;
+  }
+  .ranking-row{
+    display:grid;
+    grid-template-columns:32px minmax(0,1fr) auto;
+    align-items:center;
+    gap:8px;
+    min-height:32px;
+    padding:4px 6px;
+    border-bottom:1px solid rgba(28,107,69,.35);
+    font-size:11px;
+  }
+  .ranking-row:last-child{border-bottom:0}
+  .ranking-rank{color:var(--amber);text-align:center}
+  .ranking-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .ranking-score{color:var(--phosphor);font-weight:700}
+  .ranking-row.is-current{background:rgba(61,255,154,.08)}
+  .ranking-empty,.ranking-note{color:var(--phosphor-dim);font-size:10px;line-height:1.6}
+  .ranking-note{margin:10px 0 0}
+  .ranking-personal{margin-top:8px;padding-top:8px;border-top:1px solid var(--phosphor-dim);color:var(--amber);font-size:10px}
+
   @media (min-width: 560px){
     .dpad{
       grid-template-columns: 58px 58px 58px;
@@ -283,6 +446,20 @@
     <div class="title">SNAKE_.EXE</div>
     <div class="subtitle">terminal edition</div>
   </header>
+
+  <section class="ranking" aria-labelledby="rankingTitle">
+    <div class="ranking-head">
+      <h2 class="ranking-title" id="rankingTitle">CLASSEMENT GLOBAL</h2>
+      <span class="ranking-status" id="rankingStatus" aria-live="polite">Connexion...</span>
+    </div>
+    <div class="ranking-list" id="rankingList" aria-live="polite">
+      <div class="ranking-empty">Chargement des meilleurs scores...</div>
+    </div>
+    <div class="ranking-personal" id="rankingPersonal" hidden></div>
+    <?php if (!$isLoggedIn): ?>
+      <p class="ranking-note">Connecte-toi pour enregistrer ton meilleur score dans le classement du club.</p>
+    <?php endif; ?>
+  </section>
 
   <div class="scoreboard">
     <div class="score-box">
@@ -334,7 +511,7 @@
     </div>
   </div>
 
-  <footer>SWIPE • FLÈCHES • PAVÉ TACTILE — AUCUNE DONNÉE SAUVEGARDÉE ENTRE SESSIONS</footer>
+  <footer>SWIPE • FLÈCHES • PAVÉ TACTILE</footer>
 
 <script>
 (function(){
@@ -356,7 +533,13 @@
   const pauseOverlay = document.getElementById('pauseOverlay');
   const gameOverOverlay = document.getElementById('gameOverOverlay');
 
-  let bestScore = 0;
+  let bestScore = Number(localStorage.getItem('ilycBestScore') || 0);
+  const rankingListEl = document.getElementById('rankingList');
+  const rankingStatusEl = document.getElementById('rankingStatus');
+  const rankingPersonalEl = document.getElementById('rankingPersonal');
+  const rankingCsrfToken = <?php echo json_encode($_SESSION['csrf_token'] ?? ''); ?>;
+  const rankingCurrentUserId = <?php echo $currentUserId; ?>;
+  let rankingRequestInFlight = false;
 
   // ---------- Game state ----------
   let snake, dir, nextDir, food, score, speedLevel, tickMs, timer, running, paused;
@@ -512,7 +695,78 @@
     running = false;
     clearInterval(timer);
     finalScoreEl.textContent = score;
+    saveBestScore();
     showOverlay(gameOverOverlay);
+  }
+
+  function saveBestScore(){
+    if(score <= 0) return;
+    if(score > bestScore){
+      bestScore = score;
+      localStorage.setItem('ilycBestScore', String(bestScore));
+      updateHud();
+    }
+    if(!rankingCurrentUserId) return;
+
+    fetch('ilyc.php?score=1', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', 'X-CSRF-Token': rankingCsrfToken},
+      body: JSON.stringify({score})
+    }).then(response => {
+      if(!response.ok) throw new Error('score_save_failed');
+      refreshRanking();
+    }).catch(() => {
+      rankingStatusEl.textContent = 'Score non synchronisé';
+    });
+  }
+
+  function refreshRanking(){
+    if(rankingRequestInFlight) return;
+    rankingRequestInFlight = true;
+    fetch('ilyc.php?ranking=1', {cache: 'no-store'})
+      .then(response => {
+        if(!response.ok) throw new Error('ranking_load_failed');
+        return response.json();
+      })
+      .then(data => {
+        rankingListEl.replaceChildren();
+        if(data.entries.length === 0){
+          const empty = document.createElement('div');
+          empty.className = 'ranking-empty';
+          empty.textContent = 'Aucun score enregistré. Lance la première partie.';
+          rankingListEl.append(empty);
+        } else {
+          data.entries.forEach((entry, index) => {
+            const row = document.createElement('div');
+            row.className = 'ranking-row' + (Number(entry.account_id) === rankingCurrentUserId ? ' is-current' : '');
+            const rank = document.createElement('span');
+            rank.className = 'ranking-rank';
+            rank.textContent = String(index + 1).padStart(2, '0');
+            const name = document.createElement('span');
+            name.className = 'ranking-name';
+            name.textContent = entry.firstname + ' ' + entry.lastname;
+            const points = document.createElement('span');
+            points.className = 'ranking-score';
+            points.textContent = Number(entry.score).toLocaleString('fr-FR');
+            row.append(rank, name, points);
+            rankingListEl.append(row);
+          });
+        }
+        if(data.current_rank === null){
+          rankingPersonalEl.hidden = !rankingCurrentUserId;
+          if(rankingCurrentUserId){
+            rankingPersonalEl.textContent = 'Pas encore classé · termine une partie pour apparaître ici';
+          }
+        } else {
+          rankingPersonalEl.hidden = false;
+          rankingPersonalEl.textContent = 'Ta position : #' + data.current_rank + ' · meilleur score : ' + Number(data.current_score).toLocaleString('fr-FR');
+        }
+        rankingStatusEl.textContent = 'Mis à jour à l’instant';
+      })
+      .catch(() => {
+        rankingStatusEl.textContent = 'Classement indisponible';
+      })
+      .finally(() => { rankingRequestInFlight = false; });
   }
 
   function togglePause(){
@@ -602,6 +856,11 @@
   resetState();
   resizeCanvas();
   draw();
+  refreshRanking();
+  setInterval(refreshRanking, 5000);
+  document.addEventListener('visibilitychange', () => {
+    if(!document.hidden) refreshRanking();
+  });
 
   // gentle idle animation of food while on start screen
   setInterval(() => { if(!running) draw(); }, 100);
