@@ -57,6 +57,27 @@ if (!isset($_SESSION['created_at'])) {
     $_SESSION['created_at'] = time();
 }
 
+if (empty($_SESSION['user_id'])) {
+    require_once __DIR__ . '/persistent-auth.php';
+    try {
+        $tokenManager = new PersistentToken($pdo);
+        $userData = $tokenManager->validate();
+        if ($userData) {
+            $_SESSION['user_id'] = (int) $userData['id'];
+            $_SESSION['firstname'] = $userData['firstname'];
+            $_SESSION['lastname'] = $userData['lastname'];
+            $_SESSION['email'] = $userData['email'];
+            $_SESSION['pdp'] = $userData['pdp'];
+            $_SESSION['admin'] = (int) $userData['admin'];
+            $_SESSION['gerer_seances'] = (int) $userData['gerer_seances'];
+            $_SESSION['ban'] = (int) $userData['ban'];
+            $_SESSION['created_at'] = time();
+        }
+    } catch (Throwable $e) {
+        error_log('[session-config] impossible de restaurer la session persistante: ' . $e->getMessage());
+    }
+}
+
 if (!empty($_SESSION['user_id'])) {
     try {
         $sessionUserId = (int) $_SESSION['user_id'];

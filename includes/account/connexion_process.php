@@ -62,6 +62,8 @@ if (empty($errors)) {
                 LoginAttemptThrottler::recordFailedAttempt($email, $clientIp);
             }
         }
+    } catch (LoginThrottledException $e) {
+        $errors[] = $e->getMessage();
     } catch (Exception $e) {
         error_log("Erreur throttling login: " . $e->getMessage());
         $errors[] = "Une erreur est survenue. Réessaie plus tard.";
@@ -89,7 +91,12 @@ $_SESSION['ban'] = (int) $account['ban'];
 $_SESSION['created_at'] = time();
 
 $tokenManager = new PersistentToken($pdo);
-$tokenManager->create($account['id']);
+if (isset($_POST['remember_me']) && $_POST['remember_me'] === '1') {
+    $tokenManager->clearCurrentToken();
+    $tokenManager->create($account['id']);
+} else {
+    $tokenManager->clearCurrentToken();
+}
 // Record successful login
 try {
     LoginAttemptThrottler::recordSuccessfulLogin($email);

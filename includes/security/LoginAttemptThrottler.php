@@ -21,14 +21,22 @@ class LoginAttemptThrottler {
 
         $recentAttempts = count($attempts);
 
-        if ($recentAttempts > 0) {
+        $attemptThreshold = 0;
+        $lockoutLevel = 0;
+        foreach (self::THROTTLING_CONFIG as $level => $config) {
+            $attemptThreshold += $config['max_attempts'];
+            if ($recentAttempts >= $attemptThreshold) {
+                $lockoutLevel = $level;
+            }
+        }
+
+        if ($lockoutLevel > 0) {
             $lastAttempt = end($attempts);
-            $lockoutLevel = min(4, ceil($recentAttempts / 3));
             $lockoutDuration = self::THROTTLING_CONFIG[$lockoutLevel]['lockout_seconds'];
 
             if ($lastAttempt['timestamp'] + $lockoutDuration > time()) {
                 $remainingSeconds = ($lastAttempt['timestamp'] + $lockoutDuration) - time();
-                throw new Exception(
+                throw new LoginThrottledException(
                     "Compte temporairement verrouillé. Réessayez dans " . ceil($remainingSeconds / 60) . " minutes."
                 );
             }
@@ -108,5 +116,9 @@ class LoginAttemptThrottler {
         file_put_contents(self::STORAGE_PATH, json_encode($data), LOCK_EX);
         @chmod(self::STORAGE_PATH, 0640);
     }
+}
+
+class LoginThrottledException extends RuntimeException
+{
 }
 ?>

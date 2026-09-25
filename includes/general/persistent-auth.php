@@ -110,11 +110,26 @@ class PersistentToken
                 'expires' => time() + $this->tokenDuration,
                 'path' => '/',
                 'domain' => '',
-                'secure' => true,
+                'secure' => $this->isSecureRequest(),
                 'httponly' => true,
-                'samesite' => 'Strict'
+                'samesite' => 'Lax'
             ]
         );
+    }
+
+    public function clearCurrentToken()
+    {
+        $token = $_COOKIE[$this->tokenCookieName] ?? null;
+        if ($token && !empty($this->pdo)) {
+            try {
+                $stmt = $this->pdo->prepare('DELETE FROM persistent_tokens WHERE token = ?');
+                $stmt->execute([hash('sha256', $token)]);
+            } catch (Exception $e) {
+                error_log("Erreur suppression du token courant: " . $e->getMessage());
+            }
+        }
+
+        $this->clearToken();
     }
     
     public function clear()
@@ -141,12 +156,18 @@ class PersistentToken
                 'expires' => time() - 3600,
                 'path' => '/',
                 'domain' => '',
-                'secure' => true,
+                'secure' => $this->isSecureRequest(),
                 'httponly' => true,
-                'samesite' => 'Strict'
+                'samesite' => 'Lax'
             ]
         );
         unset($_COOKIE[$this->tokenCookieName]);
+    }
+
+    private function isSecureRequest()
+    {
+        return (!empty($_SERVER['HTTPS']) && strtolower((string) $_SERVER['HTTPS']) !== 'off')
+            || (!empty($_SERVER['SERVER_PORT']) && (int) $_SERVER['SERVER_PORT'] === 443);
     }
 
     public function cleanupExpired()

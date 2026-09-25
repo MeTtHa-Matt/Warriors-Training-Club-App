@@ -75,6 +75,13 @@ unset($_SESSION['errors'], $_SESSION['old'], $_SESSION['success']);
                             <input type="password" class="form-control auth-input" id="password" name="password"
                                 required>
                         </div>
+                        <div class="col-12">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="remember_me"
+                                    name="remember_me" value="1" checked>
+                                <label class="form-check-label" for="remember_me">Se souvenir de moi pendant 30 jours</label>
+                            </div>
+                        </div>
                     </div>
 
                     <button type="submit" class="btn btn-wtc-gold rounded-pill w-100 mt-4">Se connecter</button>
