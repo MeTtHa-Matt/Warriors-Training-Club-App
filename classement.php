@@ -41,7 +41,7 @@ $maxPhotoTotalLabel = $formatMegabytes($maxPhotoTotalBytes);
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css?v=202607102000">
-    <link rel="stylesheet" href="css/classement.css?v=7">
+    <link rel="stylesheet" href="css/classement.css?v=8">
     <link rel="manifest" href="./manifest.json">
     <link rel="icon" type="image/png" sizes="any" href="./img/wtc.png">
     <link rel="apple-touch-icon" sizes="180x180" href="./img/wtc.png">
@@ -106,20 +106,17 @@ $maxPhotoTotalLabel = $formatMegabytes($maxPhotoTotalBytes);
                 <div class="ranking-drawer__header">
                     <p class="eyebrow">Tableau des performances</p>
                     <h1 id="categoryTitle">Classement</h1>
-                    <p class="ranking-category-meta" id="categoryMeta"></p>
                 </div>
                 <div class="ranking-podium" id="podium" aria-label="Podium des trois meilleures performances"></div>
                 <div class="ranking-table-wrap">
                     <div class="ranking-table-heading">
                         <h2 id="recordListTitle">Toutes les performances</h2>
-                        <span id="recordCount"></span>
                     </div>
                     <ol class="ranking-record-list" id="recordList" aria-live="polite"></ol>
                 </div>
                 <section class="ranking-subcategory-section" id="subcategorySection" hidden>
                     <div class="ranking-subcategory-heading">
                         <div>
-                            <p class="eyebrow">Épreuves détaillées</p>
                             <h2>Sous-catégories</h2>
                         </div>
                     </div>
@@ -158,9 +155,7 @@ $maxPhotoTotalLabel = $formatMegabytes($maxPhotoTotalBytes);
                     <fieldset class="ranking-time-fieldset">
                         <legend class="ranking-label">Temps réalisé</legend>
                         <div class="ranking-time-inputs">
-                            <label><span>Heures</span><input class="form-control ranking-input" name="hours" type="number" min="0" max="99" value="0" inputmode="numeric" required></label>
-                            <label><span>Minutes</span><input class="form-control ranking-input" name="minutes" type="number" min="0" max="59" value="0" inputmode="numeric" required></label>
-                            <label><span>Secondes</span><input class="form-control ranking-input" name="seconds" type="number" min="0" max="59" value="0" inputmode="numeric" required></label>
+                            <label for="performanceTime"><span>Heures, minutes et secondes</span><input class="form-control ranking-input" id="performanceTime" name="performance_time" type="time" step="1" value="00:00:00" required></label>
                         </div>
                     </fieldset>
 

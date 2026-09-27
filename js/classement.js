@@ -375,7 +375,6 @@ document.addEventListener('DOMContentLoaded', () => {
         setDrawerOpen(true);
         if (enteringSubcategory) drawer.scrollTop = 0;
         document.getElementById('categoryTitle').textContent = 'Chargement…';
-        document.getElementById('categoryMeta').textContent = '';
         document.getElementById('podium').innerHTML = '<div class="ranking-podium__empty">Chargement des performances…</div>';
         document.getElementById('recordList').replaceChildren();
         if (updateHistory) {
@@ -411,8 +410,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderCategory(category, records, data) {
         document.getElementById('categoryTitle').textContent = category.name;
-        const totalCount = Number(data.total_count) || 0;
-        document.getElementById('categoryMeta').textContent = `${totalCount} performance${totalCount === 1 ? '' : 's'} enregistrée${totalCount === 1 ? '' : 's'}`;
         const hasSubcategories = !activeSubcategoryId && activeSubcategories.length > 0;
         subcategorySection.hidden = Boolean(activeSubcategoryId) || !hasSubcategories;
         renderSubcategories(activeSubcategories);
@@ -420,12 +417,9 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('.ranking-back span').textContent = activeSubcategoryId
             ? (data.parent_category?.name || 'Catégorie')
             : 'Classements';
-        document.getElementById('recordListTitle').textContent = activeSubcategoryId
-            ? 'Toutes les performances'
-            : hasSubcategories ? 'Mentions honorables (4e et 5e)' : 'Toutes les performances';
-        document.getElementById('recordCount').textContent = hasSubcategories
-            ? `${records.length} sur ${totalCount} meilleures performances`
-            : `${totalCount} résultat${totalCount === 1 ? '' : 's'}`;
+        const recordHeading = document.querySelector('.ranking-table-heading');
+        recordHeading.hidden = hasSubcategories;
+        document.getElementById('recordListTitle').textContent = 'Toutes les performances';
         renderPodium(records);
         renderRecordList(records.slice(3), 3);
     }
@@ -507,15 +501,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderRecordList(records, startingRank = 3) {
         const list = document.getElementById('recordList');
         list.replaceChildren();
-        if (!records.length) {
-            const empty = document.createElement('li');
-            empty.className = 'ranking-message';
-            empty.textContent = startingRank === 3
-                ? 'Les performances suivantes apparaîtront ici.'
-                : 'Aucun temps à afficher pour le moment.';
-            list.append(empty);
-            return;
-        }
+        if (!records.length) return;
 
         records.forEach((record, index) => {
             const item = document.createElement('li');
@@ -595,7 +581,7 @@ document.addEventListener('DOMContentLoaded', () => {
             deleteButton.innerHTML = '<i class="bi bi-trash3 me-1" aria-hidden="true"></i>Supprimer';
             footer.prepend(deleteButton);
         }
-        if (Number(record.user_id) === currentUserId) {
+        if ((record.participants || []).some(participant => Number(participant.user_id) === currentUserId)) {
             const removeButton = document.createElement('button');
             removeButton.className = 'btn btn-wtc-outline me-auto';
             removeButton.type = 'button';
@@ -728,13 +714,18 @@ document.addEventListener('DOMContentLoaded', () => {
             setPhotoError(`Ajoute jusqu’à ${maxPhotoCount} photos, dans les limites affichées.`);
             return;
         }
-        const hours = Number(formData.get('hours'));
-        const minutes = Number(formData.get('minutes'));
-        const seconds = Number(formData.get('seconds'));
+        const durationParts = String(formData.get('performance_time') || '').split(':').map(Number);
+        const hours = durationParts[0] || 0;
+        const minutes = durationParts[1] || 0;
+        const seconds = durationParts[2] || 0;
         if (hours * 3600 + minutes * 60 + seconds <= 0) {
             setPhotoError('Le temps doit être supérieur à zéro.');
             return;
         }
+        formData.delete('performance_time');
+        formData.set('hours', String(hours));
+        formData.set('minutes', String(minutes));
+        formData.set('seconds', String(seconds));
         selectedPhotos.forEach(file => formData.append('photos[]', file, file.name));
         formData.set('action', 'create_record');
         formData.set('category_id', activeCategoryId || '');

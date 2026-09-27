@@ -276,6 +276,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         classementRespond(['error' => 'Cette catégorie n’existe plus.'], 404);
     }
     $category['subcategories'] = array_values($category['subcategories'] ?? []);
+    foreach ($category['subcategories'] as &$subcategory) {
+        $subcategory['record_count'] = count(array_filter($data['records'], static fn($record) =>
+            (string) ($record['category_id'] ?? '') === $categoryId
+            && (string) ($record['subcategory_id'] ?? '') === (string) $subcategory['id']
+        ));
+    }
+    unset($subcategory);
     $selectedCategory = $category;
     if ($subcategoryId !== '') {
         $selectedCategory = null;

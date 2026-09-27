@@ -18,6 +18,10 @@
   gap: 1rem;
 }
 
+.ranking-table-heading[hidden] {
+  display: none;
+}
+
 .ranking-heading h1,
 .ranking-drawer__header h1 {
   margin: 0;
@@ -51,7 +55,7 @@
 }
 
 .ranking-subcategory-section {
-  margin: 0.25rem 0 1.35rem;
+  margin: 2rem 0 1.35rem;
   padding-bottom: 1.35rem;
   border-bottom: 1px solid var(--line);
 }
@@ -1242,7 +1246,7 @@ input[type="date"].ranking-input {
 
 .ranking-time-inputs {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.6rem;
 }
 
@@ -1259,8 +1263,9 @@ input[type="date"].ranking-input {
 }
 
 .ranking-time-inputs input {
-  padding-right: 0.35rem;
-  padding-left: 0.55rem;
+  width: 100%;
+  min-height: 48px;
+  padding: 0.65rem 0.75rem;
   font-variant-numeric: tabular-nums;
 }
 
