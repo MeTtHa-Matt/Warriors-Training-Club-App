@@ -103,11 +103,15 @@ header('X-Accel-Expires: 0');
 header('X-Content-Type-Options: nosniff');
 header('X-Frame-Options: SAMEORIGIN');
 header('X-XSS-Protection: 1; mode=block');
+header('X-Permitted-Cross-Domain-Policies: none');
 
 // Politique de Sécurité des Contenus (CSP)
 header(
     "Content-Security-Policy: " .
     "default-src 'self'; " .
+    "object-src 'none'; " .
+    "worker-src 'self'; " .
+    "manifest-src 'self'; " .
     "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; " .
     "script-src-elem 'self' 'unsafe-inline' https://cdn.jsdelivr.net; " .
     "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; " .

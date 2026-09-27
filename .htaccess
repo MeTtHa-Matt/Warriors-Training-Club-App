@@ -7,6 +7,35 @@ ErrorDocument 500 /error.php
 ErrorDocument 502 /error.php
 ErrorDocument 503 /error.php
 
+<IfModule mod_authz_core.c>
+    <FilesMatch "^\.">
+        Require all denied
+    </FilesMatch>
+</IfModule>
+<IfModule !mod_authz_core.c>
+    <FilesMatch "^\.">
+        Order allow,deny
+        Deny from all
+    </FilesMatch>
+</IfModule>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^data(?:/|$) - [F,L]
+</IfModule>
+
+<IfModule mod_authz_core.c>
+    <FilesMatch "^(reports|conversation_messages|login_attempts|db_audit|classements|commits|exercices|last_cleanup|db_index_version)\.(json|txt|lock)$">
+        Require all denied
+    </FilesMatch>
+</IfModule>
+<IfModule !mod_authz_core.c>
+    <FilesMatch "^(reports|conversation_messages|login_attempts|db_audit|classements|commits|exercices|last_cleanup|db_index_version)\.(json|txt|lock)$">
+        Order allow,deny
+        Deny from all
+    </FilesMatch>
+</IfModule>
+
 <IfModule mod_php.c>
     php_flag display_errors Off
     php_value log_errors On

@@ -2,6 +2,19 @@
 require_once 'includes/general/administration.php';
 
 $dbAuditPath = __DIR__ . '/data/db_audit.json';
+if (($_GET['download'] ?? '') === 'json') {
+    if (!is_file($dbAuditPath)) {
+        http_response_code(404);
+        exit;
+    }
+
+    header('Content-Type: application/json; charset=utf-8');
+    header('Content-Disposition: attachment; filename="db-audit.json"');
+    header('X-Content-Type-Options: nosniff');
+    readfile($dbAuditPath);
+    exit;
+}
+
 $rawLogs = [];
 if (is_file($dbAuditPath)) {
     $json = @file_get_contents($dbAuditPath);
@@ -55,7 +68,7 @@ $deletedEntries = array_slice(array_reverse($deletedEntries), 0, 20);
                                 <div class="info-card__title">Historique JSON</div>
                                 <div class="info-card__value display-6"><?= number_format(count($logs), 0, ',', ' ') ?></div>
                             </div>
-                            <a href="data/db_audit.json" class="btn btn-wtc-gold rounded-pill px-4" target="_blank" rel="noopener">
+                            <a href="db-audit.php?download=json" class="btn btn-wtc-gold rounded-pill px-4">
                                 <i class="bi bi-download me-2"></i>Voir le JSON brut
                             </a>
                         </div>
