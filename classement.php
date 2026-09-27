@@ -123,13 +123,14 @@ $maxPhotoTotalLabel = $formatMegabytes($maxPhotoTotalBytes);
                     <div class="ranking-subcategory-grid" id="subcategoryList"></div>
                 </section>
             </div>
-            <div class="ranking-fixed-actions" id="categoryActions" hidden>
-                <button class="btn btn-wtc-gold ranking-add-button" id="openAddRecord" type="button">
-                    <i class="bi bi-stopwatch" aria-hidden="true"></i><span>Ajouter un temps</span>
-                </button>
-            </div>
         </section>
     </main>
+
+    <div class="ranking-fixed-actions" id="categoryActions" hidden>
+        <button class="btn btn-wtc-gold ranking-add-button" id="openAddRecord" type="button">
+            <i class="bi bi-stopwatch" aria-hidden="true"></i><span>Ajouter un temps</span>
+        </button>
+    </div>
 
     <div class="modal fade wtc-modal" id="addRecordModal" tabindex="-1" aria-labelledby="addRecordTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">

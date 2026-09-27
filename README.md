@@ -158,6 +158,24 @@ Le webhook GitHub (`github-webhook.php`) déclenche automatiquement `indexnow.ph
 - `css/style.css` : styles globaux du site
 - `img/`, `img/pdps/` : ressources graphiques et photos de profil
 
+## Migration des classements vers MySQL
+
+Les classements sont stockés dans les tables `ranking_*`. Lors du changement de version, garde une sauvegarde de la base et du fichier `data/classements.json`, puis suspends temporairement les modifications de classement pendant l’import.
+
+Après avoir configuré le `.env` pour la base de destination et copié le JSON ainsi que `data/classement_photos/`, lance d’abord une simulation :
+
+```bash
+php migrate-classements.php --dry-run
+```
+
+Si les nombres affichés sont corrects, lance l’import :
+
+```bash
+php migrate-classements.php
+```
+
+Le script crée les tables si nécessaire, conserve les identifiants existants, vérifie les références aux comptes et garde le JSON intact. Une même source déjà importée (empreinte identique) ne sera pas importée une seconde fois. Par défaut, le script refuse de remplacer des classements déjà présents ; `--replace` supprime et remplace toutes les données des tables `ranking_*` et doit être utilisé uniquement volontairement. Les photos elles-mêmes ne sont pas mises en base : conserve le dossier `data/classement_photos/` avec les mêmes noms de fichiers.
+
 ---
 
 ## ✨ Fonctionnalités clés

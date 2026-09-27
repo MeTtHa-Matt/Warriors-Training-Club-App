@@ -115,3 +115,74 @@ CREATE TABLE IF NOT EXISTS index_links (
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+
+CREATE TABLE IF NOT EXISTS ranking_categories (
+    id VARCHAR(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL PRIMARY KEY,
+    name VARCHAR(80) NOT NULL,
+    created_at DATETIME NOT NULL,
+    INDEX idx_ranking_categories_created (created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS ranking_subcategories (
+    category_id VARCHAR(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    id VARCHAR(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    name VARCHAR(80) NOT NULL,
+    created_at DATETIME NOT NULL,
+    PRIMARY KEY (category_id, id),
+    INDEX idx_ranking_subcategories_created (created_at),
+    CONSTRAINT fk_ranking_subcategories_category FOREIGN KEY (category_id)
+        REFERENCES ranking_categories(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS ranking_records (
+    id VARCHAR(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL PRIMARY KEY,
+    category_id VARCHAR(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    subcategory_id VARCHAR(32) CHARACTER SET ascii COLLATE ascii_bin DEFAULT NULL,
+    owner_id INT DEFAULT NULL,
+    competition VARCHAR(120) NOT NULL,
+    event_date DATE NOT NULL,
+    time_seconds INT UNSIGNED NOT NULL,
+    created_at DATETIME NOT NULL,
+    INDEX idx_ranking_records_category_time (category_id, time_seconds, created_at),
+    INDEX idx_ranking_records_subcategory_time (category_id, subcategory_id, time_seconds),
+    INDEX idx_ranking_records_owner (owner_id),
+    CONSTRAINT fk_ranking_records_category FOREIGN KEY (category_id)
+        REFERENCES ranking_categories(id) ON DELETE CASCADE,
+    CONSTRAINT fk_ranking_records_subcategory FOREIGN KEY (category_id, subcategory_id)
+        REFERENCES ranking_subcategories(category_id, id) ON DELETE CASCADE,
+    CONSTRAINT fk_ranking_records_owner FOREIGN KEY (owner_id)
+        REFERENCES account_wtc(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS ranking_record_participants (
+    record_id VARCHAR(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    ordinal SMALLINT UNSIGNED NOT NULL,
+    account_id INT DEFAULT NULL,
+    firstname VARCHAR(100) NOT NULL,
+    lastname VARCHAR(150) NOT NULL DEFAULT '',
+    last_initial VARCHAR(20) NOT NULL DEFAULT '',
+    is_external TINYINT(1) NOT NULL DEFAULT 0,
+    PRIMARY KEY (record_id, ordinal),
+    INDEX idx_ranking_participants_account (account_id),
+    CONSTRAINT fk_ranking_participants_record FOREIGN KEY (record_id)
+        REFERENCES ranking_records(id) ON DELETE CASCADE,
+    CONSTRAINT fk_ranking_participants_account FOREIGN KEY (account_id)
+        REFERENCES account_wtc(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS ranking_record_photos (
+    record_id VARCHAR(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    ordinal SMALLINT UNSIGNED NOT NULL,
+    filename VARCHAR(40) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    PRIMARY KEY (record_id, ordinal),
+    CONSTRAINT fk_ranking_photos_record FOREIGN KEY (record_id)
+        REFERENCES ranking_records(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS ranking_imports (
+    source_name VARCHAR(255) NOT NULL PRIMARY KEY,
+    checksum CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    imported_at DATETIME NOT NULL,
+    categories_count INT UNSIGNED NOT NULL,
+    records_count INT UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../includes/general/session-config.php';
 require_once __DIR__ . '/../includes/general/db.php';
+require_once __DIR__ . '/../includes/general/classement-storage.php';
 
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
@@ -12,17 +13,18 @@ function classementRespond(array $payload, int $status = 200): void
     exit;
 }
 
-function classementRead(string $path): array
+function classementReleaseLock(PDO $pdo, bool &$lockHeld): void
 {
-    if (!is_file($path)) {
-        return ['categories' => [], 'records' => []];
+    if (!$lockHeld) {
+        return;
     }
 
-    $decoded = json_decode((string) file_get_contents($path), true);
-    if (!is_array($decoded) || !isset($decoded['categories'], $decoded['records'])) {
-        throw new RuntimeException('Le fichier de classement est invalide.');
+    try {
+        $pdo->query("SELECT RELEASE_LOCK('wtc_ranking_storage')");
+    } catch (Throwable $error) {
+        error_log('[classement] unable to release database lock: ' . $error->getMessage());
     }
-    return $decoded;
+    $lockHeld = false;
 }
 
 function classementParticipants(array $record): array
@@ -71,22 +73,6 @@ function classementExpandRecords(array $records): array
         }
     }
     return $expanded;
-}
-
-function classementWrite(string $path, array $data): bool
-{
-    $temporaryPath = $path . '.' . bin2hex(random_bytes(8)) . '.tmp';
-    $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-    if ($json === false || file_put_contents($temporaryPath, $json, LOCK_EX) === false) {
-        @unlink($temporaryPath);
-        return false;
-    }
-    chmod($temporaryPath, 0640);
-    if (!rename($temporaryPath, $path)) {
-        @unlink($temporaryPath);
-        return false;
-    }
-    return true;
 }
 
 function classementRemovePhotos(array $records, string $uploadDirectory): void
@@ -173,8 +159,6 @@ if (!$currentUser) {
     classementRespond(['error' => 'Compte introuvable.'], 401);
 }
 $isAdmin = (int) $currentUser['admin'] === 1;
-$storagePath = __DIR__ . '/../data/classements.json';
-$lockPath = __DIR__ . '/../data/classements.lock';
 $uploadDirectory = __DIR__ . '/../data/classement_photos';
 
 if (isset($_GET['photo'])) {
@@ -194,20 +178,12 @@ if (isset($_GET['photo'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $lock = fopen($lockPath, 'c');
-    if ($lock === false || !flock($lock, LOCK_SH)) {
-        classementRespond(['error' => 'Le classement est temporairement indisponible.'], 500);
-    }
     try {
-        $data = classementRead($storagePath);
+        $data = rankingStorageRead($pdo);
     } catch (Throwable $error) {
-        flock($lock, LOCK_UN);
-        fclose($lock);
         error_log('[classement] ' . $error->getMessage());
         classementRespond(['error' => 'Impossible de lire le classement.'], 500);
     }
-    flock($lock, LOCK_UN);
-    fclose($lock);
 
     if (isset($_GET['users'])) {
         $query = trim((string) $_GET['users']);
@@ -373,6 +349,7 @@ if (in_array($action, ['create_category', 'add_subcategory', 'delete_category', 
 }
 
 $savedPhotos = [];
+$rankingLockHeld = false;
 try {
     if ($action === 'create_record') {
         $competition = trim((string) ($_POST['competition'] ?? ''));
@@ -565,20 +542,19 @@ try {
         classementRespond(['error' => 'Action inconnue.'], 400);
     }
 
-    $lock = fopen($lockPath, 'c');
-    if ($lock === false || !flock($lock, LOCK_EX)) {
+    $rankingLock = $pdo->query("SELECT GET_LOCK('wtc_ranking_storage', 5)")->fetchColumn();
+    if ((int) $rankingLock !== 1) {
         classementRemovePhotos([['photos' => $savedPhotos]], $uploadDirectory);
         classementRespond(['error' => 'Le classement est temporairement indisponible.'], 500);
     }
-    $data = classementRead($storagePath);
+    $rankingLockHeld = true;
+    $data = rankingStorageRead($pdo);
     $response = null;
     $photosToRemove = [];
 
     if ($action === 'create_category') {
         foreach ($data['categories'] as $category) {
             if (mb_strtolower($category['name']) === mb_strtolower($categoryName)) {
-                flock($lock, LOCK_UN);
-                fclose($lock);
                 classementRespond(['error' => 'Cette catégorie existe déjà.'], 409);
             }
         }
@@ -663,8 +639,6 @@ try {
             }
         }
         if ($targetCategory === null) {
-            flock($lock, LOCK_UN);
-            fclose($lock);
             classementRemovePhotos([['photos' => $savedPhotos]], $uploadDirectory);
             classementRespond(['error' => 'Cette catégorie n’existe plus.'], 404);
         }
@@ -676,14 +650,10 @@ try {
             }
         }
         if ($subcategoryId !== '' && $targetSubcategory === null) {
-            flock($lock, LOCK_UN);
-            fclose($lock);
             classementRemovePhotos([['photos' => $savedPhotos]], $uploadDirectory);
             classementRespond(['error' => 'Cette sous-catégorie n’existe plus.'], 404);
         }
         if (!$isAdmin && !empty($targetCategory['subcategories']) && $targetSubcategory === null) {
-            flock($lock, LOCK_UN);
-            fclose($lock);
             classementRemovePhotos([['photos' => $savedPhotos]], $uploadDirectory);
             classementRespond(['error' => 'Choisis une sous-catégorie avant d’ajouter un temps.'], 400);
         }
@@ -831,19 +801,16 @@ try {
         $response = ['deleted' => true];
     }
 
-    $written = classementWrite($storagePath, $data);
-    flock($lock, LOCK_UN);
-    fclose($lock);
-    if (!$written) {
-        classementRemovePhotos([['photos' => $savedPhotos]], $uploadDirectory);
-        classementRespond(['error' => 'Impossible d’enregistrer le classement.'], 500);
-    }
+    rankingStorageReplace($pdo, $data);
+    classementReleaseLock($pdo, $rankingLockHeld);
     classementRemovePhotos($photosToRemove, $uploadDirectory);
     classementRespond(['success' => true] + $response);
 } catch (InvalidArgumentException $error) {
+    classementReleaseLock($pdo, $rankingLockHeld);
     classementRemovePhotos([['photos' => $savedPhotos]], $uploadDirectory);
     classementRespond(['error' => $error->getMessage()], 400);
 } catch (Throwable $error) {
+    classementReleaseLock($pdo, $rankingLockHeld);
     classementRemovePhotos([['photos' => $savedPhotos]], $uploadDirectory);
     error_log('[classement] ' . $error->getMessage());
     classementRespond(['error' => 'Une erreur est survenue pendant l’enregistrement.'], 500);

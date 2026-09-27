@@ -46,15 +46,7 @@ if (!function_exists('appendDbAuditLog')) {
         }
 
         try {
-            if (str_contains(strtoupper($sql), 'SELECT')) {
-                SecureAuditLogger::logQuery('SELECT', 'query', $params);
-            } elseif (str_contains(strtoupper($sql), 'INSERT')) {
-                SecureAuditLogger::logQuery('INSERT', 'query', $params);
-            } elseif (str_contains(strtoupper($sql), 'UPDATE')) {
-                SecureAuditLogger::logQuery('UPDATE', 'query', $params);
-            } elseif (str_contains(strtoupper($sql), 'DELETE')) {
-                SecureAuditLogger::logQuery('DELETE', 'query', $params);
-            }
+            SecureAuditLogger::logQuery($sql, $params);
         } catch (Exception $e) {
             error_log("Audit logging error: " . $e->getMessage());
         }
@@ -118,7 +110,7 @@ if (!class_exists('AuditPDO', false)) {
 $ilycScoresAvailable = false;
 
 try {
-    $pdo = new AuditPDO("mysql:host={$host};port={$port};dbname={$dbname};charset=utf8", $username, $password);
+    $pdo = new AuditPDO("mysql:host={$host};port={$port};dbname={$dbname};charset=utf8mb4", $username, $password);
 
     try {
         $pdo->exec(
@@ -191,28 +183,30 @@ try {
         }
     }
 
-    // Nettoyage automatique des séances trop anciennes (plus de 3 mois).
-    // To avoid running this expensive query on every request, throttle it to once per hour.
-    $cleanupFile = __DIR__ . '/../../data/last_cleanup.txt';
-    $runCleanup = true;
-    try {
-        if (is_file($cleanupFile)) {
-            $last = (int) @file_get_contents($cleanupFile);
-            if ($last > 0 && (time() - $last) < 3600) {
-                $runCleanup = false;
-            }
-        }
-    } catch (Throwable $e) {
-        // ignore and run cleanup
-    }
-
-    if ($runCleanup) {
+    if (!defined('WTC_SKIP_SEANCE_CLEANUP')) {
+        // Nettoyage automatique des séances trop anciennes (plus de 3 mois).
+        // To avoid running this expensive query on every request, throttle it to once per hour.
+        $cleanupFile = __DIR__ . '/../../data/last_cleanup.txt';
+        $runCleanup = true;
         try {
-            $pdo->exec('DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)');
-            appendDbAuditLog('background_cleanup', 'DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)', [], 'db.php', 'completed');
-            @file_put_contents($cleanupFile, (string) time());
+            if (is_file($cleanupFile)) {
+                $last = (int) @file_get_contents($cleanupFile);
+                if ($last > 0 && (time() - $last) < 3600) {
+                    $runCleanup = false;
+                }
+            }
         } catch (Throwable $e) {
-            appendDbAuditLog('background_cleanup_error', $e->getMessage(), [], 'db.php', 'error');
+            // ignore and run cleanup
+        }
+
+        if ($runCleanup) {
+            try {
+                $pdo->exec('DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)');
+                appendDbAuditLog('background_cleanup', 'DELETE FROM seances WHERE date_seance < DATE_SUB(CURDATE(), INTERVAL 3 MONTH)', [], 'db.php', 'completed');
+                @file_put_contents($cleanupFile, (string) time());
+            } catch (Throwable $e) {
+                appendDbAuditLog('background_cleanup_error', $e->getMessage(), [], 'db.php', 'error');
+            }
         }
     }
 } catch (PDOException $e) {
