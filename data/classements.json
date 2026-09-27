@@ -1,0 +1,166 @@
+{
+    "categories": [
+        {
+            "id": "06eb3211f27dee9a",
+            "name": "tes1",
+            "subcategories": [],
+            "created_at": "2026-09-27T16:38:43+00:00"
+        },
+        {
+            "id": "259004bda0aa23e9",
+            "name": "tetst2",
+            "subcategories": [
+                {
+                    "id": "9ff3c031cb30e9ec",
+                    "name": "1",
+                    "created_at": "2026-09-27T16:39:09+00:00"
+                },
+                {
+                    "id": "1bf18c7cd71e7598",
+                    "name": "2",
+                    "created_at": "2026-09-27T16:39:09+00:00"
+                },
+                {
+                    "id": "d9938434ae963d1f",
+                    "name": "3",
+                    "created_at": "2026-09-27T16:39:09+00:00"
+                },
+                {
+                    "id": "c5ad2f8a304dbf32",
+                    "name": "4",
+                    "created_at": "2026-09-27T16:39:09+00:00"
+                }
+            ],
+            "created_at": "2026-09-27T16:39:09+00:00"
+        }
+    ],
+    "records": [
+        {
+            "id": "ba24be498ef135f29157d4c1",
+            "category_id": "06eb3211f27dee9a",
+            "subcategory_id": null,
+            "owner_id": 1,
+            "participants": [
+                {
+                    "user_id": 1,
+                    "firstname": "admin",
+                    "last_initial": "a"
+                },
+                {
+                    "user_id": 3,
+                    "firstname": "Matthieu",
+                    "last_initial": "G"
+                }
+            ],
+            "competition": "test1",
+            "event_date": "2026-09-02",
+            "time_seconds": 4344,
+            "photos": [
+                "bd61f0b018c52918f958a98d7ac35dd4.png",
+                "4b4e19f9d9c63a26b4b6d3566523ff4d.jpg"
+            ],
+            "created_at": "2026-09-27T16:48:15+00:00"
+        },
+        {
+            "id": "5add73fe54d4e85ee4a00727",
+            "category_id": "259004bda0aa23e9",
+            "subcategory_id": "9ff3c031cb30e9ec",
+            "owner_id": 1,
+            "participants": [
+                {
+                    "user_id": 1,
+                    "firstname": "admin",
+                    "last_initial": "a"
+                }
+            ],
+            "competition": "test1",
+            "event_date": "2026-09-13",
+            "time_seconds": 4502,
+            "photos": [
+                "a82a8ab31b5c4eac095177c24421fff6.jpg"
+            ],
+            "created_at": "2026-09-27T16:52:52+00:00"
+        },
+        {
+            "id": "1c08ffae72348b85a108c142",
+            "category_id": "06eb3211f27dee9a",
+            "subcategory_id": null,
+            "owner_id": 1,
+            "participants": [
+                {
+                    "user_id": 1,
+                    "firstname": "admin",
+                    "last_initial": "a"
+                }
+            ],
+            "competition": "erfzqerfezq",
+            "event_date": "2026-09-27",
+            "time_seconds": 54950,
+            "photos": [
+                "bee904247fdd25b0fd88a68fa67aeb46.jpg"
+            ],
+            "created_at": "2026-09-27T17:04:50+00:00"
+        },
+        {
+            "id": "b3f20740968845314fc53f9d",
+            "category_id": "06eb3211f27dee9a",
+            "subcategory_id": null,
+            "owner_id": 1,
+            "participants": [
+                {
+                    "user_id": 1,
+                    "firstname": "admin",
+                    "last_initial": "a"
+                }
+            ],
+            "competition": "tgezgtezf",
+            "event_date": "2026-09-27",
+            "time_seconds": 4502,
+            "photos": [],
+            "created_at": "2026-09-27T17:05:02+00:00"
+        },
+        {
+            "id": "87a3d5975d914cad07a49fbc",
+            "category_id": "06eb3211f27dee9a",
+            "subcategory_id": null,
+            "owner_id": 1,
+            "participants": [
+                {
+                    "user_id": 1,
+                    "firstname": "admin",
+                    "last_initial": "a"
+                }
+            ],
+            "competition": "ffezqfezf",
+            "event_date": "2026-09-27",
+            "time_seconds": 4321,
+            "photos": [],
+            "created_at": "2026-09-27T17:05:16+00:00"
+        },
+        {
+            "id": "8fe5dc4770a3ab81df251440",
+            "category_id": "259004bda0aa23e9",
+            "subcategory_id": "1bf18c7cd71e7598",
+            "owner_id": 1,
+            "participants": [
+                {
+                    "user_id": 1,
+                    "firstname": "admin",
+                    "last_initial": "a"
+                },
+                {
+                    "user_id": 3,
+                    "firstname": "Matthieu",
+                    "last_initial": "G"
+                }
+            ],
+            "competition": "544598",
+            "event_date": "2026-09-27",
+            "time_seconds": 4802,
+            "photos": [
+                "d333984c6ce4ab637805d0f837980b81.png"
+            ],
+            "created_at": "2026-09-27T17:06:01+00:00"
+        }
+    ]
+}

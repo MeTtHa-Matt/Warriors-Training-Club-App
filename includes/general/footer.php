@@ -70,8 +70,56 @@ if (session_status() === PHP_SESSION_NONE) {
         </div>
     </div>
 </div>
+<div class="wtc-page-loader" id="wtcPageLoader" aria-hidden="true">
+    <div class="wtc-page-loader__content" role="status" aria-live="polite">
+        <img src="img/wtc.png" alt="" class="wtc-page-loader__logo">
+        <span class="wtc-page-loader__spinner" aria-hidden="true"></span>
+        <span class="wtc-page-loader__label">Chargement</span>
+    </div>
+</div>
 
 <script>
+(() => {
+    const loader = document.getElementById('wtcPageLoader');
+    if (!loader) return;
+
+    let showTimer;
+    const show = () => {
+        window.clearTimeout(showTimer);
+        showTimer = window.setTimeout(() => {
+            loader.classList.add('is-visible');
+            loader.setAttribute('aria-hidden', 'false');
+        }, 120);
+    };
+    const hide = () => {
+        window.clearTimeout(showTimer);
+        loader.classList.remove('is-visible');
+        loader.setAttribute('aria-hidden', 'true');
+    };
+
+    document.addEventListener('click', (event) => {
+        const link = event.target.closest('a[href]');
+        if (!link || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        if ((link.target && link.target !== '_self') || link.hasAttribute('download')) return;
+        const destination = new URL(link.href, window.location.href);
+        if (destination.origin !== window.location.origin || destination.href === window.location.href) return;
+        if (destination.pathname === window.location.pathname && destination.search === window.location.search && destination.hash) return;
+        show();
+    });
+
+    document.addEventListener('submit', (event) => {
+        if (event.defaultPrevented || (event.target.target && event.target.target !== '_self')) return;
+        show();
+    });
+
+    window.addEventListener('pageshow', hide);
+    window.addEventListener('beforeunload', () => {
+        window.clearTimeout(showTimer);
+        loader.classList.add('is-visible');
+        loader.setAttribute('aria-hidden', 'false');
+    });
+})();
+
 const WTC_CACHE_BUST_VERSION = '2026091401';
 const WTC_CACHE_BUSTER_KEY = 'wtc-cache-buster';
 

@@ -3,54 +3,144 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hors ligne - WTC</title>
+    <meta name="theme-color" content="#0c0b0a" />
+    <title>Hors connexion - Warriors Training Club</title>
     <style>
+      @font-face {
+        font-family: "Oswald";
+        src: url("./css/fonts/oswald-500.ttf") format("truetype");
+        font-weight: 500;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "Anton";
+        src: url("./css/fonts/anton.ttf") format("truetype");
+        font-display: swap;
+      }
+      * { box-sizing: border-box; }
       body {
-        margin: 0;
         min-height: 100vh;
+        min-height: 100svh;
+        margin: 0;
+        padding: 1.25rem;
+        display: grid;
+        place-items: center;
+        color: #f4efe2;
+        background:
+          linear-gradient(135deg, transparent 0 48%, rgba(201, 162, 39, 0.035) 48% 49%, transparent 49%),
+          repeating-linear-gradient(135deg, transparent 0 22px, rgba(244, 239, 226, 0.018) 22px 23px),
+          #0c0b0a;
+        font-family: "Oswald", sans-serif;
+      }
+      main {
+        width: min(100%, 560px);
+        padding: clamp(1.5rem, 7vw, 3.25rem);
+        border: 1px solid rgba(232, 199, 102, 0.22);
+        border-top: 3px solid #c9a227;
+        background: linear-gradient(145deg, rgba(32, 29, 22, 0.96), rgba(17, 15, 12, 0.98));
+        box-shadow: 0 28px 90px rgba(0, 0, 0, 0.45);
+      }
+      .brand {
         display: flex;
         align-items: center;
-        justify-content: center;
-        background: #0c0b0a;
-        color: #f4efe2;
-        font-family: Inter, sans-serif;
-        text-align: center;
-        padding: 2rem;
-      }
-      .offline-card {
-        max-width: 520px;
-        border: 1px solid rgba(232, 199, 102, 0.18);
-        padding: 2rem;
-        border-radius: 18px;
-        background: rgba(12, 11, 10, 0.96);
-      }
-      .offline-card h1 {
-        margin: 0 0 1rem;
-        font-family: Anton, sans-serif;
-        font-size: 2rem;
+        gap: 0.8rem;
+        margin-bottom: 2.6rem;
+        color: #e3c673;
+        font-size: 0.83rem;
+        letter-spacing: 0.08em;
         text-transform: uppercase;
-        letter-spacing: 0.05em;
       }
-      .offline-card p {
-        color: #9c9484;
-        margin: 1rem 0;
+      .brand img { width: 48px; height: 48px; object-fit: contain; }
+      .status {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+        padding: 0.35rem 0.65rem;
+        color: #e3c673;
+        border: 1px solid rgba(201, 162, 39, 0.32);
+        background: rgba(201, 162, 39, 0.07);
+        font-size: 0.78rem;
+        text-transform: uppercase;
+      }
+      .status::before {
+        width: 7px;
+        height: 7px;
+        content: "";
+        background: #d57b62;
+        border-radius: 50%;
+        box-shadow: 0 0 0 4px rgba(213, 123, 98, 0.12);
+      }
+      h1 {
+        margin: 1.1rem 0 0.7rem;
+        font-family: "Anton", Impact, sans-serif;
+        font-size: clamp(2.4rem, 12vw, 4rem);
+        font-weight: 400;
+        line-height: 0.98;
+        text-transform: uppercase;
+      }
+      p {
+        max-width: 38ch;
+        margin: 0;
+        color: #aaa18f;
+        font-size: 1rem;
         line-height: 1.7;
       }
-      .offline-card a {
-        color: #c9a227;
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.7rem;
+        margin-top: 1.8rem;
+      }
+      .actions a, .actions button {
+        min-height: 46px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.65rem 1rem;
+        border: 1px solid #c9a227;
+        border-radius: 3px;
+        color: #0c0b0a;
+        background: #c9a227;
+        font: 500 0.88rem "Oswald", sans-serif;
         text-decoration: none;
-        font-weight: 700;
+        text-transform: uppercase;
+        cursor: pointer;
+      }
+      .actions a.secondary {
+        color: #f4efe2;
+        background: transparent;
+        border-color: rgba(244, 239, 226, 0.28);
+      }
+      .footer {
+        margin-top: 2.4rem;
+        padding-top: 0.9rem;
+        border-top: 1px solid rgba(232, 199, 102, 0.13);
+        color: #827b6b;
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+      }
+      @media (max-width: 380px) {
+        .actions { flex-direction: column; }
+        .actions a, .actions button { width: 100%; }
       }
     </style>
   </head>
   <body>
-    <div class="offline-card">
-      <h1>Hors ligne</h1>
-      <p>
-        La page demandée n’est pas disponible sans connexion. Reviens en ligne
-        pour continuer à consulter les séances et envoyer tes inscriptions.
-      </p>
-      <p><a href="./">Retour à l’accueil</a></p>
-    </div>
+    <main>
+      <div class="brand">
+        <img src="./img/wtc.png" alt="" />
+        <span>Warriors Training Club</span>
+      </div>
+      <span class="status">Connexion indisponible</span>
+      <h1>Hors connexion</h1>
+      <p>Cette page n’est pas encore disponible sur cet appareil. Dès que le réseau revient, réessaie ou retourne à l’accueil.</p>
+      <div class="actions">
+        <button type="button" onclick="window.location.reload()">Réessayer <span aria-hidden="true">↻</span></button>
+        <a class="secondary" href="./index.php">Retour à l’accueil</a>
+      </div>
+      <div class="footer">Cardio · Hyrox · Running · Préparation physique</div>
+    </main>
   </body>
 </html>

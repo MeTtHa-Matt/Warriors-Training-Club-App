@@ -1,0 +1,594 @@
+<?php
+require_once __DIR__ . '/../includes/general/session-config.php';
+require_once __DIR__ . '/../includes/general/db.php';
+
+header('Content-Type: application/json; charset=utf-8');
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+
+function classementRespond(array $payload, int $status = 200): void
+{
+    http_response_code($status);
+    echo json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    exit;
+}
+
+function classementRead(string $path): array
+{
+    if (!is_file($path)) {
+        return ['categories' => [], 'records' => []];
+    }
+
+    $decoded = json_decode((string) file_get_contents($path), true);
+    if (!is_array($decoded) || !isset($decoded['categories'], $decoded['records'])) {
+        throw new RuntimeException('Le fichier de classement est invalide.');
+    }
+    return $decoded;
+}
+
+function classementParticipants(array $record): array
+{
+    if (isset($record['participants']) && is_array($record['participants'])) {
+        return array_values(array_filter($record['participants'], static fn($participant) => is_array($participant) && (int) ($participant['user_id'] ?? 0) > 0));
+    }
+
+    $userId = (int) ($record['user_id'] ?? 0);
+    if ($userId <= 0) {
+        return [];
+    }
+    return [[
+        'user_id' => $userId,
+        'firstname' => (string) ($record['firstname'] ?? 'Membre'),
+        'last_initial' => (string) ($record['last_initial'] ?? ''),
+    ]];
+}
+
+function classementExpandRecords(array $records): array
+{
+    $expanded = [];
+    foreach ($records as $record) {
+        $participants = classementParticipants($record);
+        foreach ($participants as $participant) {
+            $expanded[] = array_merge($record, [
+                'user_id' => (int) $participant['user_id'],
+                'participant_id' => (int) $participant['user_id'],
+                'firstname' => (string) ($participant['firstname'] ?? 'Membre'),
+                'last_initial' => (string) ($participant['last_initial'] ?? ''),
+                'owner_id' => (int) ($record['owner_id'] ?? $record['user_id'] ?? 0),
+                'participants' => $participants,
+            ]);
+        }
+    }
+    return $expanded;
+}
+
+function classementWrite(string $path, array $data): bool
+{
+    $temporaryPath = $path . '.' . bin2hex(random_bytes(8)) . '.tmp';
+    $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    if ($json === false || file_put_contents($temporaryPath, $json, LOCK_EX) === false) {
+        @unlink($temporaryPath);
+        return false;
+    }
+    chmod($temporaryPath, 0640);
+    if (!rename($temporaryPath, $path)) {
+        @unlink($temporaryPath);
+        return false;
+    }
+    return true;
+}
+
+function classementRemovePhotos(array $records, string $uploadDirectory): void
+{
+    foreach ($records as $record) {
+        foreach (($record['photos'] ?? []) as $photo) {
+            $filename = basename((string) $photo);
+            if (preg_match('/^[a-f0-9]{32}\.(jpg|png|webp)$/', $filename)) {
+                @unlink($uploadDirectory . '/' . $filename);
+            }
+        }
+    }
+}
+
+function classementSavePhotos(array $files, string $uploadDirectory): array
+{
+    if (!isset($files['name']) || !is_array($files['name'])) {
+        return [];
+    }
+
+    $allowed = [
+        'image/jpeg' => 'jpg',
+        'image/png' => 'png',
+        'image/webp' => 'webp',
+    ];
+    $names = $files['name'];
+    $saved = [];
+    $fileCount = count(array_filter($names, static fn($name) => $name !== ''));
+    if ($fileCount > 10) {
+        throw new InvalidArgumentException('Ajoute au maximum 10 photos.');
+    }
+    if (!is_dir($uploadDirectory) && !mkdir($uploadDirectory, 0755, true) && !is_dir($uploadDirectory)) {
+        throw new RuntimeException('Impossible de préparer le stockage des photos.');
+    }
+
+    try {
+        foreach ($names as $index => $originalName) {
+            if ($originalName === '') {
+                continue;
+            }
+            $error = $files['error'][$index] ?? UPLOAD_ERR_NO_FILE;
+            if ($error !== UPLOAD_ERR_OK) {
+                throw new InvalidArgumentException($error === UPLOAD_ERR_INI_SIZE || $error === UPLOAD_ERR_FORM_SIZE
+                    ? 'Chaque photo doit faire 5 Mo maximum.'
+                    : 'Une photo n’a pas pu être envoyée.');
+            }
+
+            $temporaryPath = $files['tmp_name'][$index] ?? '';
+            if (!is_uploaded_file($temporaryPath) || ($files['size'][$index] ?? 0) > 5 * 1024 * 1024) {
+                throw new InvalidArgumentException('Une photo est invalide ou dépasse 5 Mo.');
+            }
+            $finfo = new finfo(FILEINFO_MIME_TYPE);
+            $mime = $finfo->file($temporaryPath);
+            $imageInfo = @getimagesize($temporaryPath);
+            if (!isset($allowed[$mime]) || $imageInfo === false || $imageInfo['mime'] !== $mime
+                || $imageInfo[0] > 6000 || $imageInfo[1] > 6000) {
+                throw new InvalidArgumentException('Format de photo invalide. Utilise JPEG, PNG ou WebP.');
+            }
+
+            $filename = bin2hex(random_bytes(16)) . '.' . $allowed[$mime];
+            if (!move_uploaded_file($temporaryPath, $uploadDirectory . '/' . $filename)) {
+                throw new RuntimeException('Impossible d’enregistrer une photo.');
+            }
+            chmod($uploadDirectory . '/' . $filename, 0644);
+            $saved[] = $filename;
+        }
+    } catch (Throwable $error) {
+        classementRemovePhotos([['photos' => $saved]], $uploadDirectory);
+        throw $error;
+    }
+
+    return $saved;
+}
+
+if (empty($_SESSION['user_id'])) {
+    classementRespond(['error' => 'Connecte-toi pour consulter le classement.'], 401);
+}
+
+$userId = (int) $_SESSION['user_id'];
+$userQuery = $pdo->prepare('SELECT id, firstname, lastname, admin FROM account_wtc WHERE id = ?');
+$userQuery->execute([$userId]);
+$currentUser = $userQuery->fetch(PDO::FETCH_ASSOC);
+if (!$currentUser) {
+    classementRespond(['error' => 'Compte introuvable.'], 401);
+}
+$isAdmin = (int) $currentUser['admin'] === 1;
+$storagePath = __DIR__ . '/../data/classements.json';
+$lockPath = __DIR__ . '/../data/classements.lock';
+$uploadDirectory = __DIR__ . '/../data/classement_photos';
+
+if (isset($_GET['photo'])) {
+    $filename = basename((string) $_GET['photo']);
+    if (!preg_match('/^[a-f0-9]{32}\.(jpg|png|webp)$/', $filename)) {
+        classementRespond(['error' => 'Photo introuvable.'], 404);
+    }
+    $photoPath = $uploadDirectory . '/' . $filename;
+    if (!is_file($photoPath)) {
+        classementRespond(['error' => 'Photo introuvable.'], 404);
+    }
+    $mimeByExtension = ['jpg' => 'image/jpeg', 'png' => 'image/png', 'webp' => 'image/webp'];
+    header('Content-Type: ' . $mimeByExtension[pathinfo($filename, PATHINFO_EXTENSION)]);
+    header('Content-Length: ' . (string) filesize($photoPath));
+    readfile($photoPath);
+    exit;
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $lock = fopen($lockPath, 'c');
+    if ($lock === false || !flock($lock, LOCK_SH)) {
+        classementRespond(['error' => 'Le classement est temporairement indisponible.'], 500);
+    }
+    try {
+        $data = classementRead($storagePath);
+    } catch (Throwable $error) {
+        flock($lock, LOCK_UN);
+        fclose($lock);
+        error_log('[classement] ' . $error->getMessage());
+        classementRespond(['error' => 'Impossible de lire le classement.'], 500);
+    }
+    flock($lock, LOCK_UN);
+    fclose($lock);
+
+    if (isset($_GET['users'])) {
+        $query = trim((string) $_GET['users']);
+        if (mb_strlen($query) < 2) {
+            classementRespond(['users' => []]);
+        }
+                $searchTerms = preg_split('/\s+/u', $query, -1, PREG_SPLIT_NO_EMPTY) ?: [];
+                $searchConditions = [];
+                $searchParams = [$userId];
+                foreach ($searchTerms as $term) {
+                        $searchConditions[] = '(firstname LIKE ? OR lastname LIKE ?)';
+                        $termPattern = '%' . $term . '%';
+                        $searchParams[] = $termPattern;
+                        $searchParams[] = $termPattern;
+                }
+        $userSearch = $pdo->prepare(
+            'SELECT id, firstname, lastname
+             FROM account_wtc
+             WHERE ban = 0 AND id <> ?
+                             AND ' . implode(' AND ', $searchConditions) . '
+             ORDER BY firstname, lastname
+             LIMIT 10'
+        );
+                $userSearch->execute($searchParams);
+        $users = [];
+        foreach ($userSearch->fetchAll(PDO::FETCH_ASSOC) as $user) {
+            $users[] = [
+                'id' => (int) $user['id'],
+                'firstname' => (string) $user['firstname'],
+                'last_initial' => mb_substr((string) $user['lastname'], 0, 1),
+                'label' => (string) $user['firstname'] . ' ' . (string) $user['lastname'],
+            ];
+        }
+        classementRespond(['users' => $users]);
+    }
+
+    $categoryId = trim((string) ($_GET['category'] ?? ''));
+    $subcategoryId = trim((string) ($_GET['subcategory'] ?? ''));
+    if ($categoryId === '') {
+        $personalBest = [];
+        $rankingRows = classementExpandRecords($data['records']);
+        foreach ($rankingRows as $record) {
+            if ((int) ($record['user_id'] ?? 0) !== $userId) {
+                continue;
+            }
+            $categoryKey = (string) $record['category_id'];
+            if (!isset($personalBest[$categoryKey]) || $record['time_seconds'] < $personalBest[$categoryKey]['time_seconds']) {
+                $personalBest[$categoryKey] = $record;
+            }
+        }
+        foreach ($data['categories'] as &$category) {
+            $category['subcategories'] = array_values($category['subcategories'] ?? []);
+            $categoryRecords = array_filter($data['records'], static fn($record) =>
+                (string) ($record['category_id'] ?? '') === (string) $category['id']
+            );
+            $category['record_count'] = count($categoryRecords);
+            foreach ($category['subcategories'] as &$subcategory) {
+                $subcategory['record_count'] = count(array_filter($data['records'], static fn($record) =>
+                    (string) ($record['category_id'] ?? '') === (string) $category['id']
+                    && (string) ($record['subcategory_id'] ?? '') === (string) $subcategory['id']
+                ));
+            }
+            unset($subcategory);
+            $category['personal_best'] = $personalBest[(string) $category['id']] ?? null;
+        }
+        unset($category);
+        classementRespond(['categories' => array_values($data['categories']), 'is_admin' => $isAdmin]);
+    }
+
+    $category = null;
+    foreach ($data['categories'] as $candidate) {
+        if ((string) $candidate['id'] === $categoryId) {
+            $category = $candidate;
+            break;
+        }
+    }
+    if ($category === null) {
+        classementRespond(['error' => 'Cette catégorie n’existe plus.'], 404);
+    }
+    $category['subcategories'] = array_values($category['subcategories'] ?? []);
+    $selectedCategory = $category;
+    if ($subcategoryId !== '') {
+        $selectedCategory = null;
+        foreach ($category['subcategories'] as $subcategory) {
+            if ((string) $subcategory['id'] === $subcategoryId) {
+                $selectedCategory = $subcategory;
+                break;
+            }
+        }
+        if ($selectedCategory === null) {
+            classementRespond(['error' => 'Cette sous-catégorie n’existe plus.'], 404);
+        }
+    }
+
+    $categoryEvents = array_values(array_filter($data['records'], static function ($record) use ($categoryId, $subcategoryId) {
+        if ((string) $record['category_id'] !== $categoryId) {
+            return false;
+        }
+        return $subcategoryId === '' || (string) ($record['subcategory_id'] ?? '') === $subcategoryId;
+    }));
+    $records = array_map(static function ($record) {
+        $record['participants'] = classementParticipants($record);
+        return $record;
+    }, $categoryEvents);
+    usort($records, static function ($left, $right) {
+        return ($left['time_seconds'] <=> $right['time_seconds'])
+            ?: strcmp((string) $left['created_at'], (string) $right['created_at']);
+    });
+    $totalCount = count($records);
+    if ($subcategoryId === '' && $category['subcategories']) {
+        $records = array_slice($records, 0, 5);
+    }
+    classementRespond([
+        'category' => $selectedCategory,
+        'parent_category' => $subcategoryId === '' ? null : ['id' => $category['id'], 'name' => $category['name']],
+        'subcategory_id' => $subcategoryId,
+        'subcategories' => $subcategoryId === '' ? $category['subcategories'] : [],
+        'records' => $records,
+        'total_count' => $totalCount,
+        'is_admin' => $isAdmin,
+        'user_id' => $userId,
+    ]);
+}
+
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    classementRespond(['error' => 'Méthode non autorisée.'], 405);
+}
+
+$csrfToken = $_SERVER['HTTP_X_CSRF_TOKEN'] ?? ($_POST['csrf_token'] ?? '');
+if (!is_string($csrfToken) || !hash_equals((string) ($_SESSION['csrf_token'] ?? ''), $csrfToken)) {
+    classementRespond(['error' => 'Session expirée. Recharge la page et réessaie.'], 403);
+}
+
+$action = (string) ($_POST['action'] ?? '');
+if (str_contains($_SERVER['CONTENT_TYPE'] ?? '', 'application/json')) {
+    $input = json_decode((string) file_get_contents('php://input'), true);
+    if (is_array($input)) {
+        $action = (string) ($input['action'] ?? $action);
+        $_POST = array_merge($_POST, $input);
+    }
+}
+if (in_array($action, ['create_category', 'delete_category', 'delete_record'], true) && !$isAdmin) {
+    classementRespond(['error' => 'Action réservée aux admins.'], 403);
+}
+
+$savedPhotos = [];
+try {
+    if ($action === 'create_record') {
+        $competition = trim((string) ($_POST['competition'] ?? ''));
+        $eventDate = trim((string) ($_POST['event_date'] ?? ''));
+        $categoryId = trim((string) ($_POST['category_id'] ?? ''));
+        $subcategoryId = trim((string) ($_POST['subcategory_id'] ?? ''));
+        $partnerIdsInput = trim((string) ($_POST['partner_ids'] ?? ''));
+        $hours = filter_var($_POST['hours'] ?? null, FILTER_VALIDATE_INT);
+        $minutes = filter_var($_POST['minutes'] ?? null, FILTER_VALIDATE_INT);
+        $seconds = filter_var($_POST['seconds'] ?? null, FILTER_VALIDATE_INT);
+        $date = DateTimeImmutable::createFromFormat('!Y-m-d', $eventDate);
+        $dateErrors = DateTimeImmutable::getLastErrors();
+        if ($competition === '' || mb_strlen($competition) > 120 || $categoryId === ''
+            || !$date || $date->format('Y-m-d') !== $eventDate
+            || (is_array($dateErrors) && ($dateErrors['warning_count'] || $dateErrors['error_count']))
+            || $hours === false || $hours < 0 || $hours > 99
+            || $minutes === false || $minutes < 0 || $minutes > 59
+            || $seconds === false || $seconds < 0 || $seconds > 59
+            || ($hours * 3600 + $minutes * 60 + $seconds) <= 0) {
+            classementRespond(['error' => 'Vérifie la compétition, la date et le temps saisi.'], 400);
+        }
+
+        if ($partnerIdsInput !== '') {
+            $partnerIds = json_decode($partnerIdsInput, true);
+            if (!is_array($partnerIds)) {
+                classementRespond(['error' => 'La liste des participants est invalide.'], 400);
+            }
+        } else {
+            $legacyPartnerId = trim((string) ($_POST['partner_id'] ?? ''));
+            $partnerIds = $legacyPartnerId === '' ? [] : [$legacyPartnerId];
+        }
+        $partners = [];
+        $seenPartnerIds = [];
+        foreach ($partnerIds as $rawPartnerId) {
+            $partnerId = filter_var($rawPartnerId, FILTER_VALIDATE_INT);
+            if ($partnerId === false || $partnerId <= 0 || $partnerId === $userId) {
+                classementRespond(['error' => 'Choisis des adhérents valides pour partager cette performance.'], 400);
+            }
+            if (isset($seenPartnerIds[$partnerId])) {
+                continue;
+            }
+            $seenPartnerIds[$partnerId] = true;
+            $partnerQuery = $pdo->prepare('SELECT id, firstname, lastname FROM account_wtc WHERE id = ? AND ban = 0');
+            $partnerQuery->execute([$partnerId]);
+            $partner = $partnerQuery->fetch(PDO::FETCH_ASSOC);
+            if (!$partner) {
+                classementRespond(['error' => 'Cet adhérent n’est plus disponible.'], 404);
+            }
+            $partners[] = $partner;
+        }
+        $savedPhotos = classementSavePhotos($_FILES['photos'] ?? [], $uploadDirectory);
+    } elseif ($action === 'create_category') {
+        $categoryName = trim((string) ($_POST['name'] ?? ''));
+        if ($categoryName === '' || mb_strlen($categoryName) > 80) {
+            classementRespond(['error' => 'Le nom doit contenir entre 1 et 80 caractères.'], 400);
+        }
+        $rawSubcategories = trim((string) ($_POST['subcategories'] ?? ''));
+        $subcategoryNames = $rawSubcategories === '' ? [] : json_decode($rawSubcategories, true);
+        if (!is_array($subcategoryNames) || count($subcategoryNames) > 100) {
+            classementRespond(['error' => 'La liste des sous-catégories est invalide.'], 400);
+        }
+        $cleanSubcategoryNames = [];
+        $seenSubcategoryNames = [];
+        foreach ($subcategoryNames as $subcategoryName) {
+            if (!is_string($subcategoryName)) {
+                classementRespond(['error' => 'Chaque sous-catégorie doit avoir un nom valide.'], 400);
+            }
+            $subcategoryName = trim($subcategoryName);
+            if ($subcategoryName === '' || mb_strlen($subcategoryName) > 80) {
+                classementRespond(['error' => 'Chaque nom de sous-catégorie doit contenir entre 1 et 80 caractères.'], 400);
+            }
+            $normalizedName = mb_strtolower($subcategoryName);
+            if (isset($seenSubcategoryNames[$normalizedName])) {
+                classementRespond(['error' => 'Les sous-catégories doivent avoir des noms différents.'], 400);
+            }
+            $seenSubcategoryNames[$normalizedName] = true;
+            $cleanSubcategoryNames[] = $subcategoryName;
+        }
+        if (isset($_POST['has_subcategories']) && $_POST['has_subcategories'] === '1' && !$cleanSubcategoryNames) {
+            classementRespond(['error' => 'Ajoute au moins une sous-catégorie ou décoche cette option.'], 400);
+        }
+    } elseif (!in_array($action, ['delete_category', 'delete_record', 'remove_participation'], true)) {
+        classementRespond(['error' => 'Action inconnue.'], 400);
+    }
+
+    $lock = fopen($lockPath, 'c');
+    if ($lock === false || !flock($lock, LOCK_EX)) {
+        classementRemovePhotos([['photos' => $savedPhotos]], $uploadDirectory);
+        classementRespond(['error' => 'Le classement est temporairement indisponible.'], 500);
+    }
+    $data = classementRead($storagePath);
+    $response = null;
+    $photosToRemove = [];
+
+    if ($action === 'create_category') {
+        foreach ($data['categories'] as $category) {
+            if (mb_strtolower($category['name']) === mb_strtolower($categoryName)) {
+                flock($lock, LOCK_UN);
+                fclose($lock);
+                classementRespond(['error' => 'Cette catégorie existe déjà.'], 409);
+            }
+        }
+        $subcategories = [];
+        foreach ($cleanSubcategoryNames as $subcategoryName) {
+            $subcategories[] = [
+                'id' => bin2hex(random_bytes(8)),
+                'name' => $subcategoryName,
+                'created_at' => date(DATE_ATOM),
+            ];
+        }
+        $category = ['id' => bin2hex(random_bytes(8)), 'name' => $categoryName, 'subcategories' => $subcategories, 'created_at' => date(DATE_ATOM)];
+        $data['categories'][] = $category;
+        $response = ['category' => $category];
+    } elseif ($action === 'create_record') {
+        $targetCategory = null;
+        foreach ($data['categories'] as $category) {
+            if ((string) $category['id'] === $categoryId) {
+                $targetCategory = $category;
+                break;
+            }
+        }
+        if ($targetCategory === null) {
+            flock($lock, LOCK_UN);
+            fclose($lock);
+            classementRemovePhotos([['photos' => $savedPhotos]], $uploadDirectory);
+            classementRespond(['error' => 'Cette catégorie n’existe plus.'], 404);
+        }
+        $targetSubcategory = null;
+        foreach (($targetCategory['subcategories'] ?? []) as $subcategory) {
+            if ((string) $subcategory['id'] === $subcategoryId) {
+                $targetSubcategory = $subcategory;
+                break;
+            }
+        }
+        if ($subcategoryId !== '' && $targetSubcategory === null) {
+            flock($lock, LOCK_UN);
+            fclose($lock);
+            classementRemovePhotos([['photos' => $savedPhotos]], $uploadDirectory);
+            classementRespond(['error' => 'Cette sous-catégorie n’existe plus.'], 404);
+        }
+        if (!$isAdmin && !empty($targetCategory['subcategories']) && $targetSubcategory === null) {
+            flock($lock, LOCK_UN);
+            fclose($lock);
+            classementRemovePhotos([['photos' => $savedPhotos]], $uploadDirectory);
+            classementRespond(['error' => 'Choisis une sous-catégorie avant d’ajouter un temps.'], 400);
+        }
+        $participants = [[
+            'user_id' => $userId,
+            'firstname' => (string) $currentUser['firstname'],
+            'last_initial' => mb_substr((string) $currentUser['lastname'], 0, 1),
+        ]];
+        foreach ($partners as $partner) {
+            $participants[] = [
+                'user_id' => (int) $partner['id'],
+                'firstname' => (string) $partner['firstname'],
+                'last_initial' => mb_substr((string) $partner['lastname'], 0, 1),
+            ];
+        }
+        $record = [
+            'id' => bin2hex(random_bytes(12)),
+            'category_id' => $categoryId,
+            'subcategory_id' => $targetSubcategory['id'] ?? null,
+            'owner_id' => $userId,
+            'participants' => $participants,
+            'competition' => $competition,
+            'event_date' => $eventDate,
+            'time_seconds' => $hours * 3600 + $minutes * 60 + $seconds,
+            'photos' => $savedPhotos,
+            'created_at' => date(DATE_ATOM),
+        ];
+        $data['records'][] = $record;
+        $response = ['record' => $record];
+    } elseif ($action === 'delete_category') {
+        $categoryId = trim((string) ($_POST['category_id'] ?? ''));
+        $categoryFound = false;
+        foreach ($data['categories'] as $category) {
+            if ((string) $category['id'] === $categoryId) {
+                $categoryFound = true;
+                break;
+            }
+        }
+        if (!$categoryFound) {
+            classementRespond(['error' => 'Cette catégorie n’existe plus.'], 404);
+        }
+        $photosToRemove = array_values(array_filter($data['records'], static fn($record) => (string) $record['category_id'] === $categoryId));
+        $data['categories'] = array_values(array_filter($data['categories'], static fn($category) => (string) $category['id'] !== $categoryId));
+        $data['records'] = array_values(array_filter($data['records'], static fn($record) => (string) $record['category_id'] !== $categoryId));
+        $response = ['deleted' => true];
+    } elseif ($action === 'remove_participation') {
+        $recordId = trim((string) ($_POST['record_id'] ?? ''));
+        $recordIndex = null;
+        foreach ($data['records'] as $index => $record) {
+            if ((string) $record['id'] === $recordId) {
+                $recordIndex = $index;
+                break;
+            }
+        }
+        if ($recordIndex === null) {
+            classementRespond(['error' => 'Cette performance n’existe plus.'], 404);
+        }
+        $participants = classementParticipants($data['records'][$recordIndex]);
+        $remainingParticipants = array_values(array_filter($participants, static fn($participant) => (int) $participant['user_id'] !== $userId));
+        if (count($remainingParticipants) === count($participants)) {
+            classementRespond(['error' => 'Tu ne peux retirer que ta propre participation.'], 403);
+        }
+        if (!$remainingParticipants) {
+            $photosToRemove[] = $data['records'][$recordIndex];
+            unset($data['records'][$recordIndex]);
+            $data['records'] = array_values($data['records']);
+        } else {
+            $data['records'][$recordIndex]['participants'] = $remainingParticipants;
+            if ((int) ($data['records'][$recordIndex]['owner_id'] ?? 0) === $userId) {
+                $data['records'][$recordIndex]['owner_id'] = (int) $remainingParticipants[0]['user_id'];
+            }
+        }
+        $response = ['removed' => true];
+    } else {
+        $recordId = trim((string) ($_POST['record_id'] ?? ''));
+        $recordFound = false;
+        foreach ($data['records'] as $record) {
+            if ((string) $record['id'] === $recordId) {
+                $recordFound = $record;
+                break;
+            }
+        }
+        if ($recordFound === false) {
+            classementRespond(['error' => 'Cette performance n’existe plus.'], 404);
+        }
+        $photosToRemove[] = $recordFound;
+        $data['records'] = array_values(array_filter($data['records'], static fn($record) => (string) $record['id'] !== $recordId));
+        $response = ['deleted' => true];
+    }
+
+    $written = classementWrite($storagePath, $data);
+    flock($lock, LOCK_UN);
+    fclose($lock);
+    if (!$written) {
+        classementRemovePhotos([['photos' => $savedPhotos]], $uploadDirectory);
+        classementRespond(['error' => 'Impossible d’enregistrer le classement.'], 500);
+    }
+    classementRemovePhotos($photosToRemove, $uploadDirectory);
+    classementRespond(['success' => true] + $response);
+} catch (InvalidArgumentException $error) {
+    classementRemovePhotos([['photos' => $savedPhotos]], $uploadDirectory);
+    classementRespond(['error' => $error->getMessage()], 400);
+} catch (Throwable $error) {
+    classementRemovePhotos([['photos' => $savedPhotos]], $uploadDirectory);
+    error_log('[classement] ' . $error->getMessage());
+    classementRespond(['error' => 'Une erreur est survenue pendant l’enregistrement.'], 500);
+}

@@ -1,4 +1,4 @@
-const CACHE_NAME = "wtc-cache-v17";
+const CACHE_NAME = "wtc-cache-v30";
 const BASE_URL = new URL(".", self.location.href);
 const BASE_PREFIX = BASE_URL.pathname === "/" ? "" : BASE_URL.pathname.replace(/\/$/, "");
 const PRECACHE_URLS = [
@@ -15,9 +15,10 @@ const PRECACHE_URLS = [
   `${BASE_PREFIX}/css/fonts/inter-600.ttf`,
   `${BASE_PREFIX}/css/fonts/inter-700.ttf`,
   `${BASE_PREFIX}/css/style.css`,
+  `${BASE_PREFIX}/css/classement.css`,
   `${BASE_PREFIX}/js/seances.js?v=202607102200`,
   `${BASE_PREFIX}/img/wtc.png`,
-  `${BASE_PREFIX}/manifest.json?v=202608271030`,
+  `${BASE_PREFIX}/manifest.json?v=2026092701`,
   `${BASE_PREFIX}/offline.html`,
 ];
 
@@ -53,6 +54,10 @@ self.addEventListener("fetch", (event) => {
   // Do not try to cache or handle Server-Sent Events (streaming endpoints)
   try {
     const urlCheck = new URL(event.request.url);
+    if (urlCheck.pathname.endsWith('/api/classement.php')) {
+      event.respondWith(fetch(event.request, { cache: "no-store" }));
+      return;
+    }
     if (urlCheck.pathname.endsWith('/api/commits-events.php') || urlCheck.pathname.includes('/commits-events.php')) {
       // let the browser handle the SSE connection directly
       return;

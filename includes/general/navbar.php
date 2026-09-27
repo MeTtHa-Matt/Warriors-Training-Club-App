@@ -34,12 +34,12 @@ $isLoggedIn = isset($_SESSION['user_id']);
                         href="seances.php">Séances</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?php echo wtc_active('reglement-interieur.php', $current); ?>"
-                        href="reglement-interieur.php">Règlement intérieur</a>
+                    <a class="nav-link <?php echo wtc_active('classement.php', $current); ?>"
+                        href="classement.php">Classement</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?php echo wtc_active('whatsapp.php', $current); ?>"
-                        href="whatsapp.php">Rejoindre le groupe WhatsApp</a>
+                    <a class="nav-link <?php echo wtc_active('reglement-interieur.php', $current); ?>"
+                        href="reglement-interieur.php">Règlement intérieur</a>
                 </li>
                 <?php if ((int) ($_SESSION['admin'] ?? 0) === 1): ?>
                     <?php
@@ -91,6 +91,12 @@ $isLoggedIn = isset($_SESSION['user_id']);
                         <li>
                             <a class="dropdown-item wtc-user-menu__item" href="modifier-profil.php">
                                 <i class="bi bi-pencil-square"></i>Modifier le profil
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item wtc-user-menu__item <?php echo wtc_active('whatsapp.php', $current); ?>"
+                                href="whatsapp.php">
+                                <i class="bi bi-whatsapp"></i>Rejoindre le groupe WhatsApp
                             </a>
                         </li>
                         <li>
