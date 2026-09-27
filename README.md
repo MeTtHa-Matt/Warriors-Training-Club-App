@@ -160,6 +160,8 @@ Le webhook GitHub (`github-webhook.php`) déclenche automatiquement `indexnow.ph
 
 ## Migration des classements vers MySQL
 
+La page d’administration **Actions SQL** regroupe en direct les requêtes exécutées par tous les utilisateurs. Elle interroge les nouveaux événements toutes les deux secondes, répartis en lectures, ajouts, modifications, suppressions et autres. Les paramètres bindés et littéraux SQL sont masqués; l’accès à la page et à son endpoint est réservé aux administrateurs.
+
 Les classements sont stockés dans les tables `ranking_*`. Lors du changement de version, garde une sauvegarde de la base et du fichier `data/classements.json`, puis suspends temporairement les modifications de classement pendant l’import.
 
 Après avoir configuré le `.env` pour la base de destination et copié le JSON ainsi que `data/classement_photos/`, lance d’abord une simulation :
@@ -174,7 +176,18 @@ Si les nombres affichés sont corrects, lance l’import :
 php migrate-classements.php
 ```
 
-Le script crée les tables si nécessaire, conserve les identifiants existants, vérifie les références aux comptes et garde le JSON intact. Une même source déjà importée (empreinte identique) ne sera pas importée une seconde fois. Par défaut, le script refuse de remplacer des classements déjà présents ; `--replace` supprime et remplace toutes les données des tables `ranking_*` et doit être utilisé uniquement volontairement. Les photos elles-mêmes ne sont pas mises en base : conserve le dossier `data/classement_photos/` avec les mêmes noms de fichiers.
+Le script crée les tables si nécessaire, conserve les identifiants existants, vérifie les références aux comptes et garde le JSON intact. Une même source déjà importée (empreinte identique) ne sera pas importée une seconde fois. Par défaut, le script refuse de remplacer des classements déjà présents ; `--replace` supprime et remplace toutes les données des tables `ranking_*` et doit être utilisé uniquement volontairement. La base stocke seulement les noms des photos.
+
+Pour déplacer les fichiers image après leur import, prévisualise l’opération puis lance le script dédié :
+
+```bash
+php migrate-classement-photos.php --dry-run
+php migrate-classement-photos.php
+```
+
+Il déplace les images validées de `data/classement_photos/` vers `img/classement_photos/`, sans écraser un fichier différent déjà présent. Il ne modifie pas les lignes SQL, car leurs noms de fichiers ne changent pas.
+
+Après avoir vérifié les classements et photos sur le site et conservé une sauvegarde JSON hors du répertoire public, supprime du serveur `data/classements.json` et `data/classements.lock`. Tu peux également retirer les deux scripts de migration du serveur de production ; garde-les dans le dépôt pour une restauration ou une migration future. Ne supprime pas `img/classement_photos/` : les performances SQL référencent toujours ces fichiers.
 
 ---
 

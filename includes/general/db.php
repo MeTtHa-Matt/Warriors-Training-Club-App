@@ -40,15 +40,64 @@ $auditDisabled = ($env('DISABLE_DB_AUDIT') === '1');
 if (!function_exists('appendDbAuditLog')) {
     function appendDbAuditLog(string $event, string $sql, array $params = [], ?string $context = null, ?string $status = 'ok'): void
     {
-        global $auditDisabled;
-        if (!empty($auditDisabled)) {
+        global $auditDisabled, $sqlActionAuditReady, $host, $port, $dbname, $username, $password;
+        if (!empty($auditDisabled) || defined('WTC_DISABLE_SQL_ACTION_AUDIT')) {
             return;
         }
 
         try {
-            SecureAuditLogger::logQuery($sql, $params);
-        } catch (Exception $e) {
-            error_log("Audit logging error: " . $e->getMessage());
+            SecureAuditLogger::logQuery($sql, []);
+            if (empty($sqlActionAuditReady) || !in_array($event, ['sql_execute', 'sql_query', 'sql_exec'], true)) {
+                return;
+            }
+
+            static $auditPdo = null;
+            if (!$auditPdo instanceof PDO) {
+                $auditPdo = new PDO(
+                    "mysql:host={$host};port={$port};dbname={$dbname};charset=utf8mb4",
+                    $username,
+                    $password,
+                    [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+                );
+            }
+
+            $sourcePage = basename((string) ($_SERVER['SCRIPT_NAME'] ?? 'cli'));
+            $sourceLine = 0;
+            foreach (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 8) as $frame) {
+                $frameFile = (string) ($frame['file'] ?? '');
+                if ($frameFile !== '' && realpath($frameFile) !== realpath(__FILE__) && basename($frameFile) !== 'db.php') {
+                    $sourcePage = basename($frameFile);
+                    $sourceLine = (int) ($frame['line'] ?? 0);
+                    break;
+                }
+            }
+
+            $ipAddress = (string) ($_SERVER['REMOTE_ADDR'] ?? '');
+            if (filter_var($ipAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+                $ipAddress = preg_replace('/\.\d+$/', '.0', $ipAddress) ?? '';
+            } elseif (filter_var($ipAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+                $ipAddress = '[IPv6]';
+            } else {
+                $ipAddress = '';
+            }
+
+            $insertAudit = $auditPdo->prepare(
+                'INSERT INTO sql_action_logs (actor_id, query_type, table_name, statement, status, source_page, source_line, ip_partial)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+            );
+            $actorId = filter_var($_SESSION['user_id'] ?? null, FILTER_VALIDATE_INT);
+            $insertAudit->execute([
+                $actorId !== false && $actorId > 0 ? $actorId : null,
+                SecureAuditLogger::getQueryType(ltrim($sql)),
+                mb_substr(SecureAuditLogger::getTable($sql), 0, 64),
+                SecureAuditLogger::sanitizeQuery($sql),
+                $status === 'ok' ? 'ok' : 'error',
+                mb_substr($sourcePage, 0, 255),
+                $sourceLine > 0 ? $sourceLine : null,
+                $ipAddress !== '' ? $ipAddress : null,
+            ]);
+        } catch (Throwable $e) {
+            error_log('[sql-action-audit] ' . $e->getMessage());
         }
     }
 }
@@ -61,18 +110,20 @@ if (!class_exists('AuditPDOStatement', false)) {
         protected function __construct($pdo)
         {
             $this->pdo = $pdo;
-            $sql = trim((string) $this->queryString);
-            if ($sql !== '') {
-                appendDbAuditLog('statement_created', $sql, [], 'auto', 'created');
-            }
         }
 
         public function execute($input_parameters = null): bool
         {
             $sql = $this->queryString;
             $params = is_array($input_parameters) ? $input_parameters : [];
-            appendDbAuditLog('statement_execute', $sql, $params, 'auto', 'executed');
-            return parent::execute($input_parameters);
+            try {
+                $result = parent::execute($input_parameters);
+                appendDbAuditLog('sql_execute', $sql, $params, 'auto', 'ok');
+                return $result;
+            } catch (Throwable $error) {
+                appendDbAuditLog('sql_execute', $sql, $params, 'auto', 'error');
+                throw $error;
+            }
         }
     }
 }
@@ -89,20 +140,31 @@ if (!class_exists('AuditPDO', false)) {
 
         public function prepare(string $query, array $driver_options = []): PDOStatement
         {
-            appendDbAuditLog('statement_prepare', $query, [], 'auto', 'prepared');
             return parent::prepare($query, $driver_options);
         }
 
         public function query(string $query, ?int $fetchMode = null, mixed ...$fetchModeArgs): PDOStatement|false
         {
-            appendDbAuditLog('statement_query', $query, [], 'auto', 'query');
-            return parent::query($query, $fetchMode, ...$fetchModeArgs);
+            try {
+                $statement = parent::query($query, $fetchMode, ...$fetchModeArgs);
+                appendDbAuditLog('sql_query', $query, [], 'auto', 'ok');
+                return $statement;
+            } catch (Throwable $error) {
+                appendDbAuditLog('sql_query', $query, [], 'auto', 'error');
+                throw $error;
+            }
         }
 
         public function exec(string $statement): int|false
         {
-            appendDbAuditLog('statement_exec', $statement, [], 'auto', 'exec');
-            return parent::exec($statement);
+            try {
+                $result = parent::exec($statement);
+                appendDbAuditLog('sql_exec', $statement, [], 'auto', $result === false ? 'error' : 'ok');
+                return $result;
+            } catch (Throwable $error) {
+                appendDbAuditLog('sql_exec', $statement, [], 'auto', 'error');
+                throw $error;
+            }
         }
     }
 }
@@ -111,6 +173,29 @@ $ilycScoresAvailable = false;
 
 try {
     $pdo = new AuditPDO("mysql:host={$host};port={$port};dbname={$dbname};charset=utf8mb4", $username, $password);
+
+    $sqlActionAuditReady = false;
+    try {
+        $pdo->exec(
+            'CREATE TABLE IF NOT EXISTS sql_action_logs (
+                id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                actor_id INT DEFAULT NULL,
+                query_type VARCHAR(16) NOT NULL,
+                table_name VARCHAR(64) NOT NULL DEFAULT \'unknown\',
+                statement TEXT NOT NULL,
+                status VARCHAR(16) NOT NULL DEFAULT \'ok\',
+                source_page VARCHAR(255) NOT NULL DEFAULT \'unknown\',
+                source_line INT UNSIGNED DEFAULT NULL,
+                ip_partial VARCHAR(45) DEFAULT NULL,
+                INDEX idx_sql_action_logs_created (id),
+                INDEX idx_sql_action_logs_type_id (query_type, id)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4'
+        );
+        $sqlActionAuditReady = true;
+    } catch (Throwable $e) {
+        error_log('[db.php] SQL action audit table unavailable: ' . $e->getMessage());
+    }
 
     try {
         $pdo->exec(

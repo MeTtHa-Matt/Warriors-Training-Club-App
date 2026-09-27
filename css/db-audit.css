@@ -1,0 +1,261 @@
+.sql-actions-page,
+.sql-actions-heading,
+.sql-actions-content,
+.sql-actions-panel,
+.sql-actions-feed,
+.sql-actions-entry {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.sql-actions-page {
+  overflow-x: clip;
+}
+
+.sql-actions-heading {
+  padding: 1.5rem 0 1.1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.sql-actions-heading h1 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.sql-actions-heading__row,
+.sql-actions-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.sql-actions-subtitle {
+  max-width: 42rem;
+  margin: 0.6rem 0 0;
+  color: var(--grey);
+  overflow-wrap: anywhere;
+}
+
+.sql-actions-live {
+  min-width: 0;
+  max-width: 100%;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  flex: 0 0 auto;
+  color: var(--grey);
+  font-size: 0.86rem;
+}
+
+.sql-actions-live span:last-child {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.sql-actions-live__dot {
+  width: 9px;
+  height: 9px;
+  flex: 0 0 9px;
+  border-radius: 50%;
+  background: #ca5b54;
+}
+
+.sql-actions-live.is-connected .sql-actions-live__dot {
+  background: #6dbb83;
+  box-shadow: 0 0 0 3px rgba(109, 187, 131, 0.14);
+}
+
+.sql-actions-live.has-error {
+  color: #f0aaa5;
+}
+
+.sql-actions-live.has-error .sql-actions-live__dot {
+  background: #ca5b54;
+  box-shadow: 0 0 0 3px rgba(202, 91, 84, 0.14);
+}
+
+.sql-actions-content {
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+}
+
+.sql-actions-toolbar {
+  align-items: flex-end;
+  margin-bottom: 0.75rem;
+}
+
+.sql-actions-filter {
+  width: min(18rem, 100%);
+  display: grid;
+  gap: 0.3rem;
+  color: var(--grey);
+  font-size: 0.74rem;
+}
+
+.sql-actions-filter .form-select {
+  width: 100%;
+  min-height: 44px;
+  color: var(--paper);
+  background-color: #17150f;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+}
+
+.sql-actions-filter .form-select:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 0.2rem rgba(201, 162, 39, 0.16);
+}
+
+.sql-actions-updated,
+.sql-actions-note {
+  color: var(--grey);
+  font-size: 0.78rem;
+}
+
+.sql-actions-updated {
+  flex: 0 0 auto;
+  padding-bottom: 0.65rem;
+}
+
+.sql-actions-panel[hidden] {
+  display: none !important;
+}
+
+.sql-actions-feed {
+  display: flex;
+  flex-direction: column;
+}
+
+.sql-actions-entry {
+  padding: 0.85rem 0.1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.sql-actions-entry:first-child {
+  border-top: 1px solid var(--line);
+}
+
+.sql-actions-entry__meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.7rem;
+  margin-bottom: 0.5rem;
+  color: var(--grey);
+  font-size: 0.74rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.sql-actions-entry__actor {
+  overflow-wrap: anywhere;
+}
+
+.sql-actions-entry__query {
+  min-width: 44px;
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.7rem;
+  color: var(--gold-soft);
+  background: rgba(201, 162, 39, 0.08);
+  border: 1px solid rgba(201, 162, 39, 0.32);
+  border-radius: 4px;
+  font-family: var(--font-mono, monospace);
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.sql-actions-entry__query:hover,
+.sql-actions-entry__query:focus-visible {
+  color: var(--paper);
+  background: rgba(201, 162, 39, 0.16);
+  border-color: var(--gold);
+  outline: none;
+}
+
+.sql-actions-modal-query {
+  max-width: 100%;
+  margin: 0;
+  padding: 0.85rem;
+  color: var(--paper);
+  background: rgba(12, 11, 10, 0.72);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.8rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.sql-actions-result {
+  display: inline-block;
+  flex: 0 0 auto;
+  padding: 0.15rem 0.4rem;
+  color: #a8d6b4;
+  background: rgba(63, 131, 83, 0.16);
+  border-radius: 3px;
+  font-size: 0.7rem;
+}
+
+.sql-actions-result.is-error {
+  color: #f0aaa5;
+  background: rgba(138, 41, 38, 0.2);
+}
+
+.sql-actions-empty {
+  margin: 0;
+  padding: 1.3rem 0.25rem;
+  color: var(--grey);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  font-size: 0.9rem;
+}
+
+.sql-actions-note {
+  margin: 0.7rem 0 0;
+  line-height: 1.5;
+}
+
+@media (max-width: 900px) {
+  .sql-actions-heading__row,
+  .sql-actions-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .sql-actions-heading__row {
+    gap: 0.75rem;
+  }
+
+  .sql-actions-toolbar {
+    gap: 0.6rem;
+  }
+
+  .sql-actions-filter {
+    width: 100%;
+  }
+
+  .sql-actions-updated {
+    padding: 0;
+  }
+}
+
+@media (max-width: 380px) {
+  .sql-actions-heading h1 {
+    font-size: 1.55rem;
+  }
+
+  .sql-actions-entry {
+    padding: 0.7rem 0;
+  }
+
+  .sql-actions-modal-query {
+    padding: 0.65rem;
+    font-size: 0.74rem;
+  }
+}

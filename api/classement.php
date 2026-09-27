@@ -159,7 +159,7 @@ if (!$currentUser) {
     classementRespond(['error' => 'Compte introuvable.'], 401);
 }
 $isAdmin = (int) $currentUser['admin'] === 1;
-$uploadDirectory = __DIR__ . '/../data/classement_photos';
+$uploadDirectory = __DIR__ . '/../img/classement_photos';
 
 if (isset($_GET['photo'])) {
     $filename = basename((string) $_GET['photo']);

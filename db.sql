@@ -186,3 +186,18 @@ CREATE TABLE IF NOT EXISTS ranking_imports (
     categories_count INT UNSIGNED NOT NULL,
     records_count INT UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS sql_action_logs (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    actor_id INT DEFAULT NULL,
+    query_type VARCHAR(16) NOT NULL,
+    table_name VARCHAR(64) NOT NULL DEFAULT 'unknown',
+    statement TEXT NOT NULL,
+    status VARCHAR(16) NOT NULL DEFAULT 'ok',
+    source_page VARCHAR(255) NOT NULL DEFAULT 'unknown',
+    source_line INT UNSIGNED DEFAULT NULL,
+    ip_partial VARCHAR(45) DEFAULT NULL,
+    INDEX idx_sql_action_logs_created (id),
+    INDEX idx_sql_action_logs_type_id (query_type, id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

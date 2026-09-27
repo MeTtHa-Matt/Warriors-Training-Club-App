@@ -46,7 +46,7 @@ $isLoggedIn = isset($_SESSION['user_id']);
                     $adminMenuItems = [
                         ['url' => 'reports.php', 'icon' => 'bi bi-chat-left-text', 'label' => 'Signalements'],
                         ['url' => 'utilisateurs.php', 'icon' => 'bi bi-people', 'label' => 'Utilisateurs'],
-                        ['url' => 'db-audit.php', 'icon' => 'bi bi-journal-text', 'label' => 'Audit DB'],
+                        ['url' => 'actions-sql.php', 'icon' => 'bi bi-journal-text', 'label' => 'Actions SQL'],
                         ['url' => 'envoyer-mail.php', 'icon' => 'bi bi-envelope', 'label' => 'Envoyer un mail'],
                         ['url' => 'liens-index.php', 'icon' => 'bi bi-link-45deg', 'label' => 'Liens accueil'],
                         ['url' => 'commits-dashboard.php', 'icon' => 'bi bi-git', 'label' => 'GitHub commits'],

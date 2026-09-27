@@ -49,22 +49,25 @@ class SecureAuditLogger {
     /**
      * Extrait le type de requête
      */
-    private static function getQueryType($query) {
-        if (preg_match('/^SELECT/i', $query)) return 'SELECT';
-        if (preg_match('/^INSERT/i', $query)) return 'INSERT';
+    public static function getQueryType($query) {
+        if (preg_match('/^(SELECT|WITH\s)/i', $query)) return 'SELECT';
+        if (preg_match('/^(INSERT|REPLACE)/i', $query)) return 'INSERT';
         if (preg_match('/^UPDATE/i', $query)) return 'UPDATE';
         if (preg_match('/^DELETE/i', $query)) return 'DELETE';
         return 'OTHER';
     }
 
+    public static function sanitizeQuery($query) {
+        $query = preg_replace('/\'(?:\\\\.|\'\'|[^\'])*\'|"(?:\\\\.|""|[^"])*"/s', '?', (string) $query);
+        $query = preg_replace('/(?<![A-Za-z0-9_])[-+]?\d+(?:\.\d+)?(?![A-Za-z0-9_])/', '?', $query ?? '');
+        return mb_substr(trim(preg_replace('/\s+/', ' ', $query ?? '')), 0, 4000);
+    }
+
     /**
      * Extrait le nom de la table
      */
-    private static function getTable($query) {
-        if (preg_match('/FROM\s+`?(\w+)`?/i', $query, $matches)) {
-            return $matches[1];
-        }
-        if (preg_match('/UPDATE\s+`?(\w+)`?/i', $query, $matches)) {
+    public static function getTable($query) {
+        if (preg_match('/(?:FROM|INTO|UPDATE|JOIN|TABLE)\s+`?(\w+)`?/i', $query, $matches)) {
             return $matches[1];
         }
         return 'unknown';
