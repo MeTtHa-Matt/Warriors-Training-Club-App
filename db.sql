@@ -59,7 +59,8 @@ CREATE TABLE IF NOT EXISTS seances (
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (created_by) REFERENCES account_wtc(id) ON DELETE CASCADE,
     FOREIGN KEY (template_id) REFERENCES seance_templates(id) ON DELETE SET NULL,
-    INDEX (template_id)
+    INDEX (template_id),
+    INDEX idx_seances_date_start (date_seance, heure_debut)
 );
 
 CREATE TABLE IF NOT EXISTS inscriptions_seances (
@@ -72,7 +73,9 @@ CREATE TABLE IF NOT EXISTS inscriptions_seances (
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (seance_id) REFERENCES seances(id) ON DELETE CASCADE,
     FOREIGN KEY (account_id) REFERENCES account_wtc(id) ON DELETE CASCADE,
-    FOREIGN KEY (inscrit_par) REFERENCES account_wtc(id) ON DELETE CASCADE
+    FOREIGN KEY (inscrit_par) REFERENCES account_wtc(id) ON DELETE CASCADE,
+    INDEX idx_inscriptions_seance_creator (seance_id, inscrit_par),
+    INDEX idx_inscriptions_seance_created (seance_id, created_at)
 );
 
 CREATE TABLE IF NOT EXISTS persistent_tokens (

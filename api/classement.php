@@ -28,7 +28,17 @@ function classementRead(string $path): array
 function classementParticipants(array $record): array
 {
     if (isset($record['participants']) && is_array($record['participants'])) {
-        return array_values(array_filter($record['participants'], static fn($participant) => is_array($participant) && (int) ($participant['user_id'] ?? 0) > 0));
+        return array_values(array_filter($record['participants'], static function ($participant) {
+            if (!is_array($participant)) {
+                return false;
+            }
+            if ((int) ($participant['user_id'] ?? 0) > 0) {
+                return true;
+            }
+            return !empty($participant['external'])
+                && trim((string) ($participant['firstname'] ?? '')) !== ''
+                && trim((string) ($participant['lastname'] ?? '')) !== '';
+        }));
     }
 
     $userId = (int) ($record['user_id'] ?? 0);
@@ -52,7 +62,9 @@ function classementExpandRecords(array $records): array
                 'user_id' => (int) $participant['user_id'],
                 'participant_id' => (int) $participant['user_id'],
                 'firstname' => (string) ($participant['firstname'] ?? 'Membre'),
+                'lastname' => (string) ($participant['lastname'] ?? ''),
                 'last_initial' => (string) ($participant['last_initial'] ?? ''),
+                'external' => !empty($participant['external']),
                 'owner_id' => (int) ($record['owner_id'] ?? $record['user_id'] ?? 0),
                 'participants' => $participants,
             ]);
@@ -236,6 +248,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $subcategoryId = trim((string) ($_GET['subcategory'] ?? ''));
     if ($categoryId === '') {
         $personalBest = [];
+        $recordCountsByCategory = [];
+        $recordCountsBySubcategory = [];
+        foreach ($data['records'] as $record) {
+            $recordCategoryId = (string) ($record['category_id'] ?? '');
+            $recordSubcategoryId = (string) ($record['subcategory_id'] ?? '');
+            $recordCountsByCategory[$recordCategoryId] = ($recordCountsByCategory[$recordCategoryId] ?? 0) + 1;
+            if ($recordSubcategoryId !== '') {
+                $recordCountsBySubcategory[$recordCategoryId][$recordSubcategoryId] = ($recordCountsBySubcategory[$recordCategoryId][$recordSubcategoryId] ?? 0) + 1;
+            }
+        }
         $rankingRows = classementExpandRecords($data['records']);
         foreach ($rankingRows as $record) {
             if ((int) ($record['user_id'] ?? 0) !== $userId) {
@@ -248,15 +270,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         }
         foreach ($data['categories'] as &$category) {
             $category['subcategories'] = array_values($category['subcategories'] ?? []);
-            $categoryRecords = array_filter($data['records'], static fn($record) =>
-                (string) ($record['category_id'] ?? '') === (string) $category['id']
-            );
-            $category['record_count'] = count($categoryRecords);
+            $categoryIdKey = (string) $category['id'];
+            $category['record_count'] = $recordCountsByCategory[$categoryIdKey] ?? 0;
             foreach ($category['subcategories'] as &$subcategory) {
-                $subcategory['record_count'] = count(array_filter($data['records'], static fn($record) =>
-                    (string) ($record['category_id'] ?? '') === (string) $category['id']
-                    && (string) ($record['subcategory_id'] ?? '') === (string) $subcategory['id']
-                ));
+                $subcategory['record_count'] = $recordCountsBySubcategory[$categoryIdKey][(string) $subcategory['id']] ?? 0;
             }
             unset($subcategory);
             $category['personal_best'] = $personalBest[(string) $category['id']] ?? null;
@@ -276,11 +293,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         classementRespond(['error' => 'Cette catégorie n’existe plus.'], 404);
     }
     $category['subcategories'] = array_values($category['subcategories'] ?? []);
+    $recordCountsBySubcategory = [];
+    foreach ($data['records'] as $record) {
+        if ((string) ($record['category_id'] ?? '') !== $categoryId) {
+            continue;
+        }
+        $recordSubcategoryId = (string) ($record['subcategory_id'] ?? '');
+        if ($recordSubcategoryId !== '') {
+            $recordCountsBySubcategory[$recordSubcategoryId] = ($recordCountsBySubcategory[$recordSubcategoryId] ?? 0) + 1;
+        }
+    }
     foreach ($category['subcategories'] as &$subcategory) {
-        $subcategory['record_count'] = count(array_filter($data['records'], static fn($record) =>
-            (string) ($record['category_id'] ?? '') === $categoryId
-            && (string) ($record['subcategory_id'] ?? '') === (string) $subcategory['id']
-        ));
+        $subcategory['record_count'] = $recordCountsBySubcategory[(string) $subcategory['id']] ?? 0;
     }
     unset($subcategory);
     $selectedCategory = $category;
@@ -344,7 +368,7 @@ if (str_contains($_SERVER['CONTENT_TYPE'] ?? '', 'application/json')) {
         $_POST = array_merge($_POST, $input);
     }
 }
-if (in_array($action, ['create_category', 'delete_category', 'delete_record'], true) && !$isAdmin) {
+if (in_array($action, ['create_category', 'add_subcategory', 'delete_category', 'delete_record', 'delete_subcategory'], true) && !$isAdmin) {
     classementRespond(['error' => 'Action réservée aux admins.'], 403);
 }
 
@@ -380,9 +404,33 @@ try {
             $legacyPartnerId = trim((string) ($_POST['partner_id'] ?? ''));
             $partnerIds = $legacyPartnerId === '' ? [] : [$legacyPartnerId];
         }
+        if (count($partnerIds) > 20) {
+            classementRespond(['error' => 'Tu peux ajouter au maximum 20 participants à une performance.'], 400);
+        }
         $partners = [];
         $seenPartnerIds = [];
+        $seenExternalNames = [];
         foreach ($partnerIds as $rawPartnerId) {
+            if (is_array($rawPartnerId)) {
+                $firstname = is_string($rawPartnerId['firstname'] ?? null) ? trim($rawPartnerId['firstname']) : '';
+                $lastname = is_string($rawPartnerId['lastname'] ?? null) ? trim($rawPartnerId['lastname']) : '';
+                if ($firstname === '' || $lastname === '' || mb_strlen($firstname) > 80 || mb_strlen($lastname) > 80) {
+                    classementRespond(['error' => 'Saisis un prénom et un nom valides pour le participant externe.'], 400);
+                }
+                $externalKey = mb_strtolower($firstname . ' ' . $lastname);
+                if (isset($seenExternalNames[$externalKey])) {
+                    continue;
+                }
+                $seenExternalNames[$externalKey] = true;
+                $partners[] = [
+                    'user_id' => 0,
+                    'firstname' => $firstname,
+                    'lastname' => $lastname,
+                    'last_initial' => mb_substr($lastname, 0, 1),
+                    'external' => true,
+                ];
+                continue;
+            }
             $partnerId = filter_var($rawPartnerId, FILTER_VALIDATE_INT);
             if ($partnerId === false || $partnerId <= 0 || $partnerId === $userId) {
                 classementRespond(['error' => 'Choisis des adhérents valides pour partager cette performance.'], 400);
@@ -397,7 +445,12 @@ try {
             if (!$partner) {
                 classementRespond(['error' => 'Cet adhérent n’est plus disponible.'], 404);
             }
-            $partners[] = $partner;
+            $partners[] = [
+                'user_id' => (int) $partner['id'],
+                'firstname' => (string) $partner['firstname'],
+                'lastname' => (string) $partner['lastname'],
+                'last_initial' => mb_substr((string) $partner['lastname'], 0, 1),
+            ];
         }
         $savedPhotos = classementSavePhotos($_FILES['photos'] ?? [], $uploadDirectory);
     } elseif ($action === 'create_category') {
@@ -429,6 +482,84 @@ try {
         }
         if (isset($_POST['has_subcategories']) && $_POST['has_subcategories'] === '1' && !$cleanSubcategoryNames) {
             classementRespond(['error' => 'Ajoute au moins une sous-catégorie ou décoche cette option.'], 400);
+        }
+    } elseif ($action === 'add_subcategory') {
+        $categoryId = trim((string) ($_POST['category_id'] ?? ''));
+        $subcategoryName = trim((string) ($_POST['name'] ?? ''));
+        if ($categoryId === '' || $subcategoryName === '' || mb_strlen($subcategoryName) > 80) {
+            classementRespond(['error' => 'Saisis un nom de sous-catégorie valide.'], 400);
+        }
+    } elseif ($action === 'delete_subcategory') {
+        $categoryId = trim((string) ($_POST['category_id'] ?? ''));
+        $subcategoryId = trim((string) ($_POST['subcategory_id'] ?? ''));
+        if ($categoryId === '' || $subcategoryId === '') {
+            classementRespond(['error' => 'Cette sous-catégorie n’existe plus.'], 404);
+        }
+    } elseif ($action === 'edit_time') {
+        $recordId = trim((string) ($_POST['record_id'] ?? ''));
+        $hours = filter_var($_POST['hours'] ?? null, FILTER_VALIDATE_INT);
+        $minutes = filter_var($_POST['minutes'] ?? null, FILTER_VALIDATE_INT);
+        $seconds = filter_var($_POST['seconds'] ?? null, FILTER_VALIDATE_INT);
+        if ($recordId === '' || $hours === false || $hours < 0 || $hours > 99
+            || $minutes === false || $minutes < 0 || $minutes > 59
+            || $seconds === false || $seconds < 0 || $seconds > 59
+            || ($hours * 3600 + $minutes * 60 + $seconds) <= 0) {
+            classementRespond(['error' => 'Vérifie le temps saisi.'], 400);
+        }
+    } elseif ($action === 'add_participants') {
+        $recordId = trim((string) ($_POST['record_id'] ?? ''));
+        $partnerIdsInput = trim((string) ($_POST['partner_ids'] ?? ''));
+        $partnerIds = $partnerIdsInput === '' ? null : json_decode($partnerIdsInput, true);
+        if ($recordId === '' || !is_array($partnerIds) || !$partnerIds) {
+            classementRespond(['error' => 'Choisis au moins un participant à ajouter.'], 400);
+        }
+        if (count($partnerIds) > 20) {
+            classementRespond(['error' => 'Tu peux ajouter au maximum 20 participants à une performance.'], 400);
+        }
+        $partnersToAdd = [];
+        $seenPartnerIds = [];
+        $seenExternalNames = [];
+        foreach ($partnerIds as $rawPartnerId) {
+            if (is_array($rawPartnerId)) {
+                $firstname = is_string($rawPartnerId['firstname'] ?? null) ? trim($rawPartnerId['firstname']) : '';
+                $lastname = is_string($rawPartnerId['lastname'] ?? null) ? trim($rawPartnerId['lastname']) : '';
+                if ($firstname === '' || $lastname === '' || mb_strlen($firstname) > 80 || mb_strlen($lastname) > 80) {
+                    classementRespond(['error' => 'Saisis un prénom et un nom valides pour le participant externe.'], 400);
+                }
+                $externalKey = mb_strtolower($firstname . ' ' . $lastname);
+                if (isset($seenExternalNames[$externalKey])) {
+                    continue;
+                }
+                $seenExternalNames[$externalKey] = true;
+                $partnersToAdd[] = [
+                    'user_id' => 0,
+                    'firstname' => $firstname,
+                    'lastname' => $lastname,
+                    'last_initial' => mb_substr($lastname, 0, 1),
+                    'external' => true,
+                ];
+                continue;
+            }
+            $partnerId = filter_var($rawPartnerId, FILTER_VALIDATE_INT);
+            if ($partnerId === false || $partnerId <= 0 || $partnerId === $userId) {
+                classementRespond(['error' => 'Choisis des adhérents valides à ajouter.'], 400);
+            }
+            if (isset($seenPartnerIds[$partnerId])) {
+                continue;
+            }
+            $seenPartnerIds[$partnerId] = true;
+            $partnerQuery = $pdo->prepare('SELECT id, firstname, lastname FROM account_wtc WHERE id = ? AND ban = 0');
+            $partnerQuery->execute([$partnerId]);
+            $partner = $partnerQuery->fetch(PDO::FETCH_ASSOC);
+            if (!$partner) {
+                classementRespond(['error' => 'Cet adhérent n’est plus disponible.'], 404);
+            }
+            $partnersToAdd[] = [
+                'user_id' => (int) $partner['id'],
+                'firstname' => (string) $partner['firstname'],
+                'lastname' => (string) $partner['lastname'],
+                'last_initial' => mb_substr((string) $partner['lastname'], 0, 1),
+            ];
         }
     } elseif (!in_array($action, ['delete_category', 'delete_record', 'remove_participation'], true)) {
         classementRespond(['error' => 'Action inconnue.'], 400);
@@ -462,6 +593,67 @@ try {
         $category = ['id' => bin2hex(random_bytes(8)), 'name' => $categoryName, 'subcategories' => $subcategories, 'created_at' => date(DATE_ATOM)];
         $data['categories'][] = $category;
         $response = ['category' => $category];
+    } elseif ($action === 'add_subcategory') {
+        $categoryIndex = null;
+        foreach ($data['categories'] as $index => $category) {
+            if ((string) $category['id'] === $categoryId) {
+                $categoryIndex = $index;
+                break;
+            }
+        }
+        if ($categoryIndex === null) {
+            classementRespond(['error' => 'Cette catégorie n’existe plus.'], 404);
+        }
+        $subcategories = $data['categories'][$categoryIndex]['subcategories'] ?? [];
+        if (count($subcategories) >= 100) {
+            classementRespond(['error' => 'La catégorie ne peut pas dépasser 100 sous-catégories.'], 400);
+        }
+        foreach ($subcategories as $subcategory) {
+            if (mb_strtolower((string) $subcategory['name']) === mb_strtolower($subcategoryName)) {
+                classementRespond(['error' => 'Cette sous-catégorie existe déjà.'], 409);
+            }
+        }
+        $subcategory = [
+            'id' => bin2hex(random_bytes(8)),
+            'name' => $subcategoryName,
+            'created_at' => date(DATE_ATOM),
+        ];
+        $data['categories'][$categoryIndex]['subcategories'] = $subcategories;
+        $data['categories'][$categoryIndex]['subcategories'][] = $subcategory;
+        $response = ['subcategory' => $subcategory];
+    } elseif ($action === 'delete_subcategory') {
+        $categoryIndex = null;
+        foreach ($data['categories'] as $index => $category) {
+            if ((string) $category['id'] === $categoryId) {
+                $categoryIndex = $index;
+                break;
+            }
+        }
+        if ($categoryIndex === null) {
+            classementRespond(['error' => 'Cette catégorie n’existe plus.'], 404);
+        }
+        $subcategories = $data['categories'][$categoryIndex]['subcategories'] ?? [];
+        $subcategoryFound = false;
+        foreach ($subcategories as $subcategory) {
+            if ((string) $subcategory['id'] === $subcategoryId) {
+                $subcategoryFound = true;
+                break;
+            }
+        }
+        if (!$subcategoryFound) {
+            classementRespond(['error' => 'Cette sous-catégorie n’existe plus.'], 404);
+        }
+        $matchingRecords = array_values(array_filter($data['records'], static fn($record) =>
+            (string) ($record['category_id'] ?? '') === $categoryId
+            && (string) ($record['subcategory_id'] ?? '') === $subcategoryId
+        ));
+        $photosToRemove = $matchingRecords;
+        $data['records'] = array_values(array_filter($data['records'], static fn($record) =>
+            (string) ($record['category_id'] ?? '') !== $categoryId
+            || (string) ($record['subcategory_id'] ?? '') !== $subcategoryId
+        ));
+        $data['categories'][$categoryIndex]['subcategories'] = array_values(array_filter($subcategories, static fn($subcategory) => (string) $subcategory['id'] !== $subcategoryId));
+        $response = ['deleted' => true, 'deleted_record_count' => count($matchingRecords)];
     } elseif ($action === 'create_record') {
         $targetCategory = null;
         foreach ($data['categories'] as $category) {
@@ -502,10 +694,11 @@ try {
         ]];
         foreach ($partners as $partner) {
             $participants[] = [
-                'user_id' => (int) $partner['id'],
+                'user_id' => (int) $partner['user_id'],
                 'firstname' => (string) $partner['firstname'],
-                'last_initial' => mb_substr((string) $partner['lastname'], 0, 1),
-            ];
+                'lastname' => (string) $partner['lastname'],
+                'last_initial' => (string) $partner['last_initial'],
+            ] + (!empty($partner['external']) ? ['external' => true] : []);
         }
         $record = [
             'id' => bin2hex(random_bytes(12)),
@@ -537,6 +730,62 @@ try {
         $data['categories'] = array_values(array_filter($data['categories'], static fn($category) => (string) $category['id'] !== $categoryId));
         $data['records'] = array_values(array_filter($data['records'], static fn($record) => (string) $record['category_id'] !== $categoryId));
         $response = ['deleted' => true];
+    } elseif ($action === 'edit_time') {
+        $recordIndex = null;
+        foreach ($data['records'] as $index => $record) {
+            if ((string) $record['id'] === $recordId) {
+                $recordIndex = $index;
+                break;
+            }
+        }
+        if ($recordIndex === null) {
+            classementRespond(['error' => 'Cette performance n’existe plus.'], 404);
+        }
+        $participants = classementParticipants($data['records'][$recordIndex]);
+        if (!in_array($userId, array_map(static fn($participant) => (int) $participant['user_id'], $participants), true)) {
+            classementRespond(['error' => 'Tu ne peux modifier que ta propre participation.'], 403);
+        }
+        $data['records'][$recordIndex]['time_seconds'] = $hours * 3600 + $minutes * 60 + $seconds;
+        $response = ['updated' => true];
+    } elseif ($action === 'add_participants') {
+        $recordIndex = null;
+        foreach ($data['records'] as $index => $record) {
+            if ((string) $record['id'] === $recordId) {
+                $recordIndex = $index;
+                break;
+            }
+        }
+        if ($recordIndex === null) {
+            classementRespond(['error' => 'Cette performance n’existe plus.'], 404);
+        }
+        $participants = classementParticipants($data['records'][$recordIndex]);
+        if (!in_array($userId, array_map(static fn($participant) => (int) $participant['user_id'], $participants), true)) {
+            classementRespond(['error' => 'Tu ne peux ajouter des participants qu’à ta propre participation.'], 403);
+        }
+        foreach ($partnersToAdd as $partner) {
+            $alreadyIncluded = false;
+            foreach ($participants as $participant) {
+                if ((int) ($partner['user_id'] ?? 0) > 0
+                    && (int) ($participant['user_id'] ?? 0) === (int) $partner['user_id']) {
+                    $alreadyIncluded = true;
+                    break;
+                }
+                if (!empty($partner['external']) && !empty($participant['external'])
+                    && mb_strtolower((string) ($participant['firstname'] ?? '') . ' ' . (string) ($participant['lastname'] ?? ''))
+                        === mb_strtolower((string) $partner['firstname'] . ' ' . (string) $partner['lastname'])) {
+                    $alreadyIncluded = true;
+                    break;
+                }
+            }
+            if (!$alreadyIncluded) {
+                $participants[] = $partner;
+            }
+        }
+        if (count($participants) === count(classementParticipants($data['records'][$recordIndex]))) {
+            classementRespond(['error' => 'Ces participants figurent déjà sur cette performance.'], 409);
+        }
+        $data['records'][$recordIndex]['participants'] = $participants;
+        $response = ['updated' => true, 'participants' => $participants];
     } elseif ($action === 'remove_participation') {
         $recordId = trim((string) ($_POST['record_id'] ?? ''));
         $recordIndex = null;

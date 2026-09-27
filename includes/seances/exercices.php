@@ -44,8 +44,23 @@ $method = $_SERVER['REQUEST_METHOD'];
 if ($method === 'GET') {
     $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
     if ($id <= 0) {
-        $stmt = $pdo->query('SELECT id, date_seance, heure_debut, heure_fin, type_seance, coach FROM seances ORDER BY date_seance DESC, heure_debut DESC');
-        echo json_encode(['seances' => $stmt->fetchAll()]);
+        $limit = isset($_GET['limit']) ? max(1, min(100, (int) $_GET['limit'])) : 100;
+        $offset = isset($_GET['offset']) ? max(0, min(100000, (int) $_GET['offset'])) : 0;
+        $stmt = $pdo->prepare(
+            'SELECT id, date_seance, heure_debut, heure_fin, type_seance, coach
+             FROM seances
+             ORDER BY date_seance DESC, heure_debut DESC
+             LIMIT :limit OFFSET :offset'
+        );
+        $stmt->bindValue(':limit', $limit + 1, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        $seances = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $hasMore = count($seances) > $limit;
+        if ($hasMore) {
+            array_pop($seances);
+        }
+        echo json_encode(['seances' => $seances, 'has_more' => $hasMore]);
         exit;
     }
 

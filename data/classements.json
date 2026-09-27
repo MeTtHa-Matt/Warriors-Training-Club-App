@@ -1,0 +1,82 @@
+{
+    "categories": [
+        {
+            "id": "5863f8e136d1d68d",
+            "name": "test sans sous catés",
+            "subcategories": [],
+            "created_at": "2026-09-27T17:34:22+00:00"
+        },
+        {
+            "id": "eeff4c9c98941073",
+            "name": "test avec sous catés",
+            "subcategories": [
+                {
+                    "id": "1dc871d5110c60c0",
+                    "name": "1",
+                    "created_at": "2026-09-27T17:34:47+00:00"
+                },
+                {
+                    "id": "02a02ac24c751dde",
+                    "name": "3",
+                    "created_at": "2026-09-27T17:34:47+00:00"
+                },
+                {
+                    "id": "286d1f9b4cd53360",
+                    "name": "4",
+                    "created_at": "2026-09-27T17:42:35+00:00"
+                }
+            ],
+            "created_at": "2026-09-27T17:34:47+00:00"
+        },
+        {
+            "id": "66e4a1cf662537a7",
+            "name": "test",
+            "subcategories": [],
+            "created_at": "2026-09-27T17:50:33+00:00"
+        },
+        {
+            "id": "d5669ba8a06ec123",
+            "name": "tyestse2",
+            "subcategories": [],
+            "created_at": "2026-09-27T17:52:45+00:00"
+        }
+    ],
+    "records": [
+        {
+            "id": "d8ae5d09afd8a2179b480021",
+            "category_id": "5863f8e136d1d68d",
+            "subcategory_id": null,
+            "owner_id": 1,
+            "participants": [
+                {
+                    "user_id": 1,
+                    "firstname": "admin",
+                    "last_initial": "a"
+                }
+            ],
+            "competition": "test1",
+            "event_date": "2026-09-27",
+            "time_seconds": 14583,
+            "photos": [],
+            "created_at": "2026-09-27T17:37:14+00:00"
+        },
+        {
+            "id": "054ebbe37b8ddfcfdf0ab363",
+            "category_id": "5863f8e136d1d68d",
+            "subcategory_id": null,
+            "owner_id": 3,
+            "participants": [
+                {
+                    "user_id": 3,
+                    "firstname": "Matthieu",
+                    "last_initial": "G"
+                }
+            ],
+            "competition": "gresgre",
+            "event_date": "2026-09-27",
+            "time_seconds": 54000,
+            "photos": [],
+            "created_at": "2026-09-27T18:02:20+00:00"
+        }
+    ]
+}

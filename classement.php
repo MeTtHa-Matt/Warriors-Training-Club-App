@@ -147,16 +147,15 @@ $maxPhotoTotalLabel = $formatMegabytes($maxPhotoTotalBytes);
 
                     <div class="ranking-partner-picker">
                         <label class="ranking-label mt-3" for="partnerSearch">Participants avec toi <span class="ranking-optional">facultatif</span></label>
-                        <input class="form-control ranking-input" id="partnerSearch" type="search" maxlength="120" autocomplete="off" placeholder="Rechercher un adhérent">
+                        <input class="form-control ranking-input" id="partnerSearch" type="search" maxlength="160" autocomplete="off" placeholder="Rechercher ou saisir Prénom Nom">
                         <div class="ranking-partner-results" id="partnerResults" role="listbox" aria-multiselectable="true" hidden></div>
                         <div class="ranking-selected-partners" id="selectedPartners" aria-live="polite" hidden></div>
                     </div>
 
                     <fieldset class="ranking-time-fieldset">
                         <legend class="ranking-label">Temps réalisé</legend>
-                        <div class="ranking-time-inputs">
-                            <label for="performanceTime"><span>Heures, minutes et secondes</span><input class="form-control ranking-input" id="performanceTime" name="performance_time" type="time" step="1" value="00:00:00" required></label>
-                        </div>
+                        <label class="ranking-duration-control" for="performanceTime"><span>HH : MM : SS</span><input class="form-control ranking-input ranking-duration-input" id="performanceTime" name="performance_time" type="text" inputmode="numeric" maxlength="8" autocomplete="off" placeholder="00:00:00" aria-describedby="performanceTimeHint" required></label>
+                        <small class="ranking-duration-hint" id="performanceTimeHint">Saisis les chiffres à la suite : heures, minutes, secondes.</small>
                     </fieldset>
 
                     <div class="ranking-photo-toolbar">
@@ -204,7 +203,7 @@ $maxPhotoTotalLabel = $formatMegabytes($maxPhotoTotalBytes);
         <div class="modal-dialog modal-dialog-centered">
             <form class="modal-content wtc-modal__content" id="createCategoryForm">
                 <div class="modal-header wtc-modal__header">
-                    <div><p class="eyebrow mb-1">Administration</p><h2 class="modal-title" id="createCategoryTitle">Créer un classement</h2></div>
+                    <div><p class="eyebrow mb-1">Nouveau classement</p><h2 class="modal-title" id="createCategoryTitle">Créer un classement</h2></div>
                     <button class="btn-close btn-close-white" type="button" data-bs-dismiss="modal" aria-label="Fermer"></button>
                 </div>
                 <div class="modal-body">
@@ -255,6 +254,30 @@ $maxPhotoTotalLabel = $formatMegabytes($maxPhotoTotalBytes);
         </div>
     </div>
 
+    <div class="modal fade wtc-modal" id="manageSubcategoriesModal" tabindex="-1" aria-labelledby="manageSubcategoriesTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <form class="modal-content wtc-modal__content" id="manageSubcategoriesForm">
+                <div class="modal-header wtc-modal__header">
+                    <div><p class="eyebrow mb-1">Sous-catégories</p><h2 class="modal-title" id="manageSubcategoriesTitle">Gérer les sous-catégories</h2></div>
+                    <button class="btn-close btn-close-white" type="button" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="ranking-wizard-category" id="manageSubcategoriesCategory"></p>
+                    <label class="ranking-label" for="managedSubcategoryName">Nouvelle sous-catégorie</label>
+                    <div class="ranking-subcategory-entry">
+                        <input class="form-control ranking-input" id="managedSubcategoryName" maxlength="80" placeholder="Ex. Sprint 400 m">
+                        <button class="btn btn-wtc-outline" type="submit" aria-label="Ajouter cette sous-catégorie" title="Ajouter cette sous-catégorie"><i class="bi bi-plus-lg" aria-hidden="true"></i></button>
+                    </div>
+                    <ul class="ranking-subcategory-drafts" id="managedSubcategoryList" aria-live="polite"></ul>
+                    <div class="ranking-form-error" id="manageSubcategoriesError" role="alert" hidden></div>
+                </div>
+                <div class="modal-footer wtc-modal__footer">
+                    <button class="btn btn-wtc-outline" type="button" data-bs-dismiss="modal">Fermer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div class="modal fade wtc-modal" id="recordDetailsModal" tabindex="-1" aria-labelledby="recordDetailsTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
             <div class="modal-content wtc-modal__content">
@@ -267,6 +290,31 @@ $maxPhotoTotalLabel = $formatMegabytes($maxPhotoTotalBytes);
                     <button class="btn btn-wtc-outline" type="button" data-bs-dismiss="modal">Fermer</button>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="modal fade wtc-modal" id="editRecordTimeModal" tabindex="-1" aria-labelledby="editRecordTimeTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <form class="modal-content wtc-modal__content" id="editRecordTimeForm">
+                <div class="modal-header wtc-modal__header">
+                    <div><p class="eyebrow mb-1">Ma performance</p><h2 class="modal-title" id="editRecordTimeTitle">Modifier ma performance</h2></div>
+                    <button class="btn-close btn-close-white" type="button" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                </div>
+                <div class="modal-body">
+                    <label class="ranking-label" for="editPartnerSearch">Ajouter des participants <span class="ranking-optional">facultatif</span></label>
+                    <input class="form-control ranking-input" id="editPartnerSearch" type="search" maxlength="160" autocomplete="off" placeholder="Rechercher ou saisir Prénom Nom">
+                    <div class="ranking-partner-results" id="editPartnerResults" role="listbox" aria-multiselectable="true" hidden></div>
+                    <div class="ranking-selected-partners" id="editSelectedPartners" aria-live="polite" hidden></div>
+                    <label class="ranking-duration-control" for="editPerformanceTime"><span>Temps réalisé · HH : MM : SS</span><input class="form-control ranking-input ranking-duration-input" id="editPerformanceTime" name="performance_time" type="text" inputmode="numeric" maxlength="8" autocomplete="off" placeholder="00:00:00" aria-describedby="editPerformanceTimeHint" required></label>
+                    <small class="ranking-duration-hint" id="editPerformanceTimeHint">Saisis les chiffres à la suite : heures, minutes, secondes.</small>
+                    <p class="ranking-confirm-copy" id="editSharedTimeNotice" hidden>Cette performance est partagée : le nouveau temps sera visible pour tous ses participants.</p>
+                    <div class="ranking-form-error" id="editRecordTimeError" role="alert" hidden></div>
+                </div>
+                <div class="modal-footer wtc-modal__footer">
+                    <button class="btn btn-wtc-outline" type="button" data-bs-dismiss="modal">Annuler</button>
+                    <button class="btn btn-wtc-gold" type="submit"><i class="bi bi-check2 me-1" aria-hidden="true"></i>Enregistrer</button>
+                </div>
+            </form>
         </div>
     </div>
 

@@ -495,6 +495,30 @@
   cursor: pointer;
 }
 
+.ranking-category-manage {
+  width: 48px;
+  flex: 0 0 48px;
+  align-self: stretch;
+  margin: -1px 0 -1px -1px;
+  display: grid;
+  place-items: center;
+  color: #a8c9b3;
+  background: rgba(43, 105, 69, 0.14);
+  border: 0;
+  border-right: 1px solid rgba(168, 201, 179, 0.2);
+  border-radius: 6px 0 0 6px;
+  cursor: pointer;
+}
+
+.ranking-category-manage:hover {
+  color: #fff;
+  background: #356b49;
+}
+
+.ranking-category-manage + .ranking-category-delete {
+  border-radius: 0;
+}
+
 .ranking-category-delete:hover {
   color: #fff;
   background: #8a2926;
@@ -1194,6 +1218,35 @@ input[type="date"].ranking-input {
   outline: none;
 }
 
+.ranking-partner-add {
+  width: calc(100% - 1rem);
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0.35rem 0.5rem 0.5rem;
+  padding: 0.55rem 0.7rem;
+  color: var(--gold-soft);
+  background: rgba(201, 162, 39, 0.08);
+  border: 1px solid rgba(201, 162, 39, 0.38);
+  border-radius: 5px;
+  font-family: var(--font-label);
+  text-align: left;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+}
+
+.ranking-partner-add:hover,
+.ranking-partner-add:focus-visible {
+  color: var(--paper);
+  background: rgba(201, 162, 39, 0.16);
+  outline: none;
+}
+
+.ranking-partner-add i {
+  flex: 0 0 auto;
+}
+
 .ranking-partner-empty {
   margin: 0;
   padding: 0.7rem 0.75rem;
@@ -1246,7 +1299,7 @@ input[type="date"].ranking-input {
 
 .ranking-time-inputs {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.6rem;
 }
 
@@ -1265,8 +1318,38 @@ input[type="date"].ranking-input {
 .ranking-time-inputs input {
   width: 100%;
   min-height: 48px;
-  padding: 0.65rem 0.75rem;
+  padding: 0.65rem 0.7rem;
   font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.ranking-duration-control {
+  display: block;
+  max-width: 250px;
+}
+
+.ranking-duration-control > span {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: var(--grey);
+  font-family: var(--font-label);
+  font-size: 0.8rem;
+}
+
+.ranking-duration-input {
+  min-height: 54px;
+  font-family: var(--font-label);
+  font-size: 1.25rem;
+  font-variant-numeric: tabular-nums;
+  direction: ltr;
+  text-align: center;
+}
+
+.ranking-duration-hint {
+  display: block;
+  margin-top: 0.4rem;
+  color: var(--grey);
+  font-size: 0.78rem;
 }
 
 .ranking-form-error {

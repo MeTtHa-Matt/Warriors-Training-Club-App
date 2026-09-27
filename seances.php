@@ -145,6 +145,9 @@ $canManage = (int) ($_SESSION['gerer_seances'] ?? 0) === 1;
                         <select class="form-select auth-input" id="exercicesSeanceSelect">
                             <option value="">Chargement des séances…</option>
                         </select>
+                        <button type="button" class="btn btn-wtc-outline rounded-pill w-100 mt-2" id="chargerAnciennesSeances" hidden>
+                            Charger les séances plus anciennes
+                        </button>
                         <button type="button" class="btn btn-wtc-gold rounded-pill w-100 mt-4" id="btnOuvrirNoteExercices">
                             Ouvrir la note
                         </button>

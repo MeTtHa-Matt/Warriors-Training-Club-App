@@ -151,6 +151,46 @@ try {
         appendDbAuditLog('schema_migration_error', $e->getMessage(), [], 'db.php', 'error');
     }
 
+    $indexMigrationFile = __DIR__ . '/../../data/db_index_version.txt';
+    $indexMigrationVersion = is_file($indexMigrationFile) ? (int) @file_get_contents($indexMigrationFile) : 0;
+    if ($indexMigrationVersion < 1) {
+        $indexMigrationLock = @fopen($indexMigrationFile . '.lock', 'c');
+        if ($indexMigrationLock !== false && flock($indexMigrationLock, LOCK_EX)) {
+            try {
+                $indexMigrationVersion = is_file($indexMigrationFile) ? (int) @file_get_contents($indexMigrationFile) : 0;
+                if ($indexMigrationVersion < 1) {
+                    $indexes = [
+                        ['seances', 'idx_seances_date_start', ['date_seance', 'heure_debut']],
+                        ['inscriptions_seances', 'idx_inscriptions_seance_creator', ['seance_id', 'inscrit_par']],
+                        ['inscriptions_seances', 'idx_inscriptions_seance_created', ['seance_id', 'created_at']],
+                    ];
+                    $indexExists = $pdo->prepare(
+                        'SELECT 1 FROM information_schema.statistics
+                         WHERE table_schema = DATABASE() AND table_name = ? AND index_name = ?
+                         LIMIT 1'
+                    );
+                    foreach ($indexes as [$table, $indexName, $columns]) {
+                        $indexExists->execute([$table, $indexName]);
+                        if ($indexExists->fetchColumn() !== false) {
+                            continue;
+                        }
+                        $quotedColumns = implode(', ', array_map(static fn($column) => '`' . $column . '`', $columns));
+                        $pdo->exec('ALTER TABLE `' . $table . '` ADD INDEX `' . $indexName . '` (' . $quotedColumns . ')');
+                    }
+                    if (@file_put_contents($indexMigrationFile, '1', LOCK_EX) === false) {
+                        throw new RuntimeException('Impossible d’enregistrer la version des index SQL.');
+                    }
+                }
+            } catch (Throwable $e) {
+                appendDbAuditLog('schema_migration_error', $e->getMessage(), [], 'db.php:indexes', 'error');
+                error_log('[db.php] Impossible de préparer les index SQL: ' . $e->getMessage());
+            } finally {
+                flock($indexMigrationLock, LOCK_UN);
+                fclose($indexMigrationLock);
+            }
+        }
+    }
+
     // Nettoyage automatique des séances trop anciennes (plus de 3 mois).
     // To avoid running this expensive query on every request, throttle it to once per hour.
     $cleanupFile = __DIR__ . '/../../data/last_cleanup.txt';

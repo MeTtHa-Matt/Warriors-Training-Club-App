@@ -405,19 +405,44 @@
     }
   }
 
-  async function openExerciseChooser() {
+  let exerciseSessionOffset = 0;
+  const exerciseSessionPageSize = 100;
+
+  async function loadExerciseSessions(reset = false) {
     const select = document.getElementById("exercicesSeanceSelect");
-    select.innerHTML = '<option value="">Chargement des séances…</option>';
-    getModal("choixExercicesModal").show();
+    const loadOlderButton = document.getElementById("chargerAnciennesSeances");
+    if (reset) {
+      exerciseSessionOffset = 0;
+      select.replaceChildren(new Option("Chargement des séances…", ""));
+      loadOlderButton.hidden = true;
+    }
+    loadOlderButton.disabled = true;
     try {
-      const data = await apiGet("includes/seances/exercices.php");
-      select.innerHTML = data.seances.length
-        ? data.seances.map((s) => `<option value="${s.id}">${escapeHtml(formatDateFr(s.date_seance))} · ${escapeHtml(formatHeure(s.heure_debut))} · ${escapeHtml(s.type_seance)}</option>`).join("")
-        : '<option value="">Aucune séance disponible</option>';
+      const data = await apiGet(`includes/seances/exercices.php?limit=${exerciseSessionPageSize}&offset=${exerciseSessionOffset}`);
+      if (reset) select.replaceChildren();
+      data.seances.forEach((seance) => {
+        const label = `${formatDateFr(seance.date_seance)} · ${formatHeure(seance.heure_debut)} · ${seance.type_seance}`;
+        select.add(new Option(label, String(seance.id)));
+      });
+      exerciseSessionOffset += data.seances.length;
+      loadOlderButton.hidden = !data.has_more;
+      if (select.options.length === 0) {
+        select.add(new Option("Aucune séance disponible", ""));
+      }
     } catch (e) {
-      select.innerHTML = '<option value="">Impossible de charger les séances</option>';
+      if (reset) select.replaceChildren(new Option("Impossible de charger les séances", ""));
+      loadOlderButton.hidden = true;
+    } finally {
+      loadOlderButton.disabled = false;
     }
   }
+
+  async function openExerciseChooser() {
+    getModal("choixExercicesModal").show();
+    await loadExerciseSessions(true);
+  }
+
+  document.getElementById("chargerAnciennesSeances")?.addEventListener("click", () => loadExerciseSessions());
 
   function handleSInscrire() {
     if (state.currentIsRegistered) {
@@ -466,16 +491,44 @@
     }
   }
 
-  async function openInscrits(id) {
+  async function openInscrits(id, offset = 0, append = false) {
     getModal("inscritsModal").show();
     const body = document.getElementById("inscritsBody");
-    body.innerHTML = '<p class="seance-detail__loading">Chargement…</p>';
+    body.dataset.seanceId = String(id);
+    if (!body.dataset.actionsBound) {
+      body.dataset.actionsBound = "true";
+      body.addEventListener("click", async (event) => {
+        const moreButton = event.target.closest("[data-load-more-inscrits]");
+        if (moreButton) {
+          moreButton.disabled = true;
+          await openInscrits(Number(body.dataset.seanceId), Number(moreButton.dataset.offset), true);
+          return;
+        }
+        const deleteButton = event.target.closest('[data-action="delete"]');
+        if (!deleteButton) return;
+        const inscriptionId = parseInt(deleteButton.dataset.inscriptionId, 10);
+        if (!inscriptionId) return;
+        try {
+          await apiDelete("includes/seances/mes_inscriptions.php", { inscription_id: inscriptionId });
+          showToast("L'inscription a bien été supprimée.");
+          await openInscrits(Number(body.dataset.seanceId));
+          loadMonth(state.year, state.month);
+          loadUpcoming();
+          if (state.currentSeanceId === Number(body.dataset.seanceId)) {
+            loadSeanceDetail(Number(body.dataset.seanceId));
+          }
+        } catch (e) {
+          showToast("Impossible de supprimer cette inscription.", true);
+        }
+      });
+    }
+    if (!append) body.innerHTML = '<p class="seance-detail__loading">Chargement…</p>';
 
     try {
       const data = await apiGet(
-        `includes/seances/inscrits.php?seance_id=${id}`,
+        `includes/seances/inscrits.php?seance_id=${id}&limit=100&offset=${offset}`,
       );
-      if (!data.inscrits.length) {
+      if (!data.inscrits.length && offset === 0) {
         body.innerHTML =
           '<p class="upcoming-empty">Aucun inscrit pour le moment.</p>';
         return;
@@ -483,49 +536,39 @@
 
       const currentUserId = Number(window.WTC_CURRENT_USER_ID || 0);
       const isAdmin = Boolean(window.WTC_CONTEXT && window.WTC_CONTEXT.isAdmin);
-      body.innerHTML =
-        `<ul class="inscrits-list">` +
-        data.inscrits
-          .map((i) => {
-            const canDelete = Number(i.inscrit_par) === currentUserId;
-            const metaHtml = isAdmin
-              ? `<span class="inscrits-list__meta">Inscrit par ${escapeHtml(i.par_firstname)} ${escapeHtml(i.par_lastname)}</span>`
-              : "";
-            return `
+      let list = body.querySelector(".inscrits-list");
+      if (!append || !list) {
+        body.replaceChildren();
+        list = document.createElement("ul");
+        list.className = "inscrits-list";
+        body.append(list);
+      }
+      list.insertAdjacentHTML("beforeend", data.inscrits.map((i) => {
+        const canDelete = Number(i.inscrit_par) === currentUserId;
+        const metaHtml = isAdmin
+          ? `<span class="inscrits-list__meta">Inscrit par ${escapeHtml(i.par_firstname)} ${escapeHtml(i.par_lastname)}</span>`
+          : "";
+        return `
                 <li class="inscrits-list__item ${canDelete ? "inscrits-list__item--action" : ""}">
                     <span class="inscrits-list__name">${escapeHtml(i.firstname)} ${escapeHtml(i.lastname)}</span>
                     ${metaHtml}
                     ${canDelete ? `<button type="button" class="btn btn-wtc-outline rounded-pill btn-sm" data-inscription-id="${i.id}" data-action="delete">Désinscrire</button>` : ""}
                 </li>
             `;
-          })
-          .join("") +
-        `</ul>`;
-
-      body.querySelectorAll('[data-action="delete"]').forEach((button) => {
-        button.addEventListener("click", async () => {
-          const inscriptionId = parseInt(button.dataset.inscriptionId, 10);
-          if (!inscriptionId) return;
-
-          try {
-            await apiDelete("includes/seances/mes_inscriptions.php", {
-              inscription_id: inscriptionId,
-            });
-            showToast("L'inscription a bien été supprimée.");
-            openInscrits(id);
-            loadMonth(state.year, state.month);
-            loadUpcoming();
-            if (state.currentSeanceId === id) {
-              loadSeanceDetail(id);
-            }
-          } catch (e) {
-            showToast("Impossible de supprimer cette inscription.", true);
-          }
-        });
-      });
+      }).join(""));
+      body.querySelector("[data-load-more-inscrits]")?.remove();
+      if (data.has_more) {
+        const moreButton = document.createElement("button");
+        moreButton.type = "button";
+        moreButton.className = "btn btn-wtc-outline rounded-pill w-100 mt-3";
+        moreButton.dataset.loadMoreInscrits = "true";
+        moreButton.dataset.offset = String(offset + data.inscrits.length);
+        moreButton.textContent = "Charger les inscrits suivants";
+        body.append(moreButton);
+      }
     } catch (e) {
-      body.innerHTML =
-        '<p class="upcoming-empty">Impossible de charger la liste des inscrits.</p>';
+      if (!append) body.innerHTML = '<p class="upcoming-empty">Impossible de charger la liste des inscrits.</p>';
+      else showToast("Impossible de charger les inscrits suivants.", true);
     }
   }
 

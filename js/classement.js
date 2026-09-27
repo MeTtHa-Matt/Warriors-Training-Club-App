@@ -25,6 +25,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const partnerSearch = document.getElementById('partnerSearch');
     const partnerResults = document.getElementById('partnerResults');
     const selectedPartnersElement = document.getElementById('selectedPartners');
+    const editPartnerSearch = document.getElementById('editPartnerSearch');
+    const editPartnerResults = document.getElementById('editPartnerResults');
+    const editSelectedPartnersElement = document.getElementById('editSelectedPartners');
     const toast = document.getElementById('rankingToast');
     const addRecordForm = document.getElementById('addRecordForm');
     const addRecordModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('addRecordModal'));
@@ -34,6 +37,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const subcategoryWizardModal = bootstrap.Modal.getOrCreateInstance(subcategoryWizardElement);
     const detailsModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('recordDetailsModal'));
     const confirmModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('rankingConfirmModal'));
+    const manageSubcategoriesElement = document.getElementById('manageSubcategoriesModal');
+    const manageSubcategoriesModal = bootstrap.Modal.getOrCreateInstance(manageSubcategoriesElement);
+    const editRecordTimeElement = document.getElementById('editRecordTimeModal');
+    const editRecordTimeModal = bootstrap.Modal.getOrCreateInstance(editRecordTimeElement);
 
     let isAdmin = false;
     let activeCategoryId = null;
@@ -41,14 +48,23 @@ document.addEventListener('DOMContentLoaded', () => {
     let activeSubcategories = [];
     let currentUserId = 0;
     let activeRecords = [];
+    let categoriesCache = [];
     let pendingEntry = null;
+    let pendingCategoryCreation = null;
     let confirmCallback = null;
     let toastTimer = null;
     let pendingCategoryDraft = null;
     let draftSubcategoryNames = [];
     let selectedPartners = [];
+    let managedCategoryId = null;
+    let pendingTimeEditRecordId = null;
+    let editingRecord = null;
+    let editSelectedPartners = [];
+    let reopenSubcategoryManager = false;
     let partnerSearchTimer = null;
     let partnerSearchSequence = 0;
+    let editPartnerSearchTimer = null;
+    let editPartnerSearchSequence = 0;
     const photoInput = document.getElementById('achievementPhotos');
     const photoList = document.getElementById('achievementPhotoList');
     const photoCount = document.getElementById('achievementPhotoCount');
@@ -110,6 +126,47 @@ document.addEventListener('DOMContentLoaded', () => {
         const pad = part => String(part).padStart(2, '0');
         return hours > 0 ? `${pad(hours)}:${pad(minutes)}:${pad(seconds)}` : `${pad(minutes)}:${pad(seconds)}`;
     }
+
+    function formatDurationInput(value) {
+        const digits = String(value || '').replace(/\D/g, '').slice(0, 6);
+        if (digits.length <= 2) return digits;
+        if (digits.length <= 4) return `${digits.slice(0, 2)}:${digits.slice(2)}`;
+        return `${digits.slice(0, 2)}:${digits.slice(2, 4)}:${digits.slice(4)}`;
+    }
+
+    function handleDurationInput(input) {
+        input.addEventListener('focus', () => input.select());
+        input.addEventListener('input', () => {
+            const cursor = input.selectionStart ?? input.value.length;
+            const digitsBeforeCursor = input.value.slice(0, cursor).replace(/\D/g, '').length;
+            const formatted = formatDurationInput(input.value);
+            input.value = formatted;
+            let nextCursor = 0;
+            let digitsSeen = 0;
+            while (nextCursor < formatted.length && digitsSeen < digitsBeforeCursor) {
+                if (/\d/.test(formatted[nextCursor])) digitsSeen++;
+                nextCursor++;
+            }
+            input.setSelectionRange(nextCursor, nextCursor);
+        });
+    }
+
+    function parseDurationInput(value) {
+        const match = String(value || '').match(/^(\d{2}):(\d{2}):(\d{2})$/);
+        if (!match) return null;
+        const [, hours, minutes, seconds] = match.map(Number);
+        if (hours > 99 || minutes > 59 || seconds > 59) return null;
+        return { hours, minutes, seconds };
+    }
+
+    function formatDurationParts(hours, minutes, seconds) {
+        const pad = value => String(value).padStart(2, '0');
+        return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+    }
+
+    const performanceTimeInput = document.getElementById('performanceTime');
+    const editPerformanceTimeInput = document.getElementById('editPerformanceTime');
+    [performanceTimeInput, editPerformanceTimeInput].forEach(handleDurationInput);
 
     const selectedPhotos = [];
     let photoPreviewUrls = [];
@@ -205,9 +262,9 @@ document.addEventListener('DOMContentLoaded', () => {
         partnerResults.hidden = true;
     }
 
-    function renderSelectedPartners() {
-        selectedPartnersElement.replaceChildren();
-        selectedPartners.forEach(partner => {
+    function renderSelectedPartners(selection = selectedPartners, target = selectedPartnersElement) {
+        target.replaceChildren();
+        selection.forEach(partner => {
             const item = document.createElement('div');
             item.className = 'ranking-selected-partner';
             const name = document.createElement('span');
@@ -215,38 +272,80 @@ document.addEventListener('DOMContentLoaded', () => {
             const removeButton = document.createElement('button');
             removeButton.className = 'ranking-partner-remove';
             removeButton.type = 'button';
-            removeButton.dataset.removePartner = String(partner.id);
+            removeButton.dataset.removePartner = partner.key;
             removeButton.setAttribute('aria-label', `Retirer ${partner.label}`);
             removeButton.innerHTML = '<i class="bi bi-x-lg" aria-hidden="true"></i>';
             item.append(name, removeButton);
-            selectedPartnersElement.append(item);
+            target.append(item);
         });
-        selectedPartnersElement.hidden = selectedPartners.length === 0;
+        target.hidden = selection.length === 0;
     }
 
-    function showPartnerResults(users) {
-        partnerResults.replaceChildren();
+    function parseExternalName(value) {
+        const parts = String(value || '').trim().split(/\s+/u).filter(Boolean);
+        if (parts.length < 2) return null;
+        const fullName = parts.join(' ');
+        return { firstname: parts.shift(), lastname: parts.join(' '), fullName };
+    }
+
+    function normalizePartnerName(value) {
+        return String(value || '')
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .toLocaleLowerCase('fr')
+            .trim()
+            .replace(/\s+/g, ' ');
+    }
+
+    function hasExactPartnerMatch(users, externalName) {
+        const enteredName = normalizePartnerName(externalName.fullName);
+        return users.some(user => {
+            const firstname = normalizePartnerName(user.firstname);
+            const lastname = normalizePartnerName(String(user.label || '').slice(String(user.firstname || '').length));
+            return enteredName === `${firstname} ${lastname}`.trim()
+                || enteredName === `${lastname} ${firstname}`.trim();
+        });
+    }
+
+    function showPartnerResults(users, query, target = partnerResults) {
+        target.replaceChildren();
+        const externalName = parseExternalName(query);
+        const canAddExternal = externalName && !hasExactPartnerMatch(users, externalName);
+
         if (!users.length) {
             const empty = document.createElement('p');
             empty.className = 'ranking-partner-empty';
-            empty.textContent = 'Aucun adhérent trouvé.';
-            partnerResults.append(empty);
-            partnerResults.hidden = false;
-            return;
+            empty.textContent = 'Pour ajouter un participant non inscrit, écrivez son nom et son prénom.';
+            target.append(empty);
+        } else {
+            users.forEach(user => {
+                const option = document.createElement('button');
+                option.type = 'button';
+                option.className = 'ranking-partner-option';
+                option.setAttribute('role', 'option');
+                option.dataset.partnerId = String(user.id);
+                option.dataset.firstname = user.firstname;
+                option.dataset.lastInitial = user.last_initial;
+                option.textContent = user.label;
+                target.append(option);
+            });
         }
 
-        users.forEach(user => {
-            const option = document.createElement('button');
-            option.type = 'button';
-            option.className = 'ranking-partner-option';
-            option.setAttribute('role', 'option');
-            option.dataset.partnerId = String(user.id);
-            option.dataset.firstname = user.firstname;
-            option.dataset.lastInitial = user.last_initial;
-            option.textContent = user.label;
-            partnerResults.append(option);
-        });
-        partnerResults.hidden = false;
+        if (canAddExternal) {
+            if (users.length) {
+                const guidance = document.createElement('p');
+                guidance.className = 'ranking-partner-empty';
+                guidance.textContent = 'Pour ajouter un participant non inscrit, écrivez son nom et son prénom.';
+                target.append(guidance);
+            }
+            const addButton = document.createElement('button');
+            addButton.type = 'button';
+            addButton.className = 'ranking-partner-add';
+            addButton.dataset.addExternalPartner = 'true';
+            addButton.innerHTML = `<i class="bi bi-plus-lg" aria-hidden="true"></i><span>Ajouter ${escapeHtml(`${externalName.firstname} ${externalName.lastname}`)}</span>`;
+            target.append(addButton);
+        }
+        target.hidden = false;
     }
 
     partnerSearch.addEventListener('input', () => {
@@ -268,7 +367,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const data = await requestJson(`${apiUrl}?users=${encodeURIComponent(query)}`);
                 if (searchId !== partnerSearchSequence) return;
-                showPartnerResults(data.users || []);
+                showPartnerResults(data.users || [], query);
             } catch (error) {
                 if (searchId !== partnerSearchSequence) return;
                 const message = document.createElement('p');
@@ -279,33 +378,117 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 220);
     });
 
-    partnerResults.addEventListener('click', event => {
+    function handlePartnerResultClick(event, searchField, resultElement, selection, renderSelection, existingParticipants = []) {
+        const addExternalButton = event.target.closest('[data-add-external-partner]');
+        if (addExternalButton) {
+            const externalName = parseExternalName(searchField.value);
+            if (!externalName) return;
+            const key = `external:${normalizePartnerName(`${externalName.firstname} ${externalName.lastname}`)}`;
+            const alreadyInRecord = existingParticipants.some(participant => participant.external
+                && normalizePartnerName(`${participant.firstname} ${participant.lastname}`) === normalizePartnerName(`${externalName.firstname} ${externalName.lastname}`));
+            if (!alreadyInRecord && !selection.some(partner => partner.key === key) && selection.length >= 20) {
+                showToast('Tu peux ajouter au maximum 20 participants à une performance.');
+                return;
+            }
+            if (!alreadyInRecord && !selection.some(partner => partner.key === key)) {
+                selection.push({
+                    key,
+                    type: 'external',
+                    firstname: externalName.firstname,
+                    lastname: externalName.lastname,
+                    label: `${externalName.firstname} ${externalName.lastname}`
+                });
+                renderSelection();
+            }
+            searchField.value = '';
+            resultElement.replaceChildren();
+            resultElement.hidden = true;
+            return;
+        }
         const option = event.target.closest('[data-partner-id]');
         if (!option) return;
         const partnerId = Number(option.dataset.partnerId);
-        if (!selectedPartners.some(partner => partner.id === partnerId)) {
-            selectedPartners.push({ id: partnerId, label: option.textContent });
-            renderSelectedPartners();
+        const key = `member:${partnerId}`;
+        const alreadyInRecord = existingParticipants.some(participant => Number(participant.user_id) === partnerId);
+        if (!alreadyInRecord && selection.length >= 20) {
+            showToast('Tu peux ajouter au maximum 20 participants à une performance.');
+            return;
         }
-        partnerSearch.value = '';
+        if (!alreadyInRecord && !selection.some(partner => partner.key === key)) {
+            selection.push({ key, type: 'member', id: partnerId, label: option.textContent });
+            renderSelection();
+        }
+        searchField.value = '';
+        resultElement.replaceChildren();
+        resultElement.hidden = true;
+    }
+
+    partnerResults.addEventListener('click', event => {
+        handlePartnerResultClick(event, partnerSearch, partnerResults, selectedPartners, renderSelectedPartners);
         partnerSearchSequence++;
-        partnerResults.replaceChildren();
-        partnerResults.hidden = true;
+    });
+
+    editPartnerSearch.addEventListener('input', () => {
+        window.clearTimeout(editPartnerSearchTimer);
+        const query = editPartnerSearch.value.trim();
+        const searchId = ++editPartnerSearchSequence;
+        if (query.length < 2) {
+            editPartnerResults.replaceChildren();
+            editPartnerResults.hidden = true;
+            return;
+        }
+        const searching = document.createElement('p');
+        searching.className = 'ranking-partner-empty';
+        searching.textContent = 'Recherche…';
+        editPartnerResults.replaceChildren(searching);
+        editPartnerResults.hidden = false;
+        editPartnerSearchTimer = window.setTimeout(async () => {
+            try {
+                const data = await requestJson(`${apiUrl}?users=${encodeURIComponent(query)}`);
+                if (searchId === editPartnerSearchSequence) showPartnerResults(data.users || [], query, editPartnerResults);
+            } catch (error) {
+                if (searchId !== editPartnerSearchSequence) return;
+                const message = document.createElement('p');
+                message.className = 'ranking-partner-empty';
+                message.textContent = error.message;
+                editPartnerResults.replaceChildren(message);
+            }
+        }, 220);
+    });
+
+    editPartnerResults.addEventListener('click', event => {
+        handlePartnerResultClick(
+            event,
+            editPartnerSearch,
+            editPartnerResults,
+            editSelectedPartners,
+            () => renderSelectedPartners(editSelectedPartners, editSelectedPartnersElement),
+            editingRecord?.participants || []
+        );
+        editPartnerSearchSequence++;
     });
 
     selectedPartnersElement.addEventListener('click', event => {
         const removeButton = event.target.closest('[data-remove-partner]');
         if (!removeButton) return;
-        selectedPartners = selectedPartners.filter(partner => partner.id !== Number(removeButton.dataset.removePartner));
+        selectedPartners = selectedPartners.filter(partner => partner.key !== removeButton.dataset.removePartner);
         renderSelectedPartners();
+    });
+
+    editSelectedPartnersElement.addEventListener('click', event => {
+        const removeButton = event.target.closest('[data-remove-partner]');
+        if (!removeButton) return;
+        editSelectedPartners = editSelectedPartners.filter(partner => partner.key !== removeButton.dataset.removePartner);
+        renderSelectedPartners(editSelectedPartners, editSelectedPartnersElement);
     });
 
     async function loadSummary() {
         const data = await requestJson(apiUrl);
         isAdmin = data.is_admin === true;
+        categoriesCache = data.categories || [];
         createCategoryButton.hidden = !isAdmin;
-        renderCategories(data.categories || []);
-        renderPersonalBest(data.categories || []);
+        renderCategories(categoriesCache);
+        renderPersonalBest(categoriesCache);
     }
 
     function renderCategories(categories) {
@@ -313,9 +496,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!categories.length) {
             const empty = document.createElement('p');
             empty.className = 'ranking-message';
-            empty.textContent = isAdmin
-                ? 'Aucun classement pour le moment. Crée le premier tableau.'
-                : 'Aucun classement n’est disponible pour le moment.';
+            empty.textContent = 'Aucun classement pour le moment. Crée le premier tableau.';
             categoryList.append(empty);
             return;
         }
@@ -324,6 +505,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const card = document.createElement('article');
             card.className = 'ranking-category-card';
             card.innerHTML = `
+                ${isAdmin ? `<button class="ranking-category-manage" type="button" data-manage-subcategories="${escapeHtml(category.id)}" aria-label="Gérer les sous-catégories de ${escapeHtml(category.name)}" title="Gérer les sous-catégories"><i class="bi bi-list-ul" aria-hidden="true"></i></button>` : ''}
                 ${isAdmin ? `<button class="ranking-category-delete" type="button" data-delete-category="${escapeHtml(category.id)}" aria-label="Supprimer le classement ${escapeHtml(category.name)}" title="Supprimer ce classement"><i class="bi bi-trash3" aria-hidden="true"></i></button>` : ''}
                 <button class="ranking-category-open" type="button" data-open-category="${escapeHtml(category.id)}" aria-label="Ouvrir le classement ${escapeHtml(category.name)}">
                     <span class="ranking-category-card__icon" aria-hidden="true"><i class="bi bi-trophy"></i></span>
@@ -418,8 +600,11 @@ document.addEventListener('DOMContentLoaded', () => {
             ? (data.parent_category?.name || 'Catégorie')
             : 'Classements';
         const recordHeading = document.querySelector('.ranking-table-heading');
-        recordHeading.hidden = hasSubcategories;
-        document.getElementById('recordListTitle').textContent = 'Toutes les performances';
+        const hasSpecialMention = hasSubcategories && records.length > 3;
+        recordHeading.hidden = hasSubcategories && !hasSpecialMention;
+        document.getElementById('recordListTitle').textContent = hasSpecialMention
+            ? 'Mention spéciale aux 4e et 5e places'
+            : 'Toutes les performances';
         renderPodium(records);
         renderRecordList(records.slice(3), 3);
     }
@@ -443,6 +628,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function recordName(record) {
+        if (record.external && record.lastname) return `${record.firstname || ''} ${record.lastname}`.trim();
         return `${record.firstname || 'Membre'}${record.last_initial ? ` ${String(record.last_initial).slice(0, 1)}.` : ''}`;
     }
 
@@ -542,7 +728,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const footer = document.getElementById('recordDetailsFooter');
         document.getElementById('recordDetailsTitle').textContent = recordDisplayName(record);
         body.replaceChildren();
-        footer.querySelectorAll('[data-delete-record], [data-remove-participation]').forEach(button => button.remove());
+        footer.querySelectorAll('[data-remove-participation], [data-edit-time]').forEach(button => button.remove());
 
         const meta = document.createElement('div');
         meta.className = 'ranking-record-details__meta';
@@ -573,23 +759,70 @@ document.addEventListener('DOMContentLoaded', () => {
             body.append(empty);
         }
 
-        if (isAdmin) {
-            const deleteButton = document.createElement('button');
-            deleteButton.className = 'btn btn-danger me-auto';
-            deleteButton.type = 'button';
-            deleteButton.dataset.deleteRecord = record.id;
-            deleteButton.innerHTML = '<i class="bi bi-trash3 me-1" aria-hidden="true"></i>Supprimer';
-            footer.prepend(deleteButton);
-        }
         if ((record.participants || []).some(participant => Number(participant.user_id) === currentUserId)) {
+            const editButton = document.createElement('button');
+            editButton.className = 'btn btn-wtc-outline me-auto';
+            editButton.type = 'button';
+            editButton.dataset.editTime = record.id;
+            editButton.innerHTML = '<i class="bi bi-pencil me-1" aria-hidden="true"></i>Modifier';
             const removeButton = document.createElement('button');
-            removeButton.className = 'btn btn-wtc-outline me-auto';
+            removeButton.className = 'btn btn-wtc-outline';
             removeButton.type = 'button';
             removeButton.dataset.removeParticipation = record.id;
             removeButton.innerHTML = '<i class="bi bi-person-dash me-1" aria-hidden="true"></i>Retirer ma participation';
-            footer.prepend(removeButton);
+            footer.prepend(removeButton, editButton);
         }
         detailsModal.show();
+    }
+
+    function renderManagedSubcategories(category) {
+        if (!category) return;
+        const list = document.getElementById('managedSubcategoryList');
+        list.replaceChildren();
+        document.getElementById('manageSubcategoriesCategory').textContent = category.name;
+        (category.subcategories || []).forEach((subcategory, index) => {
+            const item = document.createElement('li');
+            item.className = 'ranking-subcategory-draft';
+            item.innerHTML = `
+                <span class="ranking-subcategory-draft__index">${String(index + 1).padStart(2, '0')}</span>
+                <span class="ranking-subcategory-draft__name">${escapeHtml(subcategory.name)} <small>· ${Number(subcategory.record_count) || 0} performance(s)</small></span>
+                ${isAdmin ? `<button class="ranking-subcategory-draft__remove" type="button" data-delete-managed-subcategory="${escapeHtml(subcategory.id)}" data-subcategory-name="${escapeHtml(subcategory.name)}" data-record-count="${Number(subcategory.record_count) || 0}" aria-label="Supprimer ${escapeHtml(subcategory.name)}" title="Supprimer cette sous-catégorie">
+                    <i class="bi bi-trash3" aria-hidden="true"></i>
+                </button>` : ''}`;
+            list.append(item);
+        });
+    }
+
+    function openSubcategoryManager(categoryId) {
+        const category = categoriesCache.find(item => String(item.id) === String(categoryId));
+        if (!category) return;
+        managedCategoryId = String(categoryId);
+        document.getElementById('manageSubcategoriesForm').reset();
+        document.getElementById('manageSubcategoriesError').hidden = true;
+        document.getElementById('manageSubcategoriesTitle').textContent = isAdmin ? 'Gérer les sous-catégories' : 'Ajouter une sous-catégorie';
+        renderManagedSubcategories(category);
+        manageSubcategoriesModal.show();
+    }
+
+    function openTimeEditor(recordId) {
+        const record = activeRecords.find(item => String(item.id) === String(recordId));
+        if (!record || !(record.participants || []).some(participant => Number(participant.user_id) === currentUserId)) return;
+        pendingTimeEditRecordId = String(recordId);
+        editingRecord = record;
+        editSelectedPartners = [];
+        renderSelectedPartners(editSelectedPartners, editSelectedPartnersElement);
+        editPartnerSearch.value = '';
+        editPartnerResults.replaceChildren();
+        editPartnerResults.hidden = true;
+        editPartnerSearchSequence++;
+        const totalSeconds = Number(record.time_seconds) || 0;
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+        editPerformanceTimeInput.value = formatDurationParts(hours, minutes, seconds);
+        document.getElementById('editSharedTimeNotice').hidden = (record.participants || []).length < 2;
+        document.getElementById('editRecordTimeError').hidden = true;
+        detailsModal.hide();
     }
 
     function askConfirm(message, callback, sourceModal = null, actionLabel = 'Supprimer') {
@@ -626,16 +859,6 @@ document.addEventListener('DOMContentLoaded', () => {
         showToast(`« ${categoryName} » a été supprimé.`);
     }
 
-    async function deleteRecord(recordId, sourceModal = null) {
-        askConfirm('Supprimer cette performance et les photos associées ?', async () => {
-            await postValues({ action: 'delete_record', record_id: recordId });
-            if (sourceModal) detailsModal.hide();
-            await loadSummary();
-            if (activeCategoryId) await openCategory(activeCategoryId, false, activeSubcategoryId);
-            showToast('Performance supprimée.');
-        }, sourceModal);
-    }
-
     async function removeOwnParticipation(recordId, sourceModal = null) {
         askConfirm('Retirer uniquement ta participation à cet événement ?', async () => {
             await postValues({ action: 'remove_participation', record_id: recordId });
@@ -647,6 +870,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     categoryList.addEventListener('click', event => {
+        const manageButton = event.target.closest('[data-manage-subcategories]');
+        if (manageButton) {
+            event.stopPropagation();
+            openSubcategoryManager(manageButton.dataset.manageSubcategories);
+            return;
+        }
         const deleteButton = event.target.closest('[data-delete-category]');
         if (deleteButton) {
             event.stopPropagation();
@@ -705,6 +934,24 @@ document.addEventListener('DOMContentLoaded', () => {
         addRecordModal.show();
     });
 
+    function resetConfirmRecordDialog() {
+        document.querySelector('#confirmRecordModal .eyebrow').textContent = 'Confirmation';
+        document.getElementById('confirmRecordTitle').textContent = 'Déclaration sur l’honneur';
+        document.querySelector('#confirmRecordModal .ranking-confirm-copy').textContent = 'Je confirme que les informations et les photos transmises sont exactes. Toute fausse déclaration peut entraîner une exclusion du système de classement pendant plusieurs mois.';
+        document.getElementById('confirmRecordSubmit').textContent = 'Je confirme';
+    }
+
+    function confirmCategoryCreation(formData, categoryName, subcategoryCount, sourceModal) {
+        pendingCategoryCreation = { formData, categoryName, subcategoryCount };
+        document.querySelector('#confirmRecordModal .eyebrow').textContent = 'Vérification';
+        document.getElementById('confirmRecordTitle').textContent = 'Confirmer la création du classement';
+        document.querySelector('#confirmRecordModal .ranking-confirm-copy').textContent = `Tu vas créer le classement « ${categoryName} »${subcategoryCount ? ` avec ${subcategoryCount} sous-catégorie${subcategoryCount > 1 ? 's' : ''}` : ''}. Je confirme sur l’honneur qu’il est en rapport avec le CrossFit. La création d’un classement sans rapport avec le CrossFit peut entraîner mon bannissement du système de classement pendant plusieurs mois.`;
+        document.getElementById('confirmRecordSubmit').textContent = 'Créer le classement';
+        document.getElementById('confirmRecordError').hidden = true;
+        sourceModal.addEventListener('hidden.bs.modal', () => confirmRecordModal.show(), { once: true });
+        bootstrap.Modal.getOrCreateInstance(sourceModal).hide();
+    }
+
     addRecordForm.addEventListener('submit', event => {
         event.preventDefault();
         if (!addRecordForm.reportValidity()) return;
@@ -714,10 +961,13 @@ document.addEventListener('DOMContentLoaded', () => {
             setPhotoError(`Ajoute jusqu’à ${maxPhotoCount} photos, dans les limites affichées.`);
             return;
         }
-        const durationParts = String(formData.get('performance_time') || '').split(':').map(Number);
-        const hours = durationParts[0] || 0;
-        const minutes = durationParts[1] || 0;
-        const seconds = durationParts[2] || 0;
+        const duration = parseDurationInput(formData.get('performance_time'));
+        if (!duration) {
+            setPhotoError('Saisis le temps au format HH:MM:SS, avec des minutes et secondes entre 00 et 59.');
+            performanceTimeInput.focus();
+            return;
+        }
+        const { hours, minutes, seconds } = duration;
         if (hours * 3600 + minutes * 60 + seconds <= 0) {
             setPhotoError('Le temps doit être supérieur à zéro.');
             return;
@@ -730,7 +980,9 @@ document.addEventListener('DOMContentLoaded', () => {
         formData.set('action', 'create_record');
         formData.set('category_id', activeCategoryId || '');
         formData.set('subcategory_id', activeSubcategoryId || '');
-        formData.set('partner_ids', JSON.stringify(selectedPartners.map(partner => partner.id)));
+        formData.set('partner_ids', JSON.stringify(selectedPartners.map(partner => partner.type === 'external'
+            ? { firstname: partner.firstname, lastname: partner.lastname }
+            : partner.id)));
         formData.set('csrf_token', csrfToken);
         pendingEntry = formData;
         addRecordModal.hide();
@@ -747,15 +999,37 @@ document.addEventListener('DOMContentLoaded', () => {
             clearSelectedPhotos();
             clearPartnerSelection();
         }
+        if (pendingCategoryCreation) {
+            pendingCategoryCreation = null;
+            clearCategoryDraft();
+            createCategoryContinue.textContent = 'Créer';
+        }
+        resetConfirmRecordDialog();
     });
 
     document.getElementById('confirmRecordSubmit').addEventListener('click', async event => {
-        if (!pendingEntry) return;
+        if (!pendingEntry && !pendingCategoryCreation) return;
         const button = event.currentTarget;
         const error = document.getElementById('confirmRecordError');
         button.disabled = true;
         error.hidden = true;
         try {
+            if (pendingCategoryCreation) {
+                const categoryCreation = pendingCategoryCreation;
+                await postForm(categoryCreation.formData);
+                pendingCategoryCreation = null;
+                pendingCategoryDraft = null;
+                draftSubcategoryNames = [];
+                clearCategoryDraft();
+                createCategoryContinue.textContent = 'Créer';
+                renderSubcategoryDrafts();
+                confirmRecordModal.hide();
+                await loadSummary();
+                showToast(categoryCreation.subcategoryCount
+                    ? 'Classement et sous-catégories créés.'
+                    : 'Classement créé.');
+                return;
+            }
             await postForm(pendingEntry);
             pendingEntry = null;
             confirmRecordModal.hide();
@@ -849,7 +1123,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     subcategoryWizardElement.addEventListener('hidden.bs.modal', () => {
-        if (pendingCategoryDraft) clearCategoryDraft();
+        if (pendingCategoryDraft && !pendingCategoryCreation) clearCategoryDraft();
     });
 
     document.getElementById('createCategoryForm').addEventListener('submit', async event => {
@@ -879,6 +1153,10 @@ document.addEventListener('DOMContentLoaded', () => {
             body.set('has_subcategories', '0');
             body.set('subcategories', JSON.stringify([]));
             body.set('csrf_token', csrfToken);
+            if (!isAdmin) {
+                confirmCategoryCreation(body, categoryName, 0, createCategoryElement);
+                return;
+            }
             await postForm(body);
             createCategoryModal.hide();
             clearCategoryDraft();
@@ -920,6 +1198,11 @@ document.addEventListener('DOMContentLoaded', () => {
             body.set('has_subcategories', '1');
             body.set('subcategories', JSON.stringify(draftSubcategoryNames));
             body.set('csrf_token', csrfToken);
+            if (!isAdmin) {
+                confirmCategoryCreation(body, pendingCategoryDraft.name, draftSubcategoryNames.length, subcategoryWizardElement);
+                finishCategoryCreation.disabled = false;
+                return;
+            }
             await postForm(body);
             pendingCategoryDraft = null;
             draftSubcategoryNames = [];
@@ -952,13 +1235,129 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.getElementById('recordDetailsFooter').addEventListener('click', event => {
-        const deleteButton = event.target.closest('[data-delete-record]');
-        if (deleteButton) {
-            deleteRecord(deleteButton.dataset.deleteRecord, document.getElementById('recordDetailsModal'));
+        const editButton = event.target.closest('[data-edit-time]');
+        if (editButton) {
+            openTimeEditor(editButton.dataset.editTime);
             return;
         }
         const removeButton = event.target.closest('[data-remove-participation]');
         if (removeButton) removeOwnParticipation(removeButton.dataset.removeParticipation, document.getElementById('recordDetailsModal'));
+    });
+
+    document.getElementById('manageSubcategoriesForm').addEventListener('submit', async event => {
+        event.preventDefault();
+        const input = document.getElementById('managedSubcategoryName');
+        const error = document.getElementById('manageSubcategoriesError');
+        const name = input.value.trim();
+        if (!name) {
+            error.textContent = 'Saisis un nom de sous-catégorie.';
+            error.hidden = false;
+            input.focus();
+            return;
+        }
+        error.hidden = true;
+        const submitButton = event.currentTarget.querySelector('[type="submit"]');
+        submitButton.disabled = true;
+        try {
+            await postValues({ action: 'add_subcategory', category_id: managedCategoryId, name });
+            await loadSummary();
+            input.value = '';
+            renderManagedSubcategories(categoriesCache.find(category => String(category.id) === managedCategoryId));
+            showToast('Sous-catégorie ajoutée.');
+        } catch (requestError) {
+            error.textContent = requestError.message;
+            error.hidden = false;
+        } finally {
+            submitButton.disabled = false;
+        }
+    });
+
+    document.getElementById('managedSubcategoryList').addEventListener('click', event => {
+        const button = event.target.closest('[data-delete-managed-subcategory]');
+        if (!button) return;
+        const subcategoryId = button.dataset.deleteManagedSubcategory;
+        const subcategoryName = button.dataset.subcategoryName;
+        const recordCount = Number(button.dataset.recordCount) || 0;
+        const detail = recordCount
+            ? ` ainsi que ses ${recordCount} performance(s) et photos associées`
+            : '';
+        askConfirm(`Supprimer « ${subcategoryName} »${detail} ?`, async () => {
+            const response = await postValues({ action: 'delete_subcategory', category_id: managedCategoryId, subcategory_id: subcategoryId });
+            await loadSummary();
+            reopenSubcategoryManager = true;
+            showToast(response.deleted_record_count ? 'Sous-catégorie et performances supprimées.' : 'Sous-catégorie supprimée.');
+        }, manageSubcategoriesElement);
+    });
+
+    document.getElementById('rankingConfirmModal').addEventListener('hidden.bs.modal', () => {
+        if (!reopenSubcategoryManager) return;
+        reopenSubcategoryManager = false;
+        openSubcategoryManager(managedCategoryId);
+    });
+
+    document.getElementById('recordDetailsModal').addEventListener('hidden.bs.modal', () => {
+        if (!pendingTimeEditRecordId) return;
+        editRecordTimeModal.show();
+    });
+
+    editRecordTimeElement.addEventListener('hidden.bs.modal', () => {
+        if (pendingTimeEditRecordId) pendingTimeEditRecordId = null;
+        editingRecord = null;
+        editSelectedPartners = [];
+        renderSelectedPartners(editSelectedPartners, editSelectedPartnersElement);
+    });
+
+    document.getElementById('editRecordTimeForm').addEventListener('submit', async event => {
+        event.preventDefault();
+        const form = event.currentTarget;
+        if (!form.reportValidity()) return;
+        const error = document.getElementById('editRecordTimeError');
+        const submitButton = form.querySelector('[type="submit"]');
+        const duration = parseDurationInput(editPerformanceTimeInput.value);
+        if (!duration) {
+            error.textContent = 'Saisis le temps au format HH:MM:SS, avec des minutes et secondes entre 00 et 59.';
+            error.hidden = false;
+            editPerformanceTimeInput.focus();
+            return;
+        }
+        const { hours, minutes, seconds } = duration;
+        if (hours * 3600 + minutes * 60 + seconds <= 0) {
+            error.textContent = 'Le temps doit être supérieur à zéro.';
+            error.hidden = false;
+            return;
+        }
+        error.hidden = true;
+        submitButton.disabled = true;
+        try {
+            await postValues({
+                action: 'edit_time',
+                record_id: pendingTimeEditRecordId,
+                hours: String(hours),
+                minutes: String(minutes),
+                seconds: String(seconds)
+            });
+            if (editSelectedPartners.length) {
+                await postValues({
+                    action: 'add_participants',
+                    record_id: pendingTimeEditRecordId,
+                    partner_ids: JSON.stringify(editSelectedPartners.map(partner => partner.type === 'external'
+                        ? { firstname: partner.firstname, lastname: partner.lastname }
+                        : partner.id))
+                });
+            }
+            pendingTimeEditRecordId = null;
+            editingRecord = null;
+            editSelectedPartners = [];
+            editRecordTimeModal.hide();
+            await loadSummary();
+            if (activeCategoryId) await openCategory(activeCategoryId, false, activeSubcategoryId);
+            showToast('Performance mise à jour.');
+        } catch (requestError) {
+            error.textContent = requestError.message;
+            error.hidden = false;
+        } finally {
+            submitButton.disabled = false;
+        }
     });
 
     function shiftGallery(gallery, step) {
