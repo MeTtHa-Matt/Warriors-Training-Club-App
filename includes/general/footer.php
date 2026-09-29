@@ -120,7 +120,7 @@ if (session_status() === PHP_SESSION_NONE) {
     });
 })();
 
-const WTC_CACHE_BUST_VERSION = '2026091401';
+const WTC_CACHE_BUST_VERSION = '2026092901';
 const WTC_CACHE_BUSTER_KEY = 'wtc-cache-buster';
 
 if (window.localStorage && window.localStorage.getItem(WTC_CACHE_BUSTER_KEY) !== WTC_CACHE_BUST_VERSION) {
@@ -144,7 +144,7 @@ if ('serviceWorker' in navigator) {
     });
 }
 </script>
-<script src="js/pwa-tutorials.js?v=2026090801"></script>
+<script src="js/pwa-tutorials.js?v=2026092901"></script>
 <?php
 // Global session timeout modal and script included on every page when user is logged in
 if (!empty($_SESSION['user_id'])):
