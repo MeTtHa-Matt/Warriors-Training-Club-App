@@ -10,7 +10,11 @@
     }
 
     function isInstalled() {
-        return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) ||
+        var displayModes = ['fullscreen', 'standalone', 'minimal-ui', 'window-controls-overlay'];
+        var hasInstalledDisplayMode = window.matchMedia && displayModes.some(function (mode) {
+            return window.matchMedia('(display-mode: ' + mode + ')').matches;
+        });
+        return hasInstalledDisplayMode ||
             (window.navigator && window.navigator.standalone === true);
     }
 
