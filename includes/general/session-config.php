@@ -80,9 +80,13 @@ if (empty($_SESSION['user_id'])) {
 
 if (!empty($_SESSION['user_id'])) {
     try {
-        $sessionUserId = (int) $_SESSION['user_id'];
-        $sessionUpdateStmt = $pdo->prepare('UPDATE account_wtc SET last_seen = NOW() WHERE id = ?');
-        $sessionUpdateStmt->execute([$sessionUserId]);
+        $lastSeenUpdatedAt = (int) ($_SESSION['_last_seen_updated_at'] ?? 0);
+        if (time() - $lastSeenUpdatedAt >= 60) {
+            $sessionUserId = (int) $_SESSION['user_id'];
+            $sessionUpdateStmt = $pdo->prepare('UPDATE account_wtc SET last_seen = NOW() WHERE id = ?');
+            $sessionUpdateStmt->execute([$sessionUserId]);
+            $_SESSION['_last_seen_updated_at'] = time();
+        }
     } catch (Throwable $e) {
         error_log('[session-config] impossible de mettre à jour last_seen: ' . $e->getMessage());
     }

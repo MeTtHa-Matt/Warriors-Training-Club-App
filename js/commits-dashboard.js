@@ -132,8 +132,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // initial load: force fresh fetch from GitHub and render
     fetchCommits(true, false);
-    // Simple polling: check every 15 seconds but only update UI if new commits appear
+    // Check periodically; the API shares a five-minute GitHub cache across visitors.
     setInterval(() => {
         fetchCommits(true, true);
-    }, 15000);
+    }, 60000);
 });

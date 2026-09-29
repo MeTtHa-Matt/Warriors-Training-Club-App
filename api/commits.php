@@ -17,8 +17,25 @@ if (is_file($path)) {
     }
 }
 
-// If client requested a force refresh or no stored commits, fetch from GitHub API
-if (isset($_GET['force']) || empty($commits)) {
+// Share GitHub refreshes between visitors and avoid a request burst on cache expiry.
+$cacheFresh = is_file($path) && (filemtime($path) ?: 0) >= time() - 300;
+$shouldRefresh = empty($commits) || (isset($_GET['force']) && !$cacheFresh);
+$refreshLock = null;
+if ($shouldRefresh) {
+    $refreshLock = @fopen($path . '.refresh.lock', 'c');
+    if ($refreshLock === false || !flock($refreshLock, LOCK_EX | LOCK_NB)) {
+        if (is_resource($refreshLock)) {
+            fclose($refreshLock);
+        }
+        $shouldRefresh = false;
+    } else {
+        clearstatcache(true, $path);
+        $cacheFresh = is_file($path) && (filemtime($path) ?: 0) >= time() - 300;
+        $shouldRefresh = !$cacheFresh;
+    }
+}
+
+if ($shouldRefresh) {
     $repo = 'MeTtHa-Matt/Warriors-Training-Club-App';
     $apiUrl = "https://api.github.com/repos/" . $repo . "/commits?per_page=100";
     $token = trim(getenv('GITHUB_TOKEN') ?: getenv('GITHUB_API_TOKEN') ?: '');
@@ -65,6 +82,11 @@ if (isset($_GET['force']) || empty($commits)) {
             }
         }
     }
+}
+
+if (is_resource($refreshLock)) {
+    flock($refreshLock, LOCK_UN);
+    fclose($refreshLock);
 }
 
 echo json_encode(array_values($commits));

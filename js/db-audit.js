@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   async function poll() {
-    if (polling) return;
+    if (polling || document.visibilityState !== 'visible') return;
     polling = true;
     try {
       const url = new URL(endpoint, window.location.href);
@@ -105,6 +105,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') poll();
+  });
+
   poll();
-  window.setInterval(poll, 2000);
+  window.setInterval(poll, 10000);
 });

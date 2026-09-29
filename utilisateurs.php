@@ -209,17 +209,11 @@ include __DIR__ . "/includes/general/users.php"
         }
 
         function refreshOnlineStatuses() {
-            const heartbeatPromise = fetch(usersApiUrl, {
-                method: 'POST',
-                credentials: 'same-origin',
-                cache: 'no-store',
-                headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrfToken() },
-                body: JSON.stringify({ action: 'heartbeat', csrf_token: csrfToken() })
-            }).catch(function() {
-                return null;
-            });
+            if (document.visibilityState !== 'visible') {
+                return;
+            }
 
-            const statusesPromise = fetch(usersApiUrl, {
+            fetch(usersApiUrl, {
                 method: 'POST',
                 credentials: 'same-origin',
                 cache: 'no-store',
@@ -265,7 +259,6 @@ include __DIR__ . "/includes/general/users.php"
                 // Gestion silencieuse des erreurs réseau : l’état précédent reste affiché
             });
 
-            Promise.allSettled([heartbeatPromise, statusesPromise]);
         }
 
         function sendOfflineStatus() {
@@ -295,6 +288,8 @@ include __DIR__ . "/includes/general/users.php"
         document.addEventListener('visibilitychange', function() {
             if (document.visibilityState === 'hidden') {
                 sendOfflineStatus();
+            } else {
+                refreshOnlineStatuses();
             }
         });
 
@@ -302,7 +297,7 @@ include __DIR__ . "/includes/general/users.php"
         window.addEventListener('beforeunload', sendOfflineStatus, { passive: true });
 
         refreshOnlineStatuses();
-        onlineStatusTimer = setInterval(refreshOnlineStatuses, 5000);
+        onlineStatusTimer = setInterval(refreshOnlineStatuses, 15000);
 
         // Menu toggle functionality
         document.querySelectorAll('.user-profile-card__content').forEach(function(element) {
