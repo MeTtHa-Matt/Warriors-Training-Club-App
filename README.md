@@ -127,7 +127,10 @@ MAIL_ENCRYPTION=tls
 INDEXNOW_KEY=votre_cle_indexnow
 INDEXNOW_HTTP_TOKEN=votre_token_http
 INDEXNOW_SITE_URL=http://localhost:8000
+
 ```
+
+La mesure d’audience first-party est activée dans le site et ne collecte aucun événement avant acceptation. Elle stocke les événements dans la table `analytics_events` (rétention de 90 jours) ; les visiteurs peuvent changer leur choix depuis le pied de page ou leur profil.
 
 3. Importer le schéma SQL :
 

@@ -1530,6 +1530,44 @@ h3,
   font-size: 0.88rem;
 }
 
+.wtc-analytics-consent {
+  position: fixed;
+  z-index: 2100;
+  right: max(16px, env(safe-area-inset-right));
+  bottom: max(16px, env(safe-area-inset-bottom));
+  display: flex;
+  width: min(440px, calc(100vw - 32px));
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 16px;
+  border: 1px solid var(--gold, #c9a227);
+  border-radius: 12px;
+  color: var(--paper, #f4efe2);
+  background: var(--black-soft, #151515);
+  box-shadow: 0 12px 36px rgb(0 0 0 / 28%);
+}
+.wtc-analytics-consent[hidden],
+.wtc-analytics-consent [hidden] { display: none !important; }
+.wtc-analytics-consent__message { min-width: 0; }
+.wtc-analytics-consent__message strong { font-size: .9rem; }
+.wtc-analytics-consent__message p { margin: 5px 0 0; color: var(--grey, #b5b1a8); font-size: .78rem; line-height: 1.45; }
+.wtc-analytics-consent__actions { display: flex; flex: none; gap: 7px; }
+.wtc-consent-preferences { padding: 0; border: 0; color: var(--grey, #b5b1a8); background: transparent; font: inherit; font-size: .78rem; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.wtc-consent-preferences:hover { color: var(--gold, #c9a227); }
+
+.profile-cookie-preferences { height: 100%; }
+.profile-cookie-preferences__heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.profile-cookie-preferences__heading > div > p:last-child { font-size: .9rem; }
+.profile-cookie-preferences__status { color: var(--grey, #b5b1a8); font-size: .78rem; white-space: nowrap; }
+.profile-cookie-preferences__actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.profile-cookie-preferences__actions [aria-pressed="true"] { outline: 2px solid var(--gold, #c9a227); outline-offset: 2px; }
+
+@media (max-width: 520px) {
+  .wtc-analytics-consent { right: 12px; bottom: max(12px, env(safe-area-inset-bottom)); width: calc(100vw - 24px); align-items: stretch; flex-direction: column; gap: 12px; padding: 14px; }
+  .wtc-analytics-consent__actions { justify-content: flex-end; }
+}
+
 /* ==========================================================================
    RÈGLEMENT INTÉRIEUR — à ajouter dans style.css
    ========================================================================== */

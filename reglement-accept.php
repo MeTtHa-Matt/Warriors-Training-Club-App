@@ -307,7 +307,7 @@ $pageTitle = "Warriors Training Club - Règlement intérieur";
 
             </div>
 
-            <form method="post" class="mt-4 reglement-accept__form">
+            <form method="post" class="mt-4 reglement-accept__form" data-analytics-label="acceptation_reglement">
                 <div class="form-check">
                     <input class="form-check-input wtc-checkbox" type="checkbox" id="acceptCheck" name="accepted">
                     <label class="form-check-label wtc-checkbox-label" for="acceptCheck">J'ai lu et accepté ce

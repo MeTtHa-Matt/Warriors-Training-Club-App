@@ -55,7 +55,7 @@ unset($_SESSION['errors'], $_SESSION['old']);
                 <?php endif; ?>
 
                 <form action="includes/account/inscription_process.php" method="post" enctype="multipart/form-data"
-                    class="auth-form" novalidate>
+                    class="auth-form" novalidate data-analytics-label="inscription_compte">
 
                     <div class="row g-3">
                         <div class="col-12 col-sm-6">

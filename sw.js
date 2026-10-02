@@ -1,4 +1,4 @@
-const CACHE_NAME = "wtc-cache-v31";
+const CACHE_NAME = "wtc-cache-v42";
 const BASE_URL = new URL(".", self.location.href);
 const BASE_PREFIX = BASE_URL.pathname === "/" ? "" : BASE_URL.pathname.replace(/\/$/, "");
 const PRECACHE_URLS = [
@@ -14,7 +14,7 @@ const PRECACHE_URLS = [
   `${BASE_PREFIX}/css/fonts/inter-500.ttf`,
   `${BASE_PREFIX}/css/fonts/inter-600.ttf`,
   `${BASE_PREFIX}/css/fonts/inter-700.ttf`,
-  `${BASE_PREFIX}/css/style.css`,
+  `${BASE_PREFIX}/css/style.css?v=2026100201`,
   `${BASE_PREFIX}/js/seances.js?v=202607102200`,
   `${BASE_PREFIX}/img/wtc.png`,
   `${BASE_PREFIX}/manifest.json?v=2026092701`,
@@ -71,6 +71,10 @@ self.addEventListener("fetch", (event) => {
 
   const requestURL = new URL(event.request.url);
   const isSameOrigin = requestURL.origin === self.location.origin;
+  if (!isSameOrigin) {
+    return;
+  }
+
   const isNavigation = event.request.mode === "navigate";
   const isHtmlRequest = event.request.headers
     .get("accept")
@@ -85,15 +89,12 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  if (
-    isSameOrigin &&
-    requestURL.pathname.includes("/img/pdps/")
-  ) {
+  if (requestURL.pathname.includes("/img/pdps/")) {
     event.respondWith(fetch(event.request, { cache: "no-store" }));
     return;
   }
 
-  if (isSameOrigin && requestURL.pathname.endsWith("/favicon.ico")) {
+  if (requestURL.pathname.endsWith("/favicon.ico")) {
     event.respondWith(
       caches
         .match(`${BASE_PREFIX}/img/wtc.png`, { ignoreSearch: true })
@@ -103,7 +104,6 @@ self.addEventListener("fetch", (event) => {
   }
 
   if (
-    isSameOrigin &&
     (event.request.destination === "style" ||
       event.request.destination === "script" ||
       event.request.destination === "image" ||

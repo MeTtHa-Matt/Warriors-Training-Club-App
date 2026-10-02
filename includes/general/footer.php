@@ -36,6 +36,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
         <div class="wtc-footer__bottom">
             <p class="mb-0">&copy; <?= date('Y'); ?> Warriors Training Club. Tous droits réservés.</p>
+            <button class="wtc-consent-preferences" id="wtcAnalyticsPreferences" type="button">Préférences de mesure</button>
             <p class="mb-0">Site réalisé par <span class="accent"><a href="ilyc.php">Matthew</a></span></p>
         </div>
     </div>
@@ -144,7 +145,7 @@ if ('serviceWorker' in navigator) {
     });
 }
 </script>
-<script src="js/pwa-tutorials.js?v=2026092901"></script>
+<script src="js/pwa-tutorials.js?v=2026100201"></script>
 <?php
 // Global session timeout modal and script included on every page when user is logged in
 if (!empty($_SESSION['user_id'])):

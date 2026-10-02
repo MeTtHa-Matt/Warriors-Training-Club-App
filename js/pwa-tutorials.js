@@ -52,8 +52,24 @@
             popup.style.display = 'none';
         });
 
-        openButton.addEventListener('click', function () {
-            window.location.href = 'tuto-install.php';
+        openButton.addEventListener('click', async function () {
+            if (!deferredPrompt) {
+                window.location.href = 'tuto-install.php';
+                return;
+            }
+
+            var promptEvent = deferredPrompt;
+            deferredPrompt = null;
+            popup.style.display = 'none';
+            try {
+                await promptEvent.prompt();
+                var choice = await promptEvent.userChoice;
+                if (!choice || choice.outcome !== 'accepted') {
+                    window.location.href = 'tuto-install.php';
+                }
+            } catch (error) {
+                window.location.href = 'tuto-install.php';
+            }
         });
 
         if (isMobile()) showPopup();

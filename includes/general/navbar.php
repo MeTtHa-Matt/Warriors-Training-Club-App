@@ -123,3 +123,14 @@ $isLoggedIn = isset($_SESSION['user_id']);
         </div>
     </div>
 </nav>
+    <aside class="wtc-analytics-consent" id="wtcAnalyticsConsent" aria-label="Préférences de mesure d’audience" hidden>
+        <div class="wtc-analytics-consent__message" id="wtcAnalyticsConsentMessage">
+            <strong>Mesure d’audience</strong>
+            <p>Autorisez la mesure statistique des visites et des clics, sans données directement identifiantes. Vous pourrez modifier ce choix à tout moment.</p>
+        </div>
+        <div class="wtc-analytics-consent__actions" id="wtcAnalyticsConsentActions">
+            <button class="btn btn-sm btn-wtc-outline" id="wtcAnalyticsReject" type="button">Refuser</button>
+            <button class="btn btn-sm btn-wtc-gold" id="wtcAnalyticsAccept" type="button">Accepter</button>
+        </div>
+    </aside>
+<script src="assets/analytics-consent.js?v=11" defer></script>

@@ -61,7 +61,7 @@ unset($_SESSION['errors'], $_SESSION['old'], $_SESSION['success']);
                     </div>
                 <?php endif; ?>
 
-                <form action="includes/account/connexion_process.php" method="post" class="auth-form" novalidate>
+                <form action="includes/account/connexion_process.php" method="post" class="auth-form" novalidate data-analytics-label="connexion">
 
                     <div class="row g-3">
                         <div class="col-12">

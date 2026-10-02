@@ -21,6 +21,31 @@ CREATE TABLE IF NOT EXISTS account_wtc (
 
 INSERT INTO account_wtc (firstname, lastname, email, `password`, admin, gerer_seances, email_verified) VALUES ("admin", "admin", "admin@admin.fr", "$2y$10$jgqlubHdvwg7cTs1V6C/a.RX92qQhmYV7wLzDMEA7K00g9zluuJmq", 1, 1, 1), ("Freddy", "admin", "freddy@admin.fr", "$2y$10$.DLWGa0n5s/Vxs5E/5Oz6u97tkyZedYFgGMyFAK34Qkxn1q.hUng2", 1, 1, 1);
 
+CREATE TABLE IF NOT EXISTS analytics_events (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    session_hash CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    event_type VARCHAR(24) NOT NULL,
+    page_path VARCHAR(255) NOT NULL,
+    target_type ENUM('link', 'button') DEFAULT NULL,
+    target_host VARCHAR(190) DEFAULT NULL,
+    target_path VARCHAR(255) DEFAULT NULL,
+    referrer_host VARCHAR(190) DEFAULT NULL,
+    interaction_label VARCHAR(80) DEFAULT NULL,
+    metric_name VARCHAR(24) DEFAULT NULL,
+    metric_value DECIMAL(10,2) DEFAULT NULL,
+    scroll_depth TINYINT UNSIGNED DEFAULT NULL,
+    device_category ENUM('desktop', 'mobile', 'tablet') NOT NULL,
+    browser_category ENUM('chrome', 'edge', 'firefox', 'opera', 'safari', 'other') NOT NULL,
+    operating_system ENUM('android', 'ios', 'windows', 'macos', 'linux', 'chromeos', 'other') NOT NULL DEFAULT 'other',
+    viewport_category ENUM('small', 'medium', 'large', 'unknown') NOT NULL DEFAULT 'unknown',
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_analytics_created_event (created_at, event_type),
+    INDEX idx_analytics_session_created (session_hash, created_at),
+    INDEX idx_analytics_page_created (page_path, created_at),
+    INDEX idx_analytics_target_created (target_host, target_path, created_at),
+    INDEX idx_analytics_referrer_created (referrer_host, created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 CREATE TABLE IF NOT EXISTS ilyc_scores (
     account_id INT NOT NULL PRIMARY KEY,
     score INT UNSIGNED NOT NULL DEFAULT 0,

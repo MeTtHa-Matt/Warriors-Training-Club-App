@@ -1,3 +1,5 @@
 .env
+dashboard/.env
+dashboard/storage/
 vendor/
 .aider*

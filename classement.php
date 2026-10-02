@@ -134,7 +134,7 @@ $maxPhotoTotalLabel = $formatMegabytes($maxPhotoTotalBytes);
 
     <div class="modal fade wtc-modal" id="addRecordModal" tabindex="-1" aria-labelledby="addRecordTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-            <form class="modal-content wtc-modal__content" id="addRecordForm" enctype="multipart/form-data">
+            <form class="modal-content wtc-modal__content" id="addRecordForm" enctype="multipart/form-data" data-analytics-label="ajout_performance_classement">
                 <div class="modal-header wtc-modal__header">
                     <div><p class="eyebrow mb-1">Nouvelle performance</p><h2 class="modal-title" id="addRecordTitle">Ajouter un temps</h2></div>
                     <button class="btn-close btn-close-white" type="button" data-bs-dismiss="modal" aria-label="Fermer"></button>
@@ -202,7 +202,7 @@ $maxPhotoTotalLabel = $formatMegabytes($maxPhotoTotalBytes);
 
     <div class="modal fade wtc-modal" id="createCategoryModal" tabindex="-1" aria-labelledby="createCategoryTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <form class="modal-content wtc-modal__content" id="createCategoryForm">
+            <form class="modal-content wtc-modal__content" id="createCategoryForm" data-analytics-label="creation_categorie_classement">
                 <div class="modal-header wtc-modal__header">
                     <div><p class="eyebrow mb-1">Nouveau classement</p><h2 class="modal-title" id="createCategoryTitle">Créer un classement</h2></div>
                     <button class="btn-close btn-close-white" type="button" data-bs-dismiss="modal" aria-label="Fermer"></button>

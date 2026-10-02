@@ -219,7 +219,7 @@ $canManage = (int) ($_SESSION['gerer_seances'] ?? 0) === 1;
                 </div>
                 <div class="modal-body">
                     <div id="inscrireQuelquunAlert" class="auth-alert auth-alert--error" style="display:none;"></div>
-                    <form id="formInscrireQuelquun" novalidate>
+                    <form id="formInscrireQuelquun" novalidate data-analytics-label="inscription_invite_seance">
                         <div class="mb-3">
                             <label for="guestFirstname" class="form-label">Prénom</label>
                             <input type="text" class="form-control auth-input" id="guestFirstname" required
@@ -247,7 +247,7 @@ $canManage = (int) ($_SESSION['gerer_seances'] ?? 0) === 1;
                 </div>
                 <div class="modal-body">
                     <div id="editSeanceAlert" class="auth-alert auth-alert--error" style="display:none;"></div>
-                    <form id="formEditSeance" novalidate>
+                    <form id="formEditSeance" novalidate data-analytics-label="modification_seance">
                         <input type="hidden" id="editSeanceId">
                         <div class="row g-3">
                             <div class="col-12">
@@ -325,7 +325,7 @@ $canManage = (int) ($_SESSION['gerer_seances'] ?? 0) === 1;
                     </div>
                     <div class="modal-body">
                         <div id="templateFormAlert" class="auth-alert auth-alert--error" style="display:none;"></div>
-                        <form id="formCreateTemplate" novalidate>
+                        <form id="formCreateTemplate" novalidate data-analytics-label="creation_modele_seances">
                             <div class="row g-3">
                                 <div class="col-12">
                                     <label for="templateName" class="form-label">Nom du template</label>
@@ -366,7 +366,7 @@ $canManage = (int) ($_SESSION['gerer_seances'] ?? 0) === 1;
                     </div>
                     <div class="modal-body">
                         <div id="templateSessionAlert" class="auth-alert auth-alert--error" style="display:none;"></div>
-                        <form id="formTemplateSession" novalidate>
+                        <form id="formTemplateSession" novalidate data-analytics-label="ajout_seance_modele">
                             <div class="row g-3">
                                 <div class="col-12 col-sm-6">
                                     <label for="templateSessionWeekday" class="form-label">Jour de la semaine</label>
@@ -449,7 +449,7 @@ $canManage = (int) ($_SESSION['gerer_seances'] ?? 0) === 1;
                     </div>
                     <div class="modal-body">
                         <div id="ajouterSeanceAlert" class="auth-alert auth-alert--error" style="display:none;"></div>
-                        <form id="formAjouterSeance" novalidate>
+                        <form id="formAjouterSeance" novalidate data-analytics-label="creation_seance">
                             <div class="row g-3">
                                 <div class="col-12 col-sm-6">
                                     <label for="newDate" class="form-label">Date</label>

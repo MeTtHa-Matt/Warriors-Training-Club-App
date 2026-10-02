@@ -122,7 +122,7 @@ header(
     "style-src-elem 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; " .
     "img-src 'self' data: https:; " .
     "font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; " .
-    "connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://cdn.jsdelivr.net; " .
+    "connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://cdn.jsdelivr.net https://www.google.com; " .
     "frame-src 'self' https://www.google.com https://maps.google.com; " .
     "frame-ancestors 'none'; " .
     "base-uri 'self'; " .
