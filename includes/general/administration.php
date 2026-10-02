@@ -20,9 +20,7 @@ $maintenanceEnabled = (bool) $pdo->query('SELECT MAX(maintenance) FROM account_w
 $totalSessions = (int) $pdo->query('SELECT COUNT(*) FROM seances')->fetchColumn();
 $upcomingSessions = (int) $pdo->query('SELECT COUNT(*) FROM seances WHERE date_seance >= CURDATE()')->fetchColumn();
 $totalInscriptions = (int) $pdo->query('SELECT COUNT(*) FROM inscriptions_seances')->fetchColumn();
-$reportsFile = __DIR__ . '/../../data/reports.json';
-$reportsData = is_file($reportsFile) ? json_decode(file_get_contents($reportsFile) ?: '[]', true) : [];
-$totalReports = is_array($reportsData) ? count($reportsData) : 0;
+$totalReports = (int) $pdo->query('SELECT COUNT(*) FROM dashboard_reports')->fetchColumn();
 $totalEmailsOptOut = (int) $pdo->query('SELECT COUNT(*) FROM account_wtc WHERE accept_email = 0')->fetchColumn();
 
 $pageTitle = 'Warriors Training Club - Administration';

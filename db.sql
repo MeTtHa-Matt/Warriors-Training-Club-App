@@ -226,3 +226,30 @@ CREATE TABLE IF NOT EXISTS sql_action_logs (
     INDEX idx_sql_action_logs_created (id),
     INDEX idx_sql_action_logs_type_id (query_type, id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS dashboard_reports (
+    id CHAR(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL PRIMARY KEY,
+    email VARCHAR(254) NOT NULL,
+    message TEXT NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    device_hash CHAR(64) CHARACTER SET ascii COLLATE ascii_bin DEFAULT NULL,
+    ip_hash CHAR(64) CHARACTER SET ascii COLLATE ascii_bin DEFAULT NULL,
+    INDEX idx_dashboard_reports_created (created_at),
+    INDEX idx_dashboard_reports_device_created (device_hash, created_at),
+    INDEX idx_dashboard_reports_ip_created (ip_hash, created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS dashboard_commits (
+    sha CHAR(40) CHARACTER SET ascii COLLATE ascii_bin NOT NULL PRIMARY KEY,
+    message TEXT NOT NULL,
+    url VARCHAR(500) NOT NULL,
+    author VARCHAR(190) NOT NULL DEFAULT '',
+    committed_at DATETIME NOT NULL,
+    repo VARCHAR(190) NOT NULL,
+    INDEX idx_dashboard_commits_date (committed_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS app_settings (
+    setting_key VARCHAR(100) NOT NULL PRIMARY KEY,
+    value TEXT NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

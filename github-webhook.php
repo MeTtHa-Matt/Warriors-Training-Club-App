@@ -150,6 +150,24 @@ if (count($existing) > 200) {
     $existing = array_slice($existing, -200);
 }
 
+try {
+    if (!defined('WTC_DISABLE_SQL_ACTION_AUDIT')) {
+        define('WTC_DISABLE_SQL_ACTION_AUDIT', true);
+    }
+    require_once __DIR__ . '/includes/general/db.php';
+    $saveCommit = $pdo->prepare('INSERT INTO dashboard_commits (sha, message, url, author, committed_at, repo) VALUES (?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE message = VALUES(message), url = VALUES(url), author = VALUES(author), committed_at = VALUES(committed_at), repo = VALUES(repo)');
+    foreach ($existing as $entry) {
+        $sha = strtolower((string) ($entry['id'] ?? ''));
+        $timestamp = strtotime((string) ($entry['timestamp'] ?? ''));
+        if (!preg_match('/^[a-f0-9]{40}$/', $sha) || $timestamp === false) {
+            continue;
+        }
+        $saveCommit->execute([$sha, (string) ($entry['message'] ?? ''), (string) ($entry['url'] ?? ''), (string) ($entry['author'] ?? ''), gmdate('Y-m-d H:i:s', $timestamp), (string) ($entry['repo'] ?? $repoName)]);
+    }
+} catch (Throwable $error) {
+    error_log('[github-webhook] dashboard commit sync failed: ' . $error->getMessage());
+}
+
 // Store safely
 @file_put_contents($path, json_encode($existing, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES), LOCK_EX);
 

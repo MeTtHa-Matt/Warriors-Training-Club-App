@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/db.php';
 $errors = [];
 $success = null;
 $step = $_SESSION['report_step'] ?? 'message';
@@ -36,6 +37,9 @@ $recentReports = array_filter($reports, static function (array $report) use ($no
     $createdAt = strtotime($report['created_at'] ?? '') ?: 0;
     return $createdAt >= $now - 86400 && (($report['device_hash'] ?? '') === $deviceHash || ($report['ip_hash'] ?? '') === $ipHash);
 });
+$recentDatabaseReports = $pdo->prepare('SELECT COUNT(*) FROM dashboard_reports WHERE created_at >= DATE_SUB(NOW(), INTERVAL 1 DAY) AND (device_hash = ? OR ip_hash = ?)');
+$recentDatabaseReports->execute([$deviceHash, $ipHash]);
+$recentReportCount = count($recentReports) + (int) $recentDatabaseReports->fetchColumn();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!hash_equals($_SESSION['report_csrf'], (string) ($_POST['csrf_token'] ?? ''))) {
@@ -43,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (isset($_POST['prepare_report'])) {
         $message = trim((string) ($_POST['report_message'] ?? ''));
         if (mb_strlen($message) < 10 || mb_strlen($message) > 4000) $errors[] = 'Le signalement doit contenir entre 10 et 4 000 caractères.';
-        elseif (count($recentReports) >= 3) $errors[] = 'Trop de signalements depuis cet appareil. Réessaie demain.';
+        elseif ($recentReportCount >= 3) $errors[] = 'Trop de signalements depuis cet appareil. Réessaie demain.';
         else { $_SESSION['report_data'] = ['message' => $message]; $_SESSION['report_step'] = 'email'; $step = 'email'; $reportData = $_SESSION['report_data']; }
     } elseif (isset($_POST['send_code'])) {
         $email = filter_var(trim((string) ($_POST['email'] ?? '')), FILTER_VALIDATE_EMAIL);
@@ -62,11 +66,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $code = trim((string) ($_POST['verification_code'] ?? ''));
         if (empty($verification) || ($verification['expires_at'] ?? 0) < $now) { $errors[] = 'Ce code a expiré. Demande un nouveau code.'; $step = 'email'; }
         elseif (($verification['attempts'] ?? 0) >= 5 || !password_verify($code, $verification['code_hash'])) { $_SESSION['report_verification']['attempts'] = ($verification['attempts'] ?? 0) + 1; $errors[] = 'Code incorrect.'; $step = 'code'; }
-        elseif (count($recentReports) >= 3) { $errors[] = 'Trop de signalements depuis cet appareil. Réessaie demain.'; $step = 'message'; }
+        elseif ($recentReportCount >= 3) { $errors[] = 'Trop de signalements depuis cet appareil. Réessaie demain.'; $step = 'message'; }
         else {
-            $reports[] = ['id' => bin2hex(random_bytes(8)), 'email' => $verification['email'], 'message' => $reportData['message'], 'created_at' => gmdate('c'), 'device_hash' => $deviceHash, 'ip_hash' => $ipHash];
-            if (!$writeReports($reportFile, $reports)) { $errors[] = 'Le signalement n’a pas pu être enregistré. Réessaie plus tard.'; $step = 'code'; }
-            else { unset($_SESSION['report_data'], $_SESSION['report_verification'], $_SESSION['report_step'], $_SESSION['report_code_sent_at']); $success = 'Ton signalement a bien été envoyé. Merci pour ton aide.'; $step = 'message'; }
+            try {
+                $saveReport = $pdo->prepare('INSERT INTO dashboard_reports (id, email, message, device_hash, ip_hash) VALUES (?, ?, ?, ?, ?)');
+                $saveReport->execute([bin2hex(random_bytes(16)), $verification['email'], $reportData['message'], $deviceHash, $ipHash]);
+                unset($_SESSION['report_data'], $_SESSION['report_verification'], $_SESSION['report_step'], $_SESSION['report_code_sent_at']);
+                $success = 'Ton signalement a bien été envoyé. Merci pour ton aide.';
+                $step = 'message';
+            } catch (Throwable $error) {
+                error_log('[reports] ' . $error->getMessage());
+                $errors[] = 'Le signalement n’a pas pu être enregistré. Réessaie plus tard.';
+                $step = 'code';
+            }
         }
     }
 }
