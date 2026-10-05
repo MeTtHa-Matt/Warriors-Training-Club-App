@@ -175,6 +175,15 @@ foreach ($events as $event) {
     $normalizedEvents[] = $normalized;
 }
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+$analyticsAccountId = filter_var($_SESSION['user_id'] ?? null, FILTER_VALIDATE_INT);
+$analyticsAccountId = $analyticsAccountId !== false && $analyticsAccountId !== null && $analyticsAccountId > 0
+    ? $analyticsAccountId
+    : null;
+session_write_close();
+
 [$device, $browser, $operatingSystem] = analyticsDevice((string) ($_SERVER['HTTP_USER_AGENT'] ?? ''));
 $viewportWidth = filter_var($payload['viewportWidth'] ?? null, FILTER_VALIDATE_INT);
 $viewport = $viewportWidth === false || $viewportWidth === null
@@ -223,10 +232,11 @@ try {
     $values = [];
     $parameters = [];
     foreach ($normalizedEvents as $event) {
-        $values[] = '(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        $values[] = '(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
         array_push(
             $parameters,
             $sessionHash,
+            $analyticsAccountId,
             $event['type'],
             $event['page'],
             $event['targetType'],
@@ -246,7 +256,7 @@ try {
     $pdo->beginTransaction();
     $insert = $pdo->prepare(
         'INSERT INTO analytics_events
-            (session_hash, event_type, page_path, target_type, target_host, target_path, referrer_host, interaction_label, metric_name, metric_value, scroll_depth, device_category, browser_category, operating_system, viewport_category)
+            (session_hash, account_id, event_type, page_path, target_type, target_host, target_path, referrer_host, interaction_label, metric_name, metric_value, scroll_depth, device_category, browser_category, operating_system, viewport_category)
          VALUES ' . implode(', ', $values)
     );
     $insert->execute($parameters);

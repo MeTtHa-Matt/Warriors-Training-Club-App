@@ -3,7 +3,7 @@
 
     const message = document.getElementById('wtcAnalyticsConsentMessage');
     const actions = document.getElementById('wtcAnalyticsConsentActions');
-    const storageKey = 'wtc_analytics_consent_v2';
+    const storageKey = 'wtc_analytics_consent_v3';
     let choice = null;
     let eventQueue = [];
     let trackingStarted = false;
@@ -54,7 +54,7 @@
             if (useBeacon && navigator.sendBeacon && navigator.sendBeacon('api/analytics.php', new Blob([body], { type: 'application/json' }))) continue;
             fetch('api/analytics.php', {
                 method: 'POST',
-                credentials: 'omit',
+                credentials: 'same-origin',
                 headers: { 'Content-Type': 'application/json' },
                 body,
                 keepalive: true,

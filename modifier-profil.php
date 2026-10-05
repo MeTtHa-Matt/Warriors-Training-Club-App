@@ -109,7 +109,7 @@ include __DIR__ . '/includes/general/modifier-profil.php';
                                 <div>
                                     <p class="eyebrow mb-1" id="analyticsPreferencesTitle">Confidentialité</p>
                                     <h2 class="h5 mb-2">Mesure d’audience</h2>
-                                    <p class="auth-hint mb-0">Autorise ou refuse l’enregistrement statistique des pages consultées et des clics. Ce choix ne concerne pas les emails du club.</p>
+                                    <p class="auth-hint mb-0">Autorise ou refuse l’enregistrement des pages consultées et des clics. Si tu es connecté, ces données sont associées à ton compte; sinon, elles restent liées à une session anonyme. Aucun contenu saisi n’est enregistré. Ce choix ne concerne pas les emails du club.</p>
                                 </div>
                                 <span class="profile-cookie-preferences__status" id="analyticsConsentStatus" aria-live="polite">Aucun choix</span>
                             </div>

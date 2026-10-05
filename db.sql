@@ -24,6 +24,7 @@ INSERT INTO account_wtc (firstname, lastname, email, `password`, admin, gerer_se
 CREATE TABLE IF NOT EXISTS analytics_events (
     id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     session_hash CHAR(64) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    account_id INT DEFAULT NULL,
     event_type VARCHAR(24) NOT NULL,
     page_path VARCHAR(255) NOT NULL,
     target_type ENUM('link', 'button') DEFAULT NULL,
@@ -41,9 +42,11 @@ CREATE TABLE IF NOT EXISTS analytics_events (
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     INDEX idx_analytics_created_event (created_at, event_type),
     INDEX idx_analytics_session_created (session_hash, created_at),
+    INDEX idx_analytics_account_created (account_id, created_at),
     INDEX idx_analytics_page_created (page_path, created_at),
     INDEX idx_analytics_target_created (target_host, target_path, created_at),
-    INDEX idx_analytics_referrer_created (referrer_host, created_at)
+    INDEX idx_analytics_referrer_created (referrer_host, created_at),
+    CONSTRAINT fk_analytics_events_account FOREIGN KEY (account_id) REFERENCES account_wtc(id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS ilyc_scores (

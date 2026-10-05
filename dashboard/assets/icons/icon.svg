@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="94" fill="#0b0b0a"/>
-  <rect x="18" y="18" width="476" height="476" rx="78" fill="none" stroke="#6c572f" stroke-width="4"/>
-  <path d="M88 104h336" fill="none" stroke="#51452d" stroke-width="4"/>
-  <text x="256" y="290" fill="#e7c56d" font-family="Arial, sans-serif" font-size="142" font-weight="700" text-anchor="middle">JCM</text>
-  <path d="M142 340h228" fill="none" stroke="#6c572f" stroke-width="4"/>
-  <text x="256" y="405" fill="#b9ad8f" font-family="Arial, sans-serif" font-size="38" font-weight="600" text-anchor="middle">STUDIO</text>
-</svg>
