@@ -13,7 +13,7 @@ include __DIR__ . "/includes/general/index-liens.php";
     <title>Warriors Training Club - Accueil</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/bootstrap-icons.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=202607102000">
+    <link rel="stylesheet" href="css/style.css?v=202610080840">
     <link rel="manifest" href="./manifest.json">
     <link rel="icon" type="image/png" sizes="any" href="./img/wtc.png">
     <link rel="apple-touch-icon" sizes="180x180" href="./img/wtc.png">
@@ -297,6 +297,26 @@ include __DIR__ . "/includes/general/index-liens.php";
                     </script>
                     <?php endif; ?>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section whatsapp-section" id="whatsapp">
+        <div class="container">
+            <div class="whatsapp-promo">
+                <div class="whatsapp-promo__content">
+                    <span class="whatsapp-promo__icon" aria-hidden="true">
+                        <i class="bi bi-whatsapp"></i>
+                    </span>
+                    <div>
+                        <p class="eyebrow">La communauté WTC</p>
+                        <h2>Le club continue aussi en dehors des séances.</h2>
+                        <p class="whatsapp-promo__text">Infos, échanges et actualités : rejoins les Warriors sur WhatsApp.</p>
+                    </div>
+                </div>
+                <a class="btn btn-wtc-gold rounded-pill whatsapp-promo__button" href="whatsapp.php">
+                    Rejoindre le groupe <i class="bi bi-arrow-right ms-2" aria-hidden="true"></i>
+                </a>
             </div>
         </div>
     </section>
