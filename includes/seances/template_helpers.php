@@ -5,6 +5,10 @@ function ensureSeanceTemplateSchema(PDO $pdo): void
         'CREATE TABLE IF NOT EXISTS seance_templates (
             id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(100) NOT NULL,
+            duration_value INT NOT NULL DEFAULT 1,
+            duration_unit VARCHAR(10) NOT NULL DEFAULT \'month\',
+            repeat_value INT NOT NULL DEFAULT 1,
+            repeat_unit VARCHAR(10) NOT NULL DEFAULT \'week\',
             sessions JSON NOT NULL,
             created_by INT NOT NULL,
             created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -12,6 +16,22 @@ function ensureSeanceTemplateSchema(PDO $pdo): void
             INDEX (created_by)
         )'
     );
+
+    $templateColumns = $pdo->query(
+        "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS
+         WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'seance_templates'"
+    )->fetchAll(PDO::FETCH_COLUMN);
+    $templateColumnsToAdd = [
+        'duration_value' => 'INT NOT NULL DEFAULT 1',
+        'duration_unit' => "VARCHAR(10) NOT NULL DEFAULT 'month'",
+        'repeat_value' => 'INT NOT NULL DEFAULT 1',
+        'repeat_unit' => "VARCHAR(10) NOT NULL DEFAULT 'week'",
+    ];
+    foreach ($templateColumnsToAdd as $column => $definition) {
+        if (!in_array($column, $templateColumns, true)) {
+            $pdo->exec("ALTER TABLE seance_templates ADD COLUMN {$column} {$definition}");
+        }
+    }
 
     $columnCheck = $pdo->prepare("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'seances' AND COLUMN_NAME = 'template_id'");
     $columnCheck->execute();

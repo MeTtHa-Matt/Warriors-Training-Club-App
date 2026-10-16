@@ -70,11 +70,14 @@ if ($method === 'POST') {
     }
 
     $stmt = $pdo->prepare(
-        'INSERT INTO seance_templates (name, sessions, created_by)
-         VALUES (:name, :sessions, :created_by)'
+        'INSERT INTO seance_templates
+            (name, duration_value, duration_unit, repeat_value, repeat_unit, sessions, created_by)
+         VALUES (:name, 1, :duration_unit, 1, :repeat_unit, :sessions, :created_by)'
     );
     $stmt->execute([
         'name' => $name,
+        'duration_unit' => 'month',
+        'repeat_unit' => 'week',
         'sessions' => json_encode($sessions, JSON_UNESCAPED_UNICODE),
         'created_by' => $_SESSION['user_id'],
     ]);

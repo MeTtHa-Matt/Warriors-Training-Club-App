@@ -381,6 +381,9 @@ h3,
   max-width: 640px;
   margin-bottom: 2.25rem;
 }
+.seances-section__head {
+  max-width: none;
+}
 .section-head h2 {
   font-size: clamp(1.7rem, 5vw, 2.4rem);
   margin-top: 0.35rem;
@@ -704,21 +707,31 @@ h3,
 
 /* Make the main seance action buttons full-width on small screens */
 @media (max-width: 575.98px) {
+  .seances-section__head {
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+  }
+  .seances-section__head > div:first-child {
+    min-width: 0;
+  }
+  .seances-section__actions {
+    flex: 0 0 auto;
+    flex-direction: row;
+    align-items: center;
+    width: auto;
+    gap: 0.4rem !important;
+  }
   #btnAjouterSeance,
   #btnTemplateManager {
-    display: block !important;
-    width: 100% !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem !important;
+    height: 2.75rem;
+    padding: 0.5rem;
     box-sizing: border-box;
-  }
-
-  /* ensure the wrapper stacks buttons vertically with spacing */
-  .seances-section .section-head .d-flex {
-    flex-direction: column !important;
-    align-items: stretch !important;
-  }
-
-  .seances-section .section-head .d-flex > * {
-    width: 100% !important;
+    font-size: 1.1rem;
   }
 }
 .dossier__body {
@@ -1471,6 +1484,19 @@ h3,
   padding: 1.5rem;
   overflow: visible;
 }
+#newTemplateModal .modal-body {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+#newTemplateModal .modal-footer {
+  flex: 0 0 auto;
+}
+#ajouterSeanceModal .modal-body {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
 .wtc-modal__footer {
   border-top: 1px solid var(--line);
   padding: 1.25rem 1.5rem;
@@ -1478,6 +1504,36 @@ h3,
   flex-wrap: wrap;
   gap: 0.6rem;
   justify-content: flex-end;
+}
+.wizard-step-label {
+  color: var(--grey);
+  font-size: 0.875rem;
+  margin-right: auto;
+}
+.wizard-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.wizard-summary__row {
+  display: grid;
+  grid-template-columns: minmax(7rem, 0.7fr) minmax(0, 1.3fr);
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.wizard-summary__row:last-child {
+  border-bottom: 0;
+}
+.wizard-summary__label {
+  color: var(--grey);
+}
+.wizard-summary__value {
+  color: var(--paper);
+  overflow-wrap: anywhere;
+}
+.ajouter-seance-modal__footer {
+  flex: 0 0 auto;
 }
 @media (max-width: 575.98px) {
   .wtc-modal__footer {
@@ -1490,6 +1546,35 @@ h3,
 @media (max-width: 575.98px) {
   .wtc-modal .modal-dialog {
     max-width: calc(100% - 1rem);
+  }
+  #ajouterSeanceModal .modal-dialog {
+    height: calc(100% - 1rem);
+  }
+  #newTemplateModal .modal-dialog {
+    height: calc(100% - 1rem);
+  }
+  #ajouterSeanceModal .modal-content {
+    max-height: calc(100dvh - 1rem);
+  }
+  #newTemplateModal .modal-content {
+    max-height: calc(100dvh - 1rem);
+  }
+  #ajouterSeanceModal .modal-header {
+    padding: 0.9rem 1rem;
+  }
+  #ajouterSeanceModal .modal-body {
+    padding: 1rem;
+  }
+  #ajouterSeanceModal .modal-footer {
+    padding: 0.75rem 1rem;
+  }
+  .wizard-step-label {
+    margin-right: 0;
+    text-align: center;
+  }
+  .wizard-summary__row {
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
   }
 }
 

@@ -1,4 +1,4 @@
-const CACHE_NAME = "wtc-cache-v42";
+const CACHE_NAME = "wtc-cache-v45";
 const BASE_URL = new URL(".", self.location.href);
 const BASE_PREFIX = BASE_URL.pathname === "/" ? "" : BASE_URL.pathname.replace(/\/$/, "");
 const PRECACHE_URLS = [
@@ -14,8 +14,8 @@ const PRECACHE_URLS = [
   `${BASE_PREFIX}/css/fonts/inter-500.ttf`,
   `${BASE_PREFIX}/css/fonts/inter-600.ttf`,
   `${BASE_PREFIX}/css/fonts/inter-700.ttf`,
-  `${BASE_PREFIX}/css/style.css?v=2026100201`,
-  `${BASE_PREFIX}/js/seances.js?v=202607102200`,
+  `${BASE_PREFIX}/css/style.css?v=202610161115`,
+  `${BASE_PREFIX}/js/seances.js?v=202610161115`,
   `${BASE_PREFIX}/img/wtc.png`,
   `${BASE_PREFIX}/manifest.json?v=2026092701`,
   `${BASE_PREFIX}/offline.html`,
@@ -118,7 +118,7 @@ self.addEventListener("fetch", (event) => {
 });
 
 function cacheFirst(request) {
-  return caches.match(request, { ignoreSearch: true }).then((cached) => {
+  return caches.match(request).then((cached) => {
     return (
       cached ||
       fetch(request, { cache: "no-store" }).then((response) => {

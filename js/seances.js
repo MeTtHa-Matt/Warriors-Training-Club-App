@@ -70,6 +70,29 @@
     return div.innerHTML;
   }
 
+  function setWizardStep(modal, selector, dataKey, step, label, total) {
+    modal.querySelectorAll(selector).forEach((panel) => {
+      panel.hidden = Number(panel.dataset[dataKey]) !== step;
+    });
+    label.textContent = step > total ? "Vérification" : `Étape ${step} sur ${total}`;
+  }
+
+  function renderWizardSummary(container, rows) {
+    container.replaceChildren();
+    rows.forEach(({ label, value }) => {
+      const row = document.createElement("div");
+      row.className = "wizard-summary__row";
+      const heading = document.createElement("span");
+      heading.className = "wizard-summary__label";
+      heading.textContent = label;
+      const detail = document.createElement("span");
+      detail.className = "wizard-summary__value";
+      detail.textContent = value || "—";
+      row.append(heading, detail);
+      container.append(row);
+    });
+  }
+
   function daysInMonth(year, month) {
     return new Date(year, month, 0).getDate();
   }
@@ -318,7 +341,9 @@
 
       let actionsHtml = "";
       actionsHtml += `<button type="button" class="btn btn-wtc-outline rounded-pill" id="btnVoirInscrits">Voir les inscrits</button>`;
-      if (data.has_exercices) {
+      if (data.can_manage) {
+        actionsHtml += `<button type="button" class="btn btn-wtc-gold rounded-pill" id="btnPreparerExercices">Préparer les exercices</button>`;
+      } else if (data.has_exercices) {
         actionsHtml += `<button type="button" class="btn btn-wtc-gold rounded-pill" id="btnVoirExercices">Voir les exercices</button>`;
       }
       if (data.is_creator) {
@@ -341,6 +366,13 @@
       const btnVoirExercices = document.getElementById("btnVoirExercices");
       if (btnVoirExercices)
         btnVoirExercices.addEventListener("click", () => openExercicesNote(id, false));
+
+      const btnPreparerExercices = document.getElementById("btnPreparerExercices");
+      if (btnPreparerExercices)
+        btnPreparerExercices.addEventListener("click", () => {
+          switchModal("seanceModal", "exercicesModal");
+          openExercicesNote(id, true, false);
+        });
 
       if (data.is_creator) {
         const btnModifierSeance = document.getElementById("btnModifierSeance");
@@ -376,7 +408,7 @@
     note.readOnly = !editable;
     saveButton.style.display = editable ? "" : "none";
     alertBox.style.display = "none";
-    title.textContent = editable ? "Ecrire une séance" : "Exercices de la séance";
+    title.textContent = editable ? "Préparer les exercices" : "Exercices de la séance";
     if (showModal) getModal("exercicesModal").show();
 
     try {
@@ -390,7 +422,7 @@
               id,
               content: note.value,
             });
-            showToast("La séance a bien été enregistrée.");
+            showToast("Les exercices ont bien été enregistrés.");
           } catch (e) {
             alertBox.textContent = "Impossible d'enregistrer la séance.";
             alertBox.style.display = "";
@@ -404,45 +436,6 @@
       alertBox.style.display = "";
     }
   }
-
-  let exerciseSessionOffset = 0;
-  const exerciseSessionPageSize = 100;
-
-  async function loadExerciseSessions(reset = false) {
-    const select = document.getElementById("exercicesSeanceSelect");
-    const loadOlderButton = document.getElementById("chargerAnciennesSeances");
-    if (reset) {
-      exerciseSessionOffset = 0;
-      select.replaceChildren(new Option("Chargement des séances…", ""));
-      loadOlderButton.hidden = true;
-    }
-    loadOlderButton.disabled = true;
-    try {
-      const data = await apiGet(`includes/seances/exercices.php?limit=${exerciseSessionPageSize}&offset=${exerciseSessionOffset}`);
-      if (reset) select.replaceChildren();
-      data.seances.forEach((seance) => {
-        const label = `${formatDateFr(seance.date_seance)} · ${formatHeure(seance.heure_debut)} · ${seance.type_seance}`;
-        select.add(new Option(label, String(seance.id)));
-      });
-      exerciseSessionOffset += data.seances.length;
-      loadOlderButton.hidden = !data.has_more;
-      if (select.options.length === 0) {
-        select.add(new Option("Aucune séance disponible", ""));
-      }
-    } catch (e) {
-      if (reset) select.replaceChildren(new Option("Impossible de charger les séances", ""));
-      loadOlderButton.hidden = true;
-    } finally {
-      loadOlderButton.disabled = false;
-    }
-  }
-
-  async function openExerciseChooser() {
-    getModal("choixExercicesModal").show();
-    await loadExerciseSessions(true);
-  }
-
-  document.getElementById("chargerAnciennesSeances")?.addEventListener("click", () => loadExerciseSessions());
 
   function handleSInscrire() {
     if (state.currentIsRegistered) {
@@ -742,7 +735,7 @@
 
     if (!templateState.templates.length) {
       list.innerHTML =
-        '<p class="upcoming-empty">Aucun template pour le moment.</p>';
+        '<p class="upcoming-empty">Aucun programme enregistré. Créez-en un pour ajouter facilement des séances régulières.</p>';
       return;
     }
 
@@ -788,9 +781,9 @@
                 <p class="auth-hint mb-0">${escapeHtml(typeSeance)} · ${timeStart} - ${timeEnd}</p>
               </div>
               <div class="d-flex gap-2 flex-wrap">
-                <button type="button" class="btn btn-wtc-gold rounded-pill btn-sm" data-action="apply" data-id="${template.id}">Appliquer</button>
+                <button type="button" class="btn btn-wtc-gold rounded-pill btn-sm" data-action="apply" data-id="${template.id}">Ajouter au calendrier</button>
                 <button type="button" class="btn btn-wtc-outline rounded-pill btn-sm" data-action="edit" data-id="${template.id}">Modifier</button>
-                <button type="button" class="btn btn-wtc-outline rounded-pill btn-sm" data-action="remove" data-id="${template.id}">Retirer</button>
+                <button type="button" class="btn btn-wtc-outline rounded-pill btn-sm" data-action="remove" data-id="${template.id}">Supprimer</button>
               </div>
             </div>
           </div>`;
@@ -800,7 +793,7 @@
     list.querySelectorAll("[data-action='apply']").forEach((btn) => {
       btn.addEventListener("click", async () => {
         const confirmed = window.confirm(
-          "Créer les séances à partir de ce template ?",
+          "Ajouter au calendrier les séances de ce programme ?",
         );
         if (!confirmed) return;
 
@@ -811,13 +804,13 @@
           });
           showToast(
             result.created
-              ? `Template appliqué : ${result.created} séance(s) créée(s).`
-              : "Aucune séance supplémentaire à créer.",
+              ? `${result.created} séance(s) ajoutée(s) au calendrier.`
+              : "Toutes les séances de ce programme sont déjà au calendrier.",
           );
           loadMonth(state.year, state.month);
           loadUpcoming();
         } catch (e) {
-          showToast("Impossible d’appliquer le template.", true);
+          showToast("Impossible d’ajouter les séances au calendrier.", true);
         }
       });
     });
@@ -825,7 +818,7 @@
     list.querySelectorAll("[data-action='remove']").forEach((btn) => {
       btn.addEventListener("click", async () => {
         const confirmed = window.confirm(
-          "Retirer ce template supprimera aussi les séances déjà générées à partir de ce modèle. Continuer ?",
+          "Supprimer ce programme supprimera aussi les séances déjà créées à partir de celui-ci. Continuer ?",
         );
         if (!confirmed) return;
 
@@ -876,6 +869,7 @@
       templateSessions.push(session);
     });
     renderTemplateSessionsList();
+    setTemplateWizardStep(2);
 
     // Marquer le template pour la modification
     document.getElementById("templateName").dataset.templateId = template.id;
@@ -887,6 +881,15 @@
   function toggleTypeChoice(buttons, inputEl, otherEl) {
     const selected = inputEl.value;
     toggleChoiceButtons(buttons, selected, inputEl, otherEl);
+  }
+
+  function resetTemplateSessionTypeChoice() {
+    templateSessionTypeInput.value = "";
+    toggleTypeChoice(
+      templateSessionTypeButtons,
+      templateSessionTypeInput,
+      templateSessionTypeAutre,
+    );
   }
 
   if (newTypeInput) {
@@ -914,27 +917,97 @@
   }
 
   const btnAjouterSeance = document.getElementById("btnAjouterSeance");
+  const ajouterSeanceModal = document.getElementById("ajouterSeanceModal");
+  const ajouterSeanceBack = document.getElementById("ajouterSeanceBack");
+  const ajouterSeanceNext = document.getElementById("ajouterSeanceNext");
+  const ajouterSeanceStepLabel = document.getElementById("ajouterSeanceStepLabel");
+  const ajouterSeanceStepAlert = document.getElementById("ajouterSeanceStepAlert");
+  let ajouterSeanceStep = 1;
+
+  function showAjouterSeanceStep(step) {
+    ajouterSeanceStep = step;
+    setWizardStep(
+      ajouterSeanceModal,
+      ".seance-wizard-step",
+      "seanceStep",
+      step,
+      ajouterSeanceStepLabel,
+      3,
+    );
+    ajouterSeanceBack.hidden = step === 1;
+    ajouterSeanceNext.hidden = step === 4;
+    document.getElementById("ajouterSeanceSave").hidden = step !== 4;
+  }
+
+  function currentNewSessionType() {
+    return newTypeInput.value === "__autre__"
+      ? document.getElementById("newTypeAutre").value.trim()
+      : newTypeInput.value;
+  }
+
+  function validateAjouterSeanceStep() {
+    let message = "";
+    if (ajouterSeanceStep === 1) {
+      const date = document.getElementById("newDate").value;
+      const start = document.getElementById("newHeureDebut").value;
+      const end = document.getElementById("newHeureFin").value;
+      if (!date || !start || !end) {
+        message = "Indiquez la date, l’heure de début et l’heure de fin.";
+      } else if (end <= start) {
+        message = "L’heure de fin doit être après l’heure de début.";
+      }
+    } else if (ajouterSeanceStep === 2 && !currentNewSessionType()) {
+      message = "Choisissez un type de séance ou précisez-le.";
+    } else if (ajouterSeanceStep === 3) {
+      const requiredIds = ["newCoach", "newLieuSeance", "newLieuRdv"];
+      if (requiredIds.some((id) => !document.getElementById(id).value.trim())) {
+        message = "Indiquez le coach, le lieu de la séance et le rendez-vous.";
+      }
+    }
+    ajouterSeanceStepAlert.textContent = message;
+    ajouterSeanceStepAlert.style.display = message ? "" : "none";
+    return !message;
+  }
+
   if (btnAjouterSeance) {
     btnAjouterSeance.addEventListener("click", () => {
+      document.getElementById("formAjouterSeance").reset();
+      newTypeInput.value = "";
+      toggleTypeChoice(newTypeButtons, newTypeInput, document.getElementById("newTypeAutre"));
+      ajouterSeanceStepAlert.style.display = "none";
+      document.getElementById("ajouterSeanceAlert").style.display = "none";
+      showAjouterSeanceStep(1);
       getModal("ajouterSeanceModal").show();
     });
   }
 
-  const btnEcrireSeance = document.getElementById("btnEcrireSeance");
-  if (btnEcrireSeance) {
-    btnEcrireSeance.addEventListener("click", openExerciseChooser);
-  }
+  ajouterSeanceNext?.addEventListener("click", () => {
+    if (!validateAjouterSeanceStep()) return;
+    if (ajouterSeanceStep < 3) {
+      showAjouterSeanceStep(ajouterSeanceStep + 1);
+      ajouterSeanceStepAlert.style.display = "none";
+      return;
+    }
 
-  const btnOuvrirNoteExercices = document.getElementById("btnOuvrirNoteExercices");
-  if (btnOuvrirNoteExercices) {
-    btnOuvrirNoteExercices.addEventListener("click", () => {
-      const id = parseInt(document.getElementById("exercicesSeanceSelect").value, 10);
-      if (!id) return;
-      switchModal("choixExercicesModal", "exercicesModal");
-      openExercicesNote(id, true, false);
-    });
-  }
+    const typeValue = currentNewSessionType();
+    renderWizardSummary(document.getElementById("ajouterSeanceRecap"), [
+      { label: "Date", value: formatDateFr(document.getElementById("newDate").value) },
+      {
+        label: "Horaires",
+        value: `${document.getElementById("newHeureDebut").value} – ${document.getElementById("newHeureFin").value}`,
+      },
+      { label: "Type", value: typeValue },
+      { label: "Coach", value: document.getElementById("newCoach").value.trim() },
+      { label: "Lieu", value: document.getElementById("newLieuSeance").value.trim() },
+      { label: "Rendez-vous", value: document.getElementById("newLieuRdv").value.trim() },
+    ]);
+    showAjouterSeanceStep(4);
+  });
 
+  ajouterSeanceBack?.addEventListener("click", () => {
+    showAjouterSeanceStep(ajouterSeanceStep - 1);
+    ajouterSeanceStepAlert.style.display = "none";
+  });
   const formAjouterSeance = document.getElementById("formAjouterSeance");
   if (formAjouterSeance) {
     formAjouterSeance.addEventListener("submit", async (e) => {
@@ -942,10 +1015,7 @@
       const alertBox = document.getElementById("ajouterSeanceAlert");
       alertBox.style.display = "none";
 
-      const typeValue =
-        newTypeInput.value === "__autre__"
-          ? document.getElementById("newTypeAutre").value.trim()
-          : newTypeInput.value;
+      const typeValue = currentNewSessionType();
 
       const payload = {
         date_seance: document.getElementById("newDate").value,
@@ -1000,7 +1070,7 @@
 
     if (!templateSessions.length) {
       templateSessionsList.innerHTML =
-        '<p class="upcoming-empty">Aucune séance ajoutée pour le moment.</p>';
+        '<p class="upcoming-empty">Aucune séance ajoutée. Vous pourrez vérifier le programme avant de l’enregistrer.</p>';
       return;
     }
 
@@ -1011,10 +1081,10 @@
           <div class="d-flex justify-content-between align-items-start gap-2">
             <div>
               <p class="mb-1 fw-semibold">Séance ${index + 1}</p>
-              <p class="auth-hint mb-1">${escapeHtml(session.date)} · ${escapeHtml(session.heure_debut)} - ${escapeHtml(session.heure_fin)}</p>
-              <p class="auth-hint mb-0">${escapeHtml(session.type_seance || "Séance")}</p>
+              <p class="auth-hint mb-1">${escapeHtml(JOURS[session.weekday].charAt(0).toUpperCase() + JOURS[session.weekday].slice(1))} · ${escapeHtml(session.heure_debut)} - ${escapeHtml(session.heure_fin)}</p>
+              <p class="auth-hint mb-0">${escapeHtml(session.type_seance)}</p>
             </div>
-            <button type="button" class="btn btn-wtc-outline rounded-pill btn-sm" data-remove-session="${index}">Retirer</button>
+            <button type="button" class="btn btn-wtc-outline rounded-pill btn-sm" data-remove-session="${index}" aria-label="Supprimer la séance ${index + 1}">Supprimer</button>
           </div>
         </div>`,
       )
@@ -1044,11 +1114,136 @@
 
     templateSessions.length = 0;
     renderTemplateSessionsList();
+    setTemplateWizardStep(1);
 
     if (templateFormAlert) {
       templateFormAlert.style.display = "none";
     }
+    document.getElementById("templateReviewAlert").style.display = "none";
   }
+
+  let templateWizardStep = 1;
+  function setTemplateWizardStep(step) {
+    templateWizardStep = step;
+    setWizardStep(
+      newTemplateModal,
+      ".template-wizard-step",
+      "templateStep",
+      step,
+      document.getElementById("templateStepLabel"),
+      2,
+    );
+    document.getElementById("templateWizardBack").hidden = step === 1;
+    document.getElementById("templateWizardNext").hidden = step === 3;
+    document.getElementById("templateWizardSave").hidden = step !== 3;
+  }
+
+  let templateSessionWizardStep = 1;
+  function setTemplateSessionWizardStep(step) {
+    templateSessionWizardStep = step;
+    setWizardStep(
+      templateSessionModal,
+      ".template-session-wizard-step",
+      "templateSessionStep",
+      step,
+      document.getElementById("templateSessionStepLabel"),
+      3,
+    );
+    document.getElementById("templateSessionBack").hidden = step === 1;
+    document.getElementById("templateSessionNext").textContent =
+      step === 3 ? "Ajouter au programme" : "Continuer";
+  }
+
+  function validateTemplateSessionStep() {
+    let message = "";
+    if (templateSessionWizardStep === 1) {
+      const weekday = document.getElementById("templateSessionWeekday").value;
+      const start = document.getElementById("templateSessionHeureDebut").value;
+      const end = document.getElementById("templateSessionHeureFin").value;
+      if (!weekday || !start || !end) {
+        message = "Choisissez un jour, une heure de début et une heure de fin.";
+      } else if (end <= start) {
+        message = "L’heure de fin doit être après l’heure de début.";
+      }
+    } else if (
+      templateSessionWizardStep === 2 &&
+      !(templateSessionTypeInput.value === "__autre__"
+        ? templateSessionTypeAutre.value.trim()
+        : templateSessionTypeInput.value.trim())
+    ) {
+      message = "Choisissez un type de séance ou précisez-le.";
+    }
+    const alertBox = document.getElementById("templateSessionAlert");
+    alertBox.textContent = message;
+    alertBox.style.display = message ? "" : "none";
+    return !message;
+  }
+
+  function buildTemplateReview() {
+    const weekdayNames = {
+      1: "Lundi",
+      2: "Mardi",
+      3: "Mercredi",
+      4: "Jeudi",
+      5: "Vendredi",
+      6: "Samedi",
+      7: "Dimanche",
+    };
+    const rows = [
+      { label: "Programme", value: document.getElementById("templateName").value.trim() },
+    ];
+    templateSessions.forEach((session, index) => {
+      rows.push({
+        label: `Séance ${index + 1}`,
+        value: `${weekdayNames[session.weekday]} · ${session.heure_debut}–${session.heure_fin} · ${session.type_seance}`,
+      });
+      if (session.coach) rows.push({ label: "Coach", value: session.coach });
+      if (session.lieu_seance) rows.push({ label: "Lieu", value: session.lieu_seance });
+      if (session.lieu_rdv) rows.push({ label: "Rendez-vous", value: session.lieu_rdv });
+      if (session.description) rows.push({ label: "Descriptif", value: session.description });
+    });
+    renderWizardSummary(document.getElementById("templateRecap"), rows);
+  }
+
+  document.getElementById("templateWizardNext")?.addEventListener("click", () => {
+    templateFormAlert.style.display = "none";
+    if (templateWizardStep === 1) {
+      if (!document.getElementById("templateName").value.trim()) {
+        templateFormAlert.textContent = "Donnez un nom à votre programme pour continuer.";
+        templateFormAlert.style.display = "";
+        document.getElementById("templateName").focus();
+        return;
+      }
+      setTemplateWizardStep(2);
+      return;
+    }
+    if (!templateSessions.length) {
+      templateFormAlert.textContent = "Ajoutez au moins une séance régulière pour continuer.";
+      templateFormAlert.style.display = "";
+      return;
+    }
+    buildTemplateReview();
+    document.getElementById("templateReviewAlert").style.display = "none";
+    setTemplateWizardStep(3);
+  });
+
+  document.getElementById("templateWizardBack")?.addEventListener("click", () => {
+    setTemplateWizardStep(templateWizardStep - 1);
+    templateFormAlert.style.display = "none";
+  });
+  document.getElementById("templateSessionNext")?.addEventListener("click", () => {
+    if (!validateTemplateSessionStep()) return;
+    if (templateSessionWizardStep < 3) {
+      setTemplateSessionWizardStep(templateSessionWizardStep + 1);
+      return;
+    }
+    templateSessionForm.requestSubmit();
+  });
+
+  document.getElementById("templateSessionBack")?.addEventListener("click", () => {
+    setTemplateSessionWizardStep(templateSessionWizardStep - 1);
+    document.getElementById("templateSessionAlert").style.display = "none";
+  });
 
   if (templateManagerBtn && templateManagerModal) {
     templateManagerBtn.addEventListener("click", () => {
@@ -1093,11 +1288,10 @@
       if (templateSessionForm) {
         templateSessionForm.reset();
       }
+      setTemplateSessionWizardStep(1);
+      document.getElementById("templateSessionAlert").style.display = "none";
       if (templateSessionTypeInput) {
-        templateSessionTypeInput.value = "";
-      }
-      if (templateSessionTypeAutre) {
-        templateSessionTypeAutre.style.display = "none";
+        resetTemplateSessionTypeChoice();
       }
       if (templateSessionModal) {
         if (newTemplateModal && newTemplateModal.classList.contains("show")) {
@@ -1168,13 +1362,12 @@
 
       renderTemplateSessionsList();
       templateSessionForm.reset();
+      setTemplateSessionWizardStep(1);
       if (templateSessionTypeInput) {
-        templateSessionTypeInput.value = "";
-      }
-      if (templateSessionTypeAutre) {
-        templateSessionTypeAutre.style.display = "none";
+        resetTemplateSessionTypeChoice();
       }
       if (newTemplateModal) {
+        setTemplateWizardStep(2);
         switchModal("templateSessionModal", "newTemplateModal");
       } else {
         getModal("templateSessionModal").hide();
@@ -1186,12 +1379,13 @@
   if (formCreateTemplate) {
     formCreateTemplate.addEventListener("submit", async (e) => {
       e.preventDefault();
-      templateFormAlert.style.display = "none";
+      document.getElementById("templateReviewAlert").style.display = "none";
 
       if (!templateSessions.length) {
-        templateFormAlert.textContent =
-          "Ajoute au moins une séance au template avant de l’enregistrer.";
-        templateFormAlert.style.display = "";
+        const reviewAlert = document.getElementById("templateReviewAlert");
+        reviewAlert.textContent =
+          "Ajoutez au moins une séance régulière avant d’enregistrer le programme.";
+        reviewAlert.style.display = "";
         return;
       }
 
@@ -1220,11 +1414,12 @@
         delete document.getElementById("templateName").dataset.templateId;
         templateSessions.length = 0;
         renderTemplateSessionsList();
+        setTemplateWizardStep(1);
         getModal("newTemplateModal").hide();
         showToast(
           templateId > 0
-            ? "Le template a bien été modifié."
-            : "Le template a bien été créé.",
+            ? "Le programme a bien été modifié."
+            : "Le programme a bien été créé.",
         );
         loadTemplates();
         loadMonth(state.year, state.month);
@@ -1233,9 +1428,10 @@
         const messages =
           e2.messages && e2.messages.length
             ? e2.messages.join(" ")
-            : "Impossible de créer le template.";
-        templateFormAlert.textContent = messages;
-        templateFormAlert.style.display = "";
+            : "Impossible d’enregistrer le programme.";
+        const reviewAlert = document.getElementById("templateReviewAlert");
+        reviewAlert.textContent = messages;
+        reviewAlert.style.display = "";
       }
     });
   }

@@ -24,7 +24,7 @@ $canManage = (int) ($_SESSION['gerer_seances'] ?? 0) === 1;
     <title><?php echo $pageTitle; ?></title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/bootstrap-icons.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=202607102200">
+    <link rel="stylesheet" href="css/style.css?v=202610161115">
     <link rel="manifest" href="./manifest.json">
     <link rel="icon" type="image/png" sizes="any" href="./img/wtc.png">
     <link rel="apple-touch-icon" sizes="180x180" href="./img/wtc.png">
@@ -45,22 +45,21 @@ $canManage = (int) ($_SESSION['gerer_seances'] ?? 0) === 1;
     <section class="section seances-section">
         <div class="container">
 
-            <div class="section-head d-flex flex-column flex-sm-row justify-content-between align-items-sm-end gap-3">
+            <div class="section-head seances-section__head d-flex justify-content-between align-items-center gap-3">
                 <div>
                     <p class="eyebrow">Programme du club</p>
                     <h2>Séances</h2>
                 </div>
                 <?php if ($canManage): ?>
-                    <div class="d-flex flex-wrap gap-2">
-                        <button type="button" class="btn btn-wtc-gold rounded-pill" id="btnAjouterSeance">
-                            <i class="bi bi-plus-lg me-1"></i>Ajouter une séance
-                        </button>
-                        <button type="button" class="btn btn-wtc-outline rounded-pill" id="btnEcrireSeance">
-                            <i class="bi bi-pencil-square me-1"></i>Ecrire une séance
+                    <div class="seances-section__actions d-flex flex-wrap gap-2">
+                        <button type="button" class="btn btn-wtc-gold rounded-pill" id="btnAjouterSeance"
+                            aria-label="Créer une séance" title="Créer une séance">
+                            <i class="bi bi-plus-lg" aria-hidden="true"></i>
                         </button>
                         <button type="button" class="btn btn-wtc-outline rounded-pill" id="btnTemplateManager"
-                            data-bs-toggle="modal" data-bs-target="#templateManagerModal">
-                            <i class="bi bi-diagram-3 me-1"></i>Appliquer un template
+                            data-bs-toggle="modal" data-bs-target="#templateManagerModal"
+                            aria-label="Programmes de séances" title="Programmes de séances">
+                            <i class="bi bi-calendar-week" aria-hidden="true"></i>
                         </button>
                     </div>
                 <?php endif; ?>
@@ -131,32 +130,6 @@ $canManage = (int) ($_SESSION['gerer_seances'] ?? 0) === 1;
         </div>
     </div>
 
-    <?php if ($canManage): ?>
-        <div class="modal fade wtc-modal" id="choixExercicesModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content wtc-modal__content">
-                    <div class="modal-header wtc-modal__header">
-                        <h5 class="modal-title">Ecrire une séance</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                            aria-label="Fermer"></button>
-                    </div>
-                    <div class="modal-body">
-                        <label for="exercicesSeanceSelect" class="form-label">Choisir la séance</label>
-                        <select class="form-select auth-input" id="exercicesSeanceSelect">
-                            <option value="">Chargement des séances…</option>
-                        </select>
-                        <button type="button" class="btn btn-wtc-outline rounded-pill w-100 mt-2" id="chargerAnciennesSeances" hidden>
-                            Charger les séances plus anciennes
-                        </button>
-                        <button type="button" class="btn btn-wtc-gold rounded-pill w-100 mt-4" id="btnOuvrirNoteExercices">
-                            Ouvrir la note
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    <?php endif; ?>
-
     <div class="modal fade wtc-modal" id="exercicesModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content wtc-modal__content">
@@ -167,8 +140,9 @@ $canManage = (int) ($_SESSION['gerer_seances'] ?? 0) === 1;
                 </div>
                 <div class="modal-body">
                     <div id="exercicesAlert" class="auth-alert auth-alert--error" style="display:none;"></div>
+                    <p class="auth-hint">Notez les exercices et les consignes à suivre pendant la séance.</p>
                     <textarea class="form-control auth-input" id="exercicesNote" rows="22"
-                        placeholder="Ecrivez les exercices de la séance…"></textarea>
+                        placeholder="Ex. : échauffement, exercices, séries et répétitions…"></textarea>
                 </div>
                 <div class="modal-footer wtc-modal__footer">
                     <button type="button" class="btn btn-wtc-gold rounded-pill" id="btnEnregistrerExercices" style="display:none;">
@@ -294,20 +268,21 @@ $canManage = (int) ($_SESSION['gerer_seances'] ?? 0) === 1;
 
     <?php if ($canManage): ?>
         <div class="modal fade wtc-modal" id="templateManagerModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
                 <div class="modal-content wtc-modal__content">
                     <div class="modal-header wtc-modal__header">
-                        <h5 class="modal-title">Templates de séances</h5>
+                        <h5 class="modal-title">Programmes de séances</h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                             aria-label="Fermer"></button>
                     </div>
                     <div class="modal-body">
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <div>
-                                <p class="mb-1 fw-semibold">Gérer vos templates</p>
+                                <p class="mb-1 fw-semibold">Des séances régulières, prêtes à ajouter au calendrier</p>
                             </div>
-                            <button type="button" class="btn btn-wtc-outline rounded-pill btn-sm" id="btnNewTemplate">Créer
-                                un template</button>
+                            <button type="button" class="btn btn-wtc-outline rounded-pill btn-sm" id="btnNewTemplate">
+                                Créer un programme
+                            </button>
                         </div>
                         <div id="templateManagerList" class="d-flex flex-column gap-2"></div>
                     </div>
@@ -316,41 +291,53 @@ $canManage = (int) ($_SESSION['gerer_seances'] ?? 0) === 1;
         </div>
 
         <div class="modal fade wtc-modal" id="newTemplateModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
                 <div class="modal-content wtc-modal__content">
                     <div class="modal-header wtc-modal__header">
-                        <h5 class="modal-title">Créer un template</h5>
+                        <h5 class="modal-title">Créer un programme</h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                             aria-label="Fermer"></button>
                     </div>
                     <div class="modal-body">
                         <div id="templateFormAlert" class="auth-alert auth-alert--error" style="display:none;"></div>
                         <form id="formCreateTemplate" novalidate data-analytics-label="creation_modele_seances">
-                            <div class="row g-3">
-                                <div class="col-12">
-                                    <label for="templateName" class="form-label">Nom du template</label>
+                            <div class="template-wizard-step" data-template-step="1">
+                                <p class="fw-semibold">Donnez un nom à votre programme</p>
+                                <div class="mb-3">
+                                    <label for="templateName" class="form-label">Nom du programme</label>
                                     <input type="text" class="form-control auth-input" id="templateName" required
                                         maxlength="100">
                                 </div>
-
                             </div>
-
-                            <hr class="my-4" style="border-color: rgba(244,239,226,0.15);">
-
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <div>
-                                    <p class="mb-1 fw-semibold">Séances du template</p>
-                                    <p class="mb-0 auth-hint">Ajoutez ici les séances qui feront partie du modèle.</p>
+                            <div class="template-wizard-step" data-template-step="2" hidden>
+                                <div class="mb-3">
+                                    <p class="fw-semibold mb-1">Ajoutez les séances régulières</p>
+                                    <p class="auth-hint mb-0">Choisissez les jours et horaires qui se répètent chaque semaine.</p>
                                 </div>
-                                <button type="button" class="btn btn-wtc-outline rounded-pill btn-sm"
-                                    id="btnAddTemplateSession">Ajouter une séance</button>
+                                <div id="templateSessionsList" class="d-flex flex-column gap-2"></div>
+                                <button type="button" class="btn btn-wtc-outline rounded-pill w-100 mt-3"
+                                    id="btnAddTemplateSession">Ajouter une séance type</button>
                             </div>
-
-                            <div id="templateSessionsList" class="d-flex flex-column gap-2"></div>
-
-                            <button type="submit" class="btn btn-wtc-gold rounded-pill w-100 mt-4">Enregistrer le
-                                template</button>
+                            <div class="template-wizard-step" data-template-step="3" hidden>
+                                <p class="fw-semibold">Vérifiez votre programme</p>
+                                <p class="auth-hint">Vous pourrez encore revenir en arrière pour le modifier.</p>
+                                <div id="templateReviewAlert" class="auth-alert auth-alert--error" style="display:none;"></div>
+                                <div id="templateRecap" class="wizard-summary"></div>
+                            </div>
                         </form>
+                    </div>
+                    <div class="modal-footer wtc-modal__footer">
+                        <span class="wizard-step-label" id="templateStepLabel">Étape 1 sur 2</span>
+                        <button type="button" class="btn btn-wtc-outline rounded-pill" id="templateWizardBack" hidden>
+                            Retour
+                        </button>
+                        <button type="button" class="btn btn-wtc-gold rounded-pill" id="templateWizardNext">
+                            Continuer
+                        </button>
+                        <button type="submit" form="formCreateTemplate" class="btn btn-wtc-gold rounded-pill"
+                            id="templateWizardSave" hidden>
+                            Confirmer et enregistrer
+                        </button>
                     </div>
                 </div>
             </div>
@@ -360,87 +347,107 @@ $canManage = (int) ($_SESSION['gerer_seances'] ?? 0) === 1;
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content wtc-modal__content">
                     <div class="modal-header wtc-modal__header">
-                        <h5 class="modal-title">Ajouter une séance au template</h5>
+                        <h5 class="modal-title">Ajouter une séance au programme</h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                             aria-label="Fermer"></button>
                     </div>
                     <div class="modal-body">
                         <div id="templateSessionAlert" class="auth-alert auth-alert--error" style="display:none;"></div>
                         <form id="formTemplateSession" novalidate data-analytics-label="ajout_seance_modele">
-                            <div class="row g-3">
-                                <div class="col-12 col-sm-6">
-                                    <label for="templateSessionWeekday" class="form-label">Jour de la semaine</label>
-                                    <select class="form-select auth-input" id="templateSessionWeekday" required>
-                                        <option value="">Sélectionner</option>
-                                        <option value="1">Lundi</option>
-                                        <option value="2">Mardi</option>
-                                        <option value="3">Mercredi</option>
-                                        <option value="4">Jeudi</option>
-                                        <option value="5">Vendredi</option>
-                                        <option value="6">Samedi</option>
-                                        <option value="7">Dimanche</option>
-                                    </select>
-                                </div>
-                                <div class="col-6 col-sm-3">
-                                    <label for="templateSessionHeureDebut" class="form-label">Début</label>
-                                    <input type="time" class="form-control auth-input" id="templateSessionHeureDebut"
-                                        required>
-                                </div>
-                                <div class="col-6 col-sm-3">
-                                    <label for="templateSessionHeureFin" class="form-label">Fin</label>
-                                    <input type="time" class="form-control auth-input" id="templateSessionHeureFin"
-                                        required>
-                                </div>
-                                <div class="col-12">
-                                    <label class="form-label">Type de séance</label>
-                                    <div class="wtc-choice-list" role="listbox" aria-label="Type de séance">
-                                        <button type="button" class="wtc-choice-pill" data-type-group="template"
-                                            data-value="Cardio Training">Cardio Training</button>
-                                        <button type="button" class="wtc-choice-pill" data-type-group="template"
-                                            data-value="Hyrox">Hyrox</button>
-                                        <button type="button" class="wtc-choice-pill" data-type-group="template"
-                                            data-value="Running-Trail">Running-Trail</button>
-                                        <button type="button" class="wtc-choice-pill" data-type-group="template"
-                                            data-value="Préparation physique">Préparation physique</button>
-                                        <button type="button" class="wtc-choice-pill" data-type-group="template"
-                                            data-value="__autre__">Autre…</button>
+                            <div class="template-session-wizard-step" data-template-session-step="1">
+                                <p class="fw-semibold">Quand cette séance a-t-elle lieu ?</p>
+                                <div class="row g-3">
+                                    <div class="col-12 col-sm-6">
+                                        <label for="templateSessionWeekday" class="form-label">Jour de la semaine</label>
+                                        <select class="form-select auth-input" id="templateSessionWeekday" required>
+                                            <option value="">Sélectionner</option>
+                                            <option value="1">Lundi</option>
+                                            <option value="2">Mardi</option>
+                                            <option value="3">Mercredi</option>
+                                            <option value="4">Jeudi</option>
+                                            <option value="5">Vendredi</option>
+                                            <option value="6">Samedi</option>
+                                            <option value="7">Dimanche</option>
+                                        </select>
                                     </div>
-                                    <input type="hidden" id="templateSessionType" name="templateSessionType" value="">
-                                    <input type="text" class="form-control auth-input mt-2" id="templateSessionTypeAutre"
-                                        placeholder="Préciser le type de séance" style="display:none;">
-                                </div>
-                                <div class="col-12 col-sm-6">
-                                    <label for="templateSessionCoach" class="form-label">Coach</label>
-                                    <input type="text" class="form-control auth-input" id="templateSessionCoach"
-                                        maxlength="150">
-                                </div>
-                                <div class="col-12 col-sm-6">
-                                    <label for="templateSessionLieu" class="form-label">Lieu de la séance</label>
-                                    <input type="text" class="form-control auth-input" id="templateSessionLieu"
-                                        maxlength="150" placeholder="Ex : Dojo, Stade…">
-                                </div>
-                                <div class="col-12">
-                                    <label for="templateSessionRdv" class="form-label">Lieu de rendez-vous</label>
-                                    <input type="text" class="form-control auth-input" id="templateSessionRdv"
-                                        maxlength="150">
-                                </div>
-                                <div class="col-12">
-                                    <label for="templateSessionDescription" class="form-label">Descriptif <span
-                                            class="auth-optional">(facultatif)</span></label>
-                                    <textarea class="form-control auth-input" id="templateSessionDescription" rows="3"
-                                        maxlength="2000"></textarea>
+                                    <div class="col-6 col-sm-3">
+                                        <label for="templateSessionHeureDebut" class="form-label">Début</label>
+                                        <input type="time" class="form-control auth-input" id="templateSessionHeureDebut"
+                                            required>
+                                    </div>
+                                    <div class="col-6 col-sm-3">
+                                        <label for="templateSessionHeureFin" class="form-label">Fin</label>
+                                        <input type="time" class="form-control auth-input" id="templateSessionHeureFin"
+                                            required>
+                                    </div>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-wtc-gold rounded-pill w-100 mt-4">Ajouter la
-                                séance</button>
+                            <div class="template-session-wizard-step" data-template-session-step="2" hidden>
+                                <p class="fw-semibold">Quel type de séance ?</p>
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <label class="form-label">Type de séance</label>
+                                        <div class="wtc-choice-list" role="listbox" aria-label="Type de séance">
+                                            <button type="button" class="wtc-choice-pill" data-type-group="template"
+                                                data-value="Cardio Training">Cardio Training</button>
+                                            <button type="button" class="wtc-choice-pill" data-type-group="template"
+                                                data-value="Hyrox">Hyrox</button>
+                                            <button type="button" class="wtc-choice-pill" data-type-group="template"
+                                                data-value="Running-Trail">Running-Trail</button>
+                                            <button type="button" class="wtc-choice-pill" data-type-group="template"
+                                                data-value="Préparation physique">Préparation physique</button>
+                                            <button type="button" class="wtc-choice-pill" data-type-group="template"
+                                                data-value="__autre__">Autre…</button>
+                                        </div>
+                                        <input type="hidden" id="templateSessionType" name="templateSessionType" value="">
+                                        <input type="text" class="form-control auth-input mt-2" id="templateSessionTypeAutre"
+                                            placeholder="Préciser le type de séance" style="display:none;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="template-session-wizard-step" data-template-session-step="3" hidden>
+                                <p class="fw-semibold">Complétez les détails (facultatif)</p>
+                                <div class="row g-3">
+                                    <div class="col-12 col-sm-6">
+                                        <label for="templateSessionCoach" class="form-label">Coach</label>
+                                        <input type="text" class="form-control auth-input" id="templateSessionCoach"
+                                            maxlength="150">
+                                    </div>
+                                    <div class="col-12 col-sm-6">
+                                        <label for="templateSessionLieu" class="form-label">Lieu de la séance</label>
+                                        <input type="text" class="form-control auth-input" id="templateSessionLieu"
+                                            maxlength="150" placeholder="Ex : Dojo, Stade…">
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="templateSessionRdv" class="form-label">Lieu de rendez-vous</label>
+                                        <input type="text" class="form-control auth-input" id="templateSessionRdv"
+                                            maxlength="150">
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="templateSessionDescription" class="form-label">Descriptif <span
+                                                class="auth-optional">(facultatif)</span></label>
+                                        <textarea class="form-control auth-input" id="templateSessionDescription" rows="3"
+                                            maxlength="2000"></textarea>
+                                    </div>
+                                </div>
+                            </div>
                         </form>
+                    </div>
+                    <div class="modal-footer wtc-modal__footer">
+                        <span class="wizard-step-label" id="templateSessionStepLabel">Étape 1 sur 3</span>
+                        <button type="button" class="btn btn-wtc-outline rounded-pill" id="templateSessionBack" hidden>
+                            Retour
+                        </button>
+                        <button type="button" class="btn btn-wtc-gold rounded-pill" id="templateSessionNext">
+                            Continuer
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="modal fade wtc-modal" id="ajouterSeanceModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content wtc-modal__content">
                     <div class="modal-header wtc-modal__header">
                         <h5 class="modal-title">Ajouter une séance</h5>
@@ -448,21 +455,30 @@ $canManage = (int) ($_SESSION['gerer_seances'] ?? 0) === 1;
                             aria-label="Fermer"></button>
                     </div>
                     <div class="modal-body">
+                        <p class="auth-hint">Cette séance apparaîtra dans le calendrier du club.</p>
+                        <div id="ajouterSeanceStepAlert" class="auth-alert auth-alert--error" style="display:none;"></div>
                         <div id="ajouterSeanceAlert" class="auth-alert auth-alert--error" style="display:none;"></div>
                         <form id="formAjouterSeance" novalidate data-analytics-label="creation_seance">
-                            <div class="row g-3">
-                                <div class="col-12 col-sm-6">
-                                    <label for="newDate" class="form-label">Date</label>
-                                    <input type="date" class="form-control auth-input" id="newDate" required>
+                            <div class="seance-wizard-step" data-seance-step="1">
+                                <p class="fw-semibold">Quand aura lieu la séance ?</p>
+                                <div class="row g-2 g-sm-3">
+                                    <div class="col-12 col-sm-6">
+                                        <label for="newDate" class="form-label">Date</label>
+                                        <input type="date" class="form-control auth-input" id="newDate" required>
+                                    </div>
+                                    <div class="col-6 col-sm-3">
+                                        <label for="newHeureDebut" class="form-label">Début</label>
+                                        <input type="time" class="form-control auth-input" id="newHeureDebut" required>
+                                    </div>
+                                    <div class="col-6 col-sm-3">
+                                        <label for="newHeureFin" class="form-label">Fin</label>
+                                        <input type="time" class="form-control auth-input" id="newHeureFin" required>
+                                    </div>
                                 </div>
-                                <div class="col-12 col-sm-3">
-                                    <label for="newHeureDebut" class="form-label">Début</label>
-                                    <input type="time" class="form-control auth-input" id="newHeureDebut" required>
-                                </div>
-                                <div class="col-12 col-sm-3">
-                                    <label for="newHeureFin" class="form-label">Fin</label>
-                                    <input type="time" class="form-control auth-input" id="newHeureFin" required>
-                                </div>
+                            </div>
+                        <div class="seance-wizard-step" data-seance-step="2" hidden>
+                            <p class="fw-semibold">Quel type de séance ?</p>
+                            <div class="row g-2 g-sm-3">
                                 <div class="col-12">
                                     <label class="form-label">Type de séance</label>
                                     <div class="wtc-choice-list" role="listbox" aria-label="Type de séance">
@@ -482,6 +498,11 @@ $canManage = (int) ($_SESSION['gerer_seances'] ?? 0) === 1;
                                     <input type="text" class="form-control auth-input mt-2" id="newTypeAutre"
                                         placeholder="Préciser le type de séance" style="display:none;">
                                 </div>
+                            </div>
+                        </div>
+                        <div class="seance-wizard-step" data-seance-step="3" hidden>
+                            <p class="fw-semibold">Qui encadre et où se retrouve le groupe ?</p>
+                            <div class="row g-2 g-sm-3">
                                 <div class="col-12 col-sm-6">
                                     <label for="newCoach" class="form-label">Coach</label>
                                     <input type="text" class="form-control auth-input" id="newCoach" required
@@ -498,12 +519,31 @@ $canManage = (int) ($_SESSION['gerer_seances'] ?? 0) === 1;
                                         maxlength="150">
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-wtc-gold rounded-pill w-100 mt-4">Créer la séance</button>
+                            </div>
+                            <div class="seance-wizard-step" data-seance-step="4" hidden>
+                                <p class="fw-semibold">Vérifiez les informations de la séance</p>
+                                <p class="auth-hint">Vous pourrez revenir en arrière pour les modifier.</p>
+                                <div id="ajouterSeanceRecap" class="wizard-summary"></div>
+                            </div>
                         </form>
+                    </div>
+                    <div class="modal-footer wtc-modal__footer ajouter-seance-modal__footer">
+                        <span class="wizard-step-label" id="ajouterSeanceStepLabel">Étape 1 sur 3</span>
+                        <button type="button" class="btn btn-wtc-outline rounded-pill" id="ajouterSeanceBack" hidden>
+                            Retour
+                        </button>
+                        <button type="button" class="btn btn-wtc-gold rounded-pill" id="ajouterSeanceNext">
+                            Continuer
+                        </button>
+                        <button type="submit" form="formAjouterSeance" class="btn btn-wtc-gold rounded-pill"
+                            id="ajouterSeanceSave" hidden>
+                            Confirmer et créer
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
+
     <?php endif; ?>
 
     <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1090;">
@@ -525,7 +565,7 @@ $canManage = (int) ($_SESSION['gerer_seances'] ?? 0) === 1;
             window.WTC_OPEN_SEANCE = <?php echo (int) $_GET['open']; ?>;
         </script>
         <?php endif; ?>
-    <script src="js/seances.js?v=202607102200"></script>
+    <script src="js/seances.js?v=202610161115"></script>
 
 </body>
 
