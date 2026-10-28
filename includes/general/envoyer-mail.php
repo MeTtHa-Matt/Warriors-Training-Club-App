@@ -67,7 +67,6 @@ $stylePresets = [
 ];
 
 $postedSubject = '';
-$postedSignature = 'L’équipe du club';
 $postedStylePreset = 'classique';
 $postedMessageHtml = '';
 
@@ -78,14 +77,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $postedSubject = trim($_POST['subject'] ?? '');
-        $postedSignature = trim($_POST['signature'] ?? "L'équipe du club");
         
-        // Valider les en-têtes d'email
         EmailHeaderValidator::validateSubject($postedSubject);
-        EmailHeaderValidator::validateSignature($postedSignature);
         
         $subject = EmailHeaderValidator::validateSubject($postedSubject);
-        $signature = EmailHeaderValidator::validateSignature($postedSignature);
         
         $postedStylePreset = $_POST['style_preset'] ?? 'classique';
         $postedStylePreset = array_key_exists($postedStylePreset, $stylePresets) ? $postedStylePreset : 'classique';
@@ -144,7 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        $htmlBody = buildMailHtmlBody($subject, $postedMessageHtml, $signature);
+        $htmlBody = buildMailHtmlBody($subject, $postedMessageHtml);
 
         $result = sendBulkHtmlEmail(
             array_map(function ($user) {
@@ -182,10 +177,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $pageTitle = 'Warriors Training Club - Envoyer un mail';
 
-function buildMailHtmlBody(string $subject, string $messageHtml, string $signature): string
+function buildMailHtmlBody(string $subject, string $messageHtml): string
 {
     $safeSubject = htmlspecialchars($subject, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-    $safeSignature = htmlspecialchars($signature, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
     $safeMessage = $messageHtml;
 
     return <<<HTML
@@ -204,7 +198,6 @@ function buildMailHtmlBody(string $subject, string $messageHtml, string $signatu
             <td style="padding:24px 24px 18px;">
               <h1 style="margin:0 0 12px; font-size:24px; color:#111827;">{$safeSubject}</h1>
               <div style="font-size:16px; line-height:1.7; color:#1f2937;">{$safeMessage}</div>
-              <p style="margin:20px 0 0; font-size:15px; line-height:1.6; color:#4b5563;">À très vite,<br><strong>{$safeSignature}</strong></p>
             </td>
           </tr>
         </table>

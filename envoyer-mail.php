@@ -136,12 +136,6 @@ include __DIR__ . '/includes/general/envoyer-mail.php'
                                     <div class="mail-attachment-list" id="attachmentFiles"></div>
                                 </div>
 
-                                <div class="col-12">
-                                    <label for="signature" class="form-label">Signature</label>
-                                    <input type="text" class="form-control auth-input" id="signature" name="signature"
-                                        placeholder="Ex. : L’équipe du club"
-                                        value="<?= htmlspecialchars($postedSignature) ?>">
-                                </div>
                             </div>
 
                             <div class="mail-actions mt-4">
@@ -172,7 +166,7 @@ include __DIR__ . '/includes/general/envoyer-mail.php'
         )), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) ?>;
     </script>
     <script src="js/mail-recipients.js?v=202610281125"></script>
-    <script src="js/envoyer-mail.js?v=202610281105"></script>
+    <script src="js/envoyer-mail.js?v=202610281116"></script>
 
 </body>
 

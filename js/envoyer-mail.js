@@ -10,12 +10,10 @@ const stylePresets = {
 
 const subjectInput = document.getElementById("subject");
 const styleSelect = document.getElementById("style_preset");
-const signatureInput = document.getElementById("signature");
 const editor = document.getElementById("messageEditor");
 const hiddenMessageInput = document.getElementById("message_html");
 const previewMeta = document.getElementById("mailPreviewMeta");
 const previewMessage = document.getElementById("mailPreviewMessage");
-const previewSignature = document.getElementById("mailPreviewSignature");
 const styleBadge = document.getElementById("styleBadge");
 const summarySubject = document.getElementById("mailSummarySubject");
 const summaryStyle = document.getElementById("mailSummaryStyle");
@@ -63,13 +61,6 @@ function updatePreview() {
         ? subjectInput.value.trim()
         : "À définir";
   }
-  if (previewSignature) {
-    previewSignature.textContent =
-      signatureInput && signatureInput.value.trim()
-        ? signatureInput.value.trim()
-        : "L’équipe du club";
-  }
-
   syncEditorContent();
 }
 
@@ -131,7 +122,7 @@ if (fontColorInput) {
   });
 }
 
-[subjectInput, styleSelect, signatureInput]
+[subjectInput, styleSelect]
   .filter(Boolean)
   .forEach(function (el) {
     el.addEventListener("input", updatePreview);
