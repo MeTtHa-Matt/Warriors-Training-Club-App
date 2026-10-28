@@ -140,10 +140,15 @@ if (empty($_SESSION['pdp']) || !file_exists($pdpsDir . basename($_SESSION['pdp']
     $_SESSION['pdp'] = $account['pdp'];
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_infos'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['update_infos']) || isset($_POST['upload_profile_photo']))) {
+    $promptPhotoUpload = isset($_POST['upload_profile_photo']);
+    if ($promptPhotoUpload && !hash_equals((string) ($_SESSION['csrf_token'] ?? ''), (string) ($_POST['csrf_token'] ?? ''))) {
+        http_response_code(403);
+        exit('La session a expiré. Recharge la page et réessaie.');
+    }
 
-    $firstname = trim($_POST['firstname'] ?? '');
-    $lastname = trim($_POST['lastname'] ?? '');
+    $firstname = $promptPhotoUpload ? $account['firstname'] : trim($_POST['firstname'] ?? '');
+    $lastname = $promptPhotoUpload ? $account['lastname'] : trim($_POST['lastname'] ?? '');
 
     if ($firstname === '' || $lastname === '') {
         $errors[] = "Le prénom et le nom sont obligatoires.";
@@ -151,7 +156,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_infos'])) {
 
     $pdpFilename = $account['pdp'];
 
-    if (!empty($_FILES['pdp']['name']) && $_FILES['pdp']['error'] === UPLOAD_ERR_OK) {
+    $photoUpload = $_FILES['pdp'] ?? null;
+    if ($promptPhotoUpload && (!$photoUpload || ($photoUpload['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK)) {
+        $uploadError = (int) ($photoUpload['error'] ?? UPLOAD_ERR_NO_FILE);
+        $errors[] = match ($uploadError) {
+            UPLOAD_ERR_INI_SIZE, UPLOAD_ERR_FORM_SIZE => 'La photo ne doit pas dépasser 2 Mo.',
+            UPLOAD_ERR_NO_FILE => 'Aucune photo n’a été sélectionnée.',
+            default => 'La photo n’a pas pu être téléversée. Réessaie.',
+        };
+    } elseif ($photoUpload && !empty($photoUpload['name']) && ($photoUpload['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_OK) {
         $allowedTypes = [
             'image/jpeg' => 'jpg',
             'image/jpg' => 'jpg',
@@ -162,9 +175,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_infos'])) {
         $maxSize = 2 * 1024 * 1024; // 2 Mo
 
         $finfo = new finfo(FILEINFO_MIME_TYPE);
-        $fileType = $finfo->file($_FILES['pdp']['tmp_name']);
-        $fileSize = $_FILES['pdp']['size'];
-        $extension = strtolower(pathinfo($_FILES['pdp']['name'], PATHINFO_EXTENSION));
+        $fileType = $finfo->file($photoUpload['tmp_name']);
+        $fileSize = $photoUpload['size'];
+        $extension = strtolower(pathinfo($photoUpload['name'], PATHINFO_EXTENSION));
 
         if (!isset($allowedTypes[$fileType])) {
             $errors[] = 'Le format de l\'image doit être JPEG, PNG ou WebP.';
@@ -184,11 +197,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_infos'])) {
                 $saved = false;
 
                 if ($canResize) {
-                    $saved = cropAndResizeImage($_FILES['pdp']['tmp_name'], $destination, $fileType, 400);
+                    $saved = cropAndResizeImage($photoUpload['tmp_name'], $destination, $fileType, 400);
                 }
 
                 if (!$saved && !$canResize) {
-                    $saved = move_uploaded_file($_FILES['pdp']['tmp_name'], $destination);
+                    $saved = move_uploaded_file($photoUpload['tmp_name'], $destination);
                 }
 
                 if ($saved) {
@@ -209,7 +222,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_infos'])) {
     }
 
     if (empty($errors)) {
-        $acceptEmail = isset($_POST['accept_email']) ? 1 : 0;
+        $acceptEmail = $promptPhotoUpload ? (int) $account['accept_email'] : (isset($_POST['accept_email']) ? 1 : 0);
 
         $updateStmt = $pdo->prepare(
             'UPDATE account_wtc SET firstname = ?, lastname = ?, pdp = ?, accept_email = ? WHERE id = ?'
@@ -225,7 +238,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_infos'])) {
         $_SESSION['pdp'] = $pdpFilename;
         $_SESSION['accept_email'] = $acceptEmail;
 
-        $success = "Tes informations ont bien été mises à jour.";
+        $success = $promptPhotoUpload
+            ? 'Ta photo de profil a bien été mise à jour.'
+            : 'Tes informations ont bien été mises à jour.';
     }
 
     $_SESSION['profile_flash'] = [

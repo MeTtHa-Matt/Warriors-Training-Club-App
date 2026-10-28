@@ -75,6 +75,35 @@ if (session_status() === PHP_SESSION_NONE) {
         </div>
     </div>
 </div>
+<?php if (
+    !empty($_SESSION['user_id'])
+    && basename((string) ($_SESSION['pdp'] ?? 'pdp_base.png')) === 'pdp_base.png'
+    && basename($_SERVER['SCRIPT_NAME'] ?? '') !== 'modifier-profil.php'
+): ?>
+<div class="modal fade wtc-modal" id="profilePhotoPrompt" data-user-id="<?= (int) $_SESSION['user_id'] ?>" tabindex="-1" aria-labelledby="profilePhotoPromptTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content wtc-modal__content">
+            <div class="modal-header wtc-modal__header">
+                <h5 class="modal-title" id="profilePhotoPromptTitle">Ajoute ta photo de profil</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fermer"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-0">Une photo aiderait l’administration à mieux différencier et reconnaître les membres du club.</p>
+            </div>
+            <div class="modal-footer wtc-modal__footer">
+                <button type="button" class="btn btn-wtc-outline rounded-pill" data-bs-dismiss="modal">Me le rappeler plus tard</button>
+                <button type="button" class="btn btn-wtc-gold rounded-pill" id="profilePhotoPromptUpload">Uploader ma photo de profil</button>
+            </div>
+        </div>
+    </div>
+    <form method="POST" action="modifier-profil.php" enctype="multipart/form-data" id="profilePhotoPromptForm" hidden>
+        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars((string) ($_SESSION['csrf_token'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
+        <input type="hidden" name="upload_profile_photo" value="1">
+        <input type="file" name="pdp" id="profilePhotoPromptInput" accept="image/jpeg,image/png,image/webp" required>
+    </form>
+</div>
+<script src="js/profile-photo-prompt.js?v=202610281125" defer></script>
+<?php endif; ?>
 <div class="wtc-page-loader" id="wtcPageLoader" aria-hidden="true">
     <div class="wtc-page-loader__content" role="status" aria-live="polite">
         <img src="img/wtc.png" alt="" class="wtc-page-loader__logo">
