@@ -1010,6 +1010,39 @@ h3,
   color: var(--grey);
 }
 
+.password-visibility {
+  position: relative;
+}
+.password-visibility .auth-input {
+  padding-right: 3rem;
+}
+.password-visibility__toggle {
+  position: absolute;
+  top: 50%;
+  right: 0.55rem;
+  width: 2rem;
+  height: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--grey);
+  cursor: pointer;
+}
+.password-visibility__toggle:hover,
+.password-visibility__toggle:focus-visible {
+  color: var(--gold-soft);
+  outline: none;
+}
+.password-visibility__toggle:focus-visible {
+  box-shadow: 0 0 0 2px var(--gold-glow);
+}
+.password-visibility__toggle .bi { font-size: 1.05rem; }
+
 /* Fichier: bouton parcourir en thème sombre */
 .auth-input[type="file"]::file-selector-button {
   background: var(--gold);

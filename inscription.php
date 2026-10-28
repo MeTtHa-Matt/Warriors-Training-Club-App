@@ -17,7 +17,7 @@ unset($_SESSION['errors'], $_SESSION['old']);
     <title><?php echo $pageTitle; ?></title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/bootstrap-icons.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=202607102000">
+    <link rel="stylesheet" href="css/style.css?v=202610281130">
     <link rel="manifest" href="./manifest.json">
     <link rel="icon" type="image/png" sizes="any" href="./img/wtc.png">
     <link rel="apple-touch-icon" sizes="180x180" href="./img/wtc.png">
@@ -80,14 +80,26 @@ unset($_SESSION['errors'], $_SESSION['old']);
 
                         <div class="col-12 col-sm-6">
                             <label for="password" class="form-label">Mot de passe</label>
-                            <input type="password" class="form-control auth-input" id="password" name="password"
-                                required minlength="8">
+                            <div class="password-visibility">
+                                <input type="password" class="form-control auth-input" id="password" name="password"
+                                    required minlength="8">
+                                <button type="button" class="password-visibility__toggle" data-password-toggle="password"
+                                    aria-label="Afficher le mot de passe" aria-pressed="false">
+                                    <i class="bi bi-eye" aria-hidden="true"></i>
+                                </button>
+                            </div>
                         </div>
 
                         <div class="col-12 col-sm-6">
                             <label for="password_confirm" class="form-label">Confirmer</label>
-                            <input type="password" class="form-control auth-input" id="password_confirm"
-                                name="password_confirm" required minlength="8">
+                            <div class="password-visibility">
+                                <input type="password" class="form-control auth-input" id="password_confirm"
+                                    name="password_confirm" required minlength="8">
+                                <button type="button" class="password-visibility__toggle" data-password-toggle="password_confirm"
+                                    aria-label="Afficher la confirmation du mot de passe" aria-pressed="false">
+                                    <i class="bi bi-eye" aria-hidden="true"></i>
+                                </button>
+                            </div>
                         </div>
 
                         <div class="col-12">
@@ -111,6 +123,7 @@ unset($_SESSION['errors'], $_SESSION['old']);
     <?php require 'includes/general/footer.php'; ?>
 
     <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/password-visibility.js?v=202610281130"></script>
 
 </body>
 
