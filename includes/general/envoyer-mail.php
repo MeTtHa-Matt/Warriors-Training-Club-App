@@ -19,10 +19,24 @@ if (!$isAdmin) {
 
 $errors = [];
 $success = null;
-$recipientsStmt = $pdo->prepare('SELECT id, firstname, lastname, email FROM account_wtc WHERE ban = 0 AND accept_email = 1 AND email <> "" ORDER BY lastname ASC, firstname ASC');
-$recipientsStmt->execute();
+$recipientsStmt = $pdo->prepare(
+    'SELECT id, firstname, lastname, email, admin FROM account_wtc
+     WHERE ban = 0 AND (accept_email = 1 OR id = ?) AND email <> ""
+     ORDER BY lastname ASC, firstname ASC'
+);
+$recipientsStmt->execute([$currentId]);
 $recipients = $recipientsStmt->fetchAll(PDO::FETCH_ASSOC);
-$recipientCount = count($recipients);
+$eligibleRecipients = [];
+foreach ($recipients as $recipient) {
+    $normalizedEmail = strtolower(trim($recipient['email']));
+    if (filter_var($normalizedEmail, FILTER_VALIDATE_EMAIL)) {
+        $recipient['email'] = $normalizedEmail;
+        $eligibleRecipients[$normalizedEmail] = $recipient;
+    }
+}
+$recipientCount = 0;
+$postedRecipientEmails = [];
+$reportCsrf = $_SESSION['bulk_mail_csrf'] ??= bin2hex(random_bytes(32));
 
 if (isset($_GET['sent']) && $_GET['sent'] === '1') {
     $sentCount = (int) ($_GET['count'] ?? $recipientCount ?? 0);
@@ -59,6 +73,10 @@ $postedMessageHtml = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
+        if (!hash_equals($reportCsrf, (string) ($_POST['csrf_token'] ?? ''))) {
+            throw new InvalidArgumentException('La session a expiré. Recharge la page et réessaie.');
+        }
+
         $postedSubject = trim($_POST['subject'] ?? '');
         $postedSignature = trim($_POST['signature'] ?? "L'équipe du club");
         
@@ -74,17 +92,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $postedMessageHtml = trim($_POST['message_html'] ?? '');
         $stylePreset = $postedStylePreset;
 
-    if ($subject === '') {
-        $errors[] = 'Ajoute un objet pour ce mail.';
-    }
-    if ($postedMessageHtml === '') {
-        $errors[] = 'Rédige un message avant l’envoi.';
-    }
-    if ($recipientCount === 0) {
-        $errors[] = 'Aucun destinataire actif à qui envoyer le mail.';
-    }
+        $submittedEmails = $_POST['recipients'] ?? [];
+        if (!is_array($submittedEmails)) {
+            throw new InvalidArgumentException('La liste des destinataires est invalide.');
+        }
+        foreach ($submittedEmails as $email) {
+            if (!is_string($email)) {
+                throw new InvalidArgumentException('La liste des destinataires est invalide.');
+            }
+            $email = strtolower(trim($email));
+            if (!isset($eligibleRecipients[$email])) {
+                throw new InvalidArgumentException('Un destinataire sélectionné n’est plus disponible.');
+            }
+            $postedRecipientEmails[$email] = $email;
+        }
+        $postedRecipientEmails = array_values($postedRecipientEmails);
+        $selectedRecipients = array_map(
+            static fn(string $email): array => $eligibleRecipients[$email],
+            $postedRecipientEmails
+        );
+        $recipientCount = count($selectedRecipients);
 
-    if (empty($errors)) {
+        if ($subject === '') {
+            $errors[] = 'Ajoute un objet pour ce mail.';
+        }
+        if ($postedMessageHtml === '') {
+            $errors[] = 'Rédige un message avant l’envoi.';
+        }
+        if ($recipientCount === 0) {
+            $errors[] = 'Ajoute au moins un destinataire.';
+        }
+
+        if (empty($errors)) {
             $uploadDir = __DIR__ . '/uploads/mail-attachments';
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0755, true);
@@ -113,7 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'email' => $user['email'],
                     'name' => trim($user['firstname'] . ' ' . $user['lastname']),
                 ];
-            }, $recipients),
+            }, $selectedRecipients),
             $subject,
             $htmlBody,
             [],
@@ -131,8 +170,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         } else {
             $errors[] = $result['error'] ?? 'Impossible d’envoyer le mail.';
-        }
+            }
     }
+    } catch (InvalidArgumentException $e) {
+        $errors[] = $e->getMessage();
     } catch (Throwable $e) {
         error_log('[envoyer-mail] exception: ' . $e->getMessage());
         $errors[] = 'Une erreur est survenue lors de la préparation du mail.';

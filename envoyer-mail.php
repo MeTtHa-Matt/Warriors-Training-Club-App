@@ -19,7 +19,7 @@ include __DIR__ . '/includes/general/envoyer-mail.php'
     <title>Warriors Training Club - Envoyer un mail</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/bootstrap-icons.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=202607102000">
+    <link rel="stylesheet" href="css/style.css?v=202610281120">
     <link rel="icon" type="image/png" href="/WTC-App/img/wtc.png">
 </head>
 
@@ -66,10 +66,32 @@ include __DIR__ . '/includes/general/envoyer-mail.php'
             <div class="mail-shell">
                 <div class="col-12 col-lg-7">
                     <div class="mail-card">
-                        <h2 class="mail-card__title">Écrire un message à tous les utilisateurs</h2>
+                        <h2 class="mail-card__title">Écrire un message aux utilisateurs</h2>
 
                         <form method="POST" class="mail-form" enctype="multipart/form-data">
+                            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($reportCsrf) ?>">
                             <div class="row g-3">
+                                <div class="col-12">
+                                    <label for="recipientInput" class="form-label">Destinataires</label>
+                                    <div class="mail-recipient-picker" id="recipientPicker">
+                                        <div class="mail-recipient-picker__tokens" id="recipientTokens">
+                                            <?php foreach ($postedRecipientEmails as $email): ?>
+                                                <?php $recipient = $eligibleRecipients[$email]; ?>
+                                                <span class="mail-recipient-token" data-recipient-email="<?= htmlspecialchars($email) ?>">
+                                                    <span><?= htmlspecialchars(trim($recipient['firstname'] . ' ' . $recipient['lastname'])) ?> &lt;<?= htmlspecialchars($email) ?>&gt;</span>
+                                                    <button type="button" class="mail-recipient-token__remove" aria-label="Supprimer <?= htmlspecialchars($email) ?>"><i class="bi bi-x-lg"></i></button>
+                                                    <input type="hidden" name="recipients[]" value="<?= htmlspecialchars($email) ?>">
+                                                </span>
+                                            <?php endforeach; ?>
+                                            <input type="text" class="mail-recipient-input" id="recipientInput"
+                                                autocomplete="off" aria-label="Ajouter un destinataire"
+                                                aria-autocomplete="list" aria-expanded="false"
+                                                placeholder="Nom, adresse e-mail, all, admin ou nadmin…">
+                                        </div>
+                                        <ul class="mail-recipient-suggestions" id="recipientSuggestions" role="listbox" hidden></ul>
+                                    </div>
+                                    <p class="form-text">Sépare les adresses avec Espace. Commandes : <code>all</code>, <code>admin</code>, <code>nadmin</code>.</p>
+                                </div>
                                 <div class="col-12">
                                     <label for="subject" class="form-label">Objet du mail</label>
                                     <input type="text" class="form-control auth-input" id="subject" name="subject"
@@ -126,7 +148,7 @@ include __DIR__ . '/includes/general/envoyer-mail.php'
                                 <button type="submit" class="btn btn-wtc-gold rounded-pill px-4">
                                     <i class="bi bi-send me-2"></i>Envoyer le mail
                                 </button>
-                                <span class="text-muted small">À <?= $recipientCount ?>
+                                <span class="text-muted small">À <span id="recipientCount"><?= $recipientCount ?></span>
                                     destinataire<?= $recipientCount > 1 ? 's' : '' ?></span>
                             </div>
                         </form>
@@ -139,7 +161,18 @@ include __DIR__ . '/includes/general/envoyer-mail.php'
     <?php require 'includes/general/footer.php'; ?>
 
     <script src="js/bootstrap.bundle.min.js"></script>
-    <script src="js/envoyer-mail.js"></script>
+    <script>
+        window.mailRecipients = <?= json_encode(array_values(array_map(
+            static fn(array $recipient): array => [
+                'email' => $recipient['email'],
+                'name' => trim($recipient['firstname'] . ' ' . $recipient['lastname']),
+                'admin' => (int) $recipient['admin'] === 1,
+            ],
+            $eligibleRecipients
+        )), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) ?>;
+    </script>
+    <script src="js/mail-recipients.js?v=202610281125"></script>
+    <script src="js/envoyer-mail.js?v=202610281105"></script>
 
 </body>
 
