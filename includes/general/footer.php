@@ -44,6 +44,10 @@ if (session_status() === PHP_SESSION_NONE) {
 
 <button type="button" class="wtc-report-fab" data-bs-toggle="modal" data-bs-target="#reportHelpModal" aria-label="Signaler un problème" title="Signaler un problème">
     <i class="bi bi-exclamation-lg"></i>
+    <span class="wtc-report-badge wtc-report-badge--user" data-report-notification="user" aria-label="Réponses à tes signalements" hidden></span>
+    <?php if ((int) ($_SESSION['admin'] ?? 0) === 1): ?>
+        <span class="wtc-report-badge wtc-report-badge--admin" data-report-notification="admin" aria-label="Signalements à traiter" hidden></span>
+    <?php endif; ?>
 </button>
 <?php if (basename($_SERVER['SCRIPT_NAME'] ?? '') !== 'tuto-install.php'): ?>
 <div id="pwa-install-popup" style="display:none;position:fixed;inset:0;align-items:center;justify-content:center;background:rgba(0,0,0,0.45);z-index:2000;">
@@ -121,7 +125,7 @@ if (session_status() === PHP_SESSION_NONE) {
     });
 })();
 
-const WTC_CACHE_BUST_VERSION = '2026092901';
+const WTC_CACHE_BUST_VERSION = '202610281045';
 const WTC_CACHE_BUSTER_KEY = 'wtc-cache-buster';
 
 if (window.localStorage && window.localStorage.getItem(WTC_CACHE_BUSTER_KEY) !== WTC_CACHE_BUST_VERSION) {
@@ -146,6 +150,7 @@ if ('serviceWorker' in navigator) {
 }
 </script>
 <script src="js/pwa-tutorials.js?v=2026100201"></script>
+<script src="js/report-notifications.js?v=202610280900" defer></script>
 <?php
 // Global session timeout modal and script included on every page when user is logged in
 if (!empty($_SESSION['user_id'])):

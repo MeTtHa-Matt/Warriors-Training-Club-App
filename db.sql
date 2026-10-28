@@ -237,9 +237,26 @@ CREATE TABLE IF NOT EXISTS dashboard_reports (
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     device_hash CHAR(64) CHARACTER SET ascii COLLATE ascii_bin DEFAULT NULL,
     ip_hash CHAR(64) CHARACTER SET ascii COLLATE ascii_bin DEFAULT NULL,
+    owner_user_id INT DEFAULT NULL,
+    status VARCHAR(16) NOT NULL DEFAULT 'open',
+    user_last_viewed_message_id BIGINT UNSIGNED NOT NULL DEFAULT 0,
     INDEX idx_dashboard_reports_created (created_at),
     INDEX idx_dashboard_reports_device_created (device_hash, created_at),
-    INDEX idx_dashboard_reports_ip_created (ip_hash, created_at)
+    INDEX idx_dashboard_reports_ip_created (ip_hash, created_at),
+    INDEX idx_dashboard_reports_owner_status (owner_user_id, status),
+    CONSTRAINT fk_dashboard_reports_owner FOREIGN KEY (owner_user_id) REFERENCES account_wtc(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS dashboard_report_messages (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    report_id CHAR(32) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
+    sender_type ENUM('user', 'admin') NOT NULL,
+    sender_id INT DEFAULT NULL,
+    message TEXT NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_report_messages_report_id (report_id, id),
+    CONSTRAINT fk_report_messages_report FOREIGN KEY (report_id) REFERENCES dashboard_reports(id) ON DELETE CASCADE,
+    CONSTRAINT fk_report_messages_sender FOREIGN KEY (sender_id) REFERENCES account_wtc(id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS dashboard_commits (

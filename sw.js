@@ -1,4 +1,4 @@
-const CACHE_NAME = "wtc-cache-v45";
+const CACHE_NAME = "wtc-cache-v47";
 const BASE_URL = new URL(".", self.location.href);
 const BASE_PREFIX = BASE_URL.pathname === "/" ? "" : BASE_URL.pathname.replace(/\/$/, "");
 const PRECACHE_URLS = [
@@ -14,7 +14,7 @@ const PRECACHE_URLS = [
   `${BASE_PREFIX}/css/fonts/inter-500.ttf`,
   `${BASE_PREFIX}/css/fonts/inter-600.ttf`,
   `${BASE_PREFIX}/css/fonts/inter-700.ttf`,
-  `${BASE_PREFIX}/css/style.css?v=202610161115`,
+  `${BASE_PREFIX}/css/style.css?v=202610281033`,
   `${BASE_PREFIX}/js/seances.js?v=202610161115`,
   `${BASE_PREFIX}/img/wtc.png`,
   `${BASE_PREFIX}/manifest.json?v=2026092701`,
