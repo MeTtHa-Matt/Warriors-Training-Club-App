@@ -125,7 +125,7 @@ if (session_status() === PHP_SESSION_NONE) {
     });
 })();
 
-const WTC_CACHE_BUST_VERSION = '202610281045';
+const WTC_CACHE_BUST_VERSION = '202610281100';
 const WTC_CACHE_BUSTER_KEY = 'wtc-cache-buster';
 
 if (window.localStorage && window.localStorage.getItem(WTC_CACHE_BUSTER_KEY) !== WTC_CACHE_BUST_VERSION) {

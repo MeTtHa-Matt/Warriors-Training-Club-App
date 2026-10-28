@@ -1,0 +1,29 @@
+.navbar-nav .dropdown-submenu > .dropdown-menu {
+  position: static !important;
+  inset: auto !important;
+  display: none;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 0 0 0.75rem !important;
+  transform: none !important;
+  border: 0 !important;
+  border-left: 1px solid var(--line) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.navbar-nav .dropdown-submenu > .dropdown-menu.show {
+  display: block;
+}
+
+.navbar-nav .dropdown-submenu > .dropdown-toggle::after {
+  margin-left: auto;
+  transform: rotate(90deg);
+}
+
+.navbar-nav .dropdown-submenu > .dropdown-toggle[aria-expanded="true"]::after {
+  transform: rotate(-90deg);
+}
