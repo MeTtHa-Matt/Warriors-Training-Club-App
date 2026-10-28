@@ -78,18 +78,18 @@ include __DIR__ . '/includes/general/modifier-profil.php';
                             <div class="mb-3">
                                 <label for="firstname" class="form-label">Prénom</label>
                                 <input type="text" class="form-control auth-input" id="firstname" name="firstname"
-                                    value="<?= htmlspecialchars($account['firstname']) ?>" required>
+                                    value="<?= htmlspecialchars($formFirstname) ?>" required>
                             </div>
 
                             <div class="mb-3">
                                 <label for="lastname" class="form-label">Nom</label>
                                 <input type="text" class="form-control auth-input" id="lastname" name="lastname"
-                                    value="<?= htmlspecialchars($account['lastname']) ?>" required>
+                                    value="<?= htmlspecialchars($formLastname) ?>" required>
                             </div>
 
                             <div class="mb-4 form-check form-switch">
                                 <input type="checkbox" class="form-check-input" role="switch" id="accept_email"
-                                    name="accept_email" <?= $account['accept_email'] ? 'checked' : '' ?>>
+                                    name="accept_email" <?= $formAcceptEmail ? 'checked' : '' ?>>
                                 <label class="form-check-label" for="accept_email">
                                     Recevoir les emails d'information du club
                                 </label>

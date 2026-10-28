@@ -4,7 +4,10 @@ require_once __DIR__ . '/../security/RateLimiter.php';
 $pageTitle = "Warriors Training Club - Mot de passe oublié";
 
 $errors = [];
-$success = null;
+$flash = $_SESSION['password_reset_flash'] ?? [];
+unset($_SESSION['password_reset_flash']);
+$success = $flash['success'] ?? null;
+$errors = $flash['errors'] ?? [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
@@ -47,4 +50,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         error_log('[mdp_oublie] exception: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
         $errors[] = "Une erreur est survenue. Merci de réessayer plus tard.";
     }
+
+    $_SESSION['password_reset_flash'] = ['success' => $success, 'errors' => $errors];
+    header('Location: mot-de-passe-oublie.php', true, 303);
+    exit;
 }

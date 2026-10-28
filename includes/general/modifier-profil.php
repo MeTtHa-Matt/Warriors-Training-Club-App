@@ -27,8 +27,13 @@ if (empty($_SESSION['user_id'])) {
 }
 
 $accountId = $_SESSION['user_id'];
-$errors = [];
-$success = null;
+$profileFlash = $_SESSION['profile_flash'] ?? [];
+unset($_SESSION['profile_flash']);
+$errors = $profileFlash['info_errors'] ?? [];
+$success = $profileFlash['info_success'] ?? null;
+$passwordErrors = $profileFlash['password_errors'] ?? [];
+$passwordSuccess = $profileFlash['password_success'] ?? null;
+$postedProfile = $profileFlash['values'] ?? [];
 
 function cropAndResizeImage(string $sourcePath, string $destinationPath, string $mimeType, int $size = 400): bool
 {
@@ -119,6 +124,10 @@ if (!$account) {
     header('Location: connexion.php');
     exit;
 }
+
+$formFirstname = $postedProfile['firstname'] ?? $account['firstname'];
+$formLastname = $postedProfile['lastname'] ?? $account['lastname'];
+$formAcceptEmail = $postedProfile['accept_email'] ?? (int) $account['accept_email'];
 
 $pdpsDir = __DIR__ . '/../../img/pdps/';
 $account['pdp'] = basename((string) ($account['pdp'] ?? '')) ?: 'pdp_base.png';
@@ -218,10 +227,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_infos'])) {
 
         $success = "Tes informations ont bien été mises à jour.";
     }
-}
 
-$passwordSuccess = null;
-$passwordErrors = [];
+    $_SESSION['profile_flash'] = [
+        'info_errors' => $errors,
+        'info_success' => $success,
+        'values' => [
+            'firstname' => $firstname,
+            'lastname' => $lastname,
+            'accept_email' => isset($_POST['accept_email']) ? 1 : 0,
+        ],
+    ];
+    header('Location: modifier-profil.php', true, 303);
+    exit;
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_password'])) {
 
@@ -256,6 +274,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_password'])) {
             $passwordErrors[] = "Une erreur est survenue lors de la modification du mot de passe.";
         }
     }
+
+    $_SESSION['profile_flash'] = [
+        'password_success' => $passwordSuccess,
+        'password_errors' => $passwordErrors,
+    ];
+    header('Location: modifier-profil.php', true, 303);
+    exit;
 }
 
 $deleteErrors = [];

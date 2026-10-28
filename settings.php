@@ -11,7 +11,9 @@ if ($currentId <= 0 || (int) ($_SESSION['admin'] ?? 0) !== 1) {
 }
 
 $errors = [];
-$success = null;
+$success = $_SESSION['settings_flash']['success'] ?? null;
+$errors = $_SESSION['settings_flash']['errors'] ?? [];
+unset($_SESSION['settings_flash']);
 
 // Read current settings (in seconds)
 $currentTimeoutSeconds = (int) get_setting('session_timeout_seconds', (string)(14 * 86400));
@@ -70,6 +72,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_settings'])) {
             $errors[] = 'Impossible d’enregistrer les paramètres.';
         }
     }
+
+    $_SESSION['settings_flash'] = ['success' => $success, 'errors' => $errors];
+    header('Location: settings.php', true, 303);
+    exit;
 }
 
 $pageTitle = 'Warriors Training Club - Paramètres';

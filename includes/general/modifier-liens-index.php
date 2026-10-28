@@ -100,7 +100,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             $pdo->commit();
-            $success = 'Les liens ont bien été enregistrés.';
+            $_SESSION['success'] = 'Les liens ont bien été enregistrés.';
+            header('Location: liens-index.php', true, 303);
+            exit;
         } catch (PDOException $e) {
             $pdo->rollBack();
             $errors[] = 'Impossible d’enregistrer les liens. Vérifie que la table index_links existe bien dans la base de données.';
